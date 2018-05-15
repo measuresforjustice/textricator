@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+java -cp "$(dirname $0)/lib/*" ${JAVA_OPTS} io.mfj.textricator.cli.TextricatorCli "$@"
