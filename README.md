@@ -679,7 +679,6 @@ recordTypes:
   inmateName:
     label: "inmateName"
     valueTypes:
-      valueTypes
       - lastName
       - firstName
     
