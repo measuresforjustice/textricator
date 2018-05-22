@@ -1,4 +1,4 @@
-# ![Textricator](./textricator.svg)
+# ![Textricator](./textricator-logo.svg)
 
 _Textricator_ is a tool to extract text from documents and generate structured data.
 
@@ -754,3 +754,5 @@ Much credit is due to some people who do not show up in the commit history:
 * Joe Hale, for the original idea and prototype
 * John Castaneda and Abbie Miehle who, as the first end users, provided excellent
 bug reports, improvements, documentation, and examples.
+
+![mascot](./textricator-mascot.svg)
