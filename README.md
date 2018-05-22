@@ -1,4 +1,4 @@
-# Textricator
+# ![Textricator](./textricator.svg)
 
 _Textricator_ is a tool to extract text from documents and generate structured data.
 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+   viewBox="0 0 80 15"
+   height="15mm"
+   width="80mm">
+   <style type="text/css"><![CDATA[
+   text {
+    font: bold 11pt "Maven Pro";
+   }
+   ]]></style>
+  <rect x="0" y="0"
+     height="5" width="20"
+     style="fill:#acdde4" />
+  <rect x="7" y="5"
+     height="10" width="6"
+     style="fill:#ff0000" />
+  <path d="m 11,10 -5,0 -5,-5 h 5 l 5,5 z"
+  style="fill:#000000" />
+  <text x="13.5" y="15">extricator</text>
+</svg>
