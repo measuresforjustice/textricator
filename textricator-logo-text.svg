@@ -14,7 +14,7 @@
   <rect x="7" y="5"
      height="10" width="6"
      style="fill:#ff0000" />
-  <path d="m 11,10 -5,0 -5,-5 h 5 l 5,5 z"
-  style="fill:#000000" />
+  <path d="m 9.5,10 -4,0 -4,-5 h 4 l 4,5 z"
+     style="fill:#000000" />
   <text x="13.5" y="14">extricator</text>
 </svg>
