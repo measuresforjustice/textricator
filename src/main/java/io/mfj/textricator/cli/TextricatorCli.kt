@@ -116,7 +116,7 @@ object TextricatorCli {
     val inputFormat = opts.string("--input-format") ?: inputFile.extension.toLowerCase()
 
     val outputFile = opts.file("<output>")
-    if ( outputFile != null ) outputFile.parentFile.mkdirs()
+    if ( outputFile != null ) outputFile.absoluteFile.parentFile.mkdirs()
     val outputFormat = opts.string("--output-format") ?:
         if ( outputFile == null ) {
           Textricator.TEXT_OUTPUT_FORMAT_CSV
@@ -157,7 +157,7 @@ object TextricatorCli {
     val inputFormat = opts.string("--input-format") ?: inputFile.extension.toLowerCase()
 
     val outputFile = opts.file("<output>")
-    if ( outputFile != null ) outputFile.parentFile.mkdirs()
+    if ( outputFile != null ) outputFile.absoluteFile.parentFile.mkdirs()
     val outputFormat = opts.string("--output-format") ?:
         if ( outputFile == null ) {
           throw SystemExitException( "--output-format is required if <output> is omitted.", 1 )
@@ -195,7 +195,7 @@ object TextricatorCli {
     val inputFormat = opts.string("--input-format") ?: inputFile.extension.toLowerCase()
 
     val outputFile = opts.file("<output>")
-    if ( outputFile != null ) outputFile.parentFile.mkdirs()
+    if ( outputFile != null ) outputFile.absoluteFile.parentFile.mkdirs()
     val outputFormat = opts.string("--output-format") ?:
         if ( outputFile == null ) {
           throw SystemExitException( "--output-format is required if <output> is omitted.", 1 )
