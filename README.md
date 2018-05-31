@@ -9,6 +9,8 @@ _Textricator_ is released under the
 
 `io.mfj.textricator.cli.TextricatorCli` is the command-line interface.
 
+There is an [online demo](https://textricator-demo.mfj.io). ([Source code for online demo](https://github.com/measuresforjustice/textricator-web))
+
 The CLI has three subcommands, to use the three main features of Textricator:
   * text - Extract text from the PDF and generate JSON.
   * table - Parse the text that is in columns and rows. See [Table](#table) section.
