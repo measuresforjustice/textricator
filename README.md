@@ -5,6 +5,10 @@ _Textricator_ is a tool to extract text from documents and generate structured d
 _Textricator_ is released under the
 [GNU Affero General Public License Version 3](https://www.gnu.org/licenses/agpl-3.0.en.html).
 
+This application is actively used and developed by [Measures for Justice](https://measuresforjustice.org).
+We welcome feedback, bug reports, and contributions. Create an issue, send a pull request,
+or email us at <textricator@mfj.io>. If you use _Textricator_, please let us know.
+
 `io.mfj.textricator.Textricator` is the main entry point for library usage.
 
 `io.mfj.textricator.cli.TextricatorCli` is the command-line interface.
