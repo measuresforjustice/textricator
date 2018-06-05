@@ -8,6 +8,9 @@ _Textricator_ is released under the
 This application is actively used and developed by [Measures for Justice](https://measuresforjustice.org).
 We welcome feedback, bug reports, and contributions. Create an issue, send a pull request,
 or email us at <textricator@mfj.io>. If you use _Textricator_, please let us know.
+Send us your mailing address and we will mail you a sticker.
+
+Builds are available at [https://textricator.mfj.io/dist](https://textricator.mfj.io/dist).
 
 `io.mfj.textricator.Textricator` is the main entry point for library usage.
 
@@ -20,6 +23,17 @@ The CLI has three subcommands, to use the three main features of Textricator:
   * table - Parse the text that is in columns and rows. See [Table](#table) section.
   * form - Parse the text with a configured finite state machine. See [Form](#form) section.
 
+## Quick Start
+
+- Download the latest build from [https://textricator.mfj.io/dist](https://textricator.mfj.io/dist).
+- Extract it.
+- Show help
+    - `./textricator --help`
+- Extract raw text from a PDF to standard out
+    - `./textricator text --input-format=pdf.pdfbox examples/school-employee-list.pdf`
+- Parse a PDF to CSV
+    - `./textricator form --config=examples/school-employee-list.yml examples/school-employee-list.pdf examples/school-employee-list.csv`
+ 
 ### Extractors
 
 Extractors extract text (instances of `io.mfj.textricator.text.Text`) from a source.
