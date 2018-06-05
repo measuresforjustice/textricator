@@ -1,0 +1,697 @@
+---
+extractor: "pdf.pdfbox"
+
+header:
+  default: 0
+footer:
+  default: 770
+
+maxRowDistance: 2
+
+rootRecordType: rapsheet
+recordTypes:
+  rapsheet:
+    label: "Rap Sheet"
+    valueTypes:
+      - requester
+      - requestDate
+      - requestTime
+      - attn
+      - header
+      - caDojId
+      - dob
+      - sex
+      - race
+      - height
+      - weight
+      - eyeColor
+      - hairColor
+      - birthState
+    children:
+      - name
+      - arrest
+  name:
+    label: "name"
+    valueTypes:
+      - nameId
+      - lastName
+      - firstName
+  arrest:
+    label: "arrest"
+    valueTypes:
+      - arrestDate
+      - arrestNameId
+      - arrestDob
+      - arrestDate
+      - arrestLocation
+    children:
+      - charge
+      - appearance
+  charge:
+    label: "charge"
+    valueTypes:
+      - chargeNumber
+      - chargeId
+      - chargeCode
+      - chargeName
+      - chargeDesc
+  appearance:
+    label: "appearance"
+    valueTypes:
+      - appearanceNameId
+      - appearanceDate
+      - appearanceCourt
+    children:
+      - dispo
+  dispo:
+    label: "disposition"
+    valueTypes:
+      - dispoChargeNumber
+      - dispoChargeId
+      - dispoChargeCode
+      - dispoChargeName
+      - dispoChargeDesc
+      - dispo
+      - dispoConvStatus
+      - dispoSentence
+
+valueTypes:
+  requestDate:
+    replacements:
+      -
+        pattern: "^DATE:(.*)$"
+        replacement: "$1"
+  requestTime:
+    replacements:
+      -
+        pattern: "^TIME:(.*)$"
+        replacement: "$1"
+  attn:
+    replacements:
+      -
+        pattern: "^ATTN:(.*)$"
+        replacement: "$1"
+  caDojId:
+    replacements:
+      -
+        pattern: "^CII/(.*)$"
+        replacement: "$1"
+  dob:
+    replacements:
+      -
+        pattern: "^DOB/(.*)$"
+        replacement: "$1"
+  sex:
+    replacements:
+      -
+        pattern: "^SEX/(.*)$"
+        replacement: "$1"
+  race:
+    replacements:
+      -
+        pattern: "^RAC/(.*)$"
+        replacement: "$1"
+  height:
+    replacements:
+      -
+        pattern: "^HGT/(.*)$"
+        replacement: "$1"
+  weight:
+    replacements:
+      -
+        pattern: "^WGT/(.*)$"
+        replacement: "$1"
+  eyeColor:
+    replacements:
+      -
+        pattern: "^EYE/(.*)$"
+        replacement: "$1"
+  hairColor:
+    replacements:
+      -
+        pattern: "^HAIR/(.*)$"
+        replacement: "$1"
+  birthState:
+    replacements:
+      -
+        pattern: "^POB/(.*)$"
+        replacement: "$1"
+
+  nameId:
+    replacements:
+      -
+        pattern: "^NAM/(.*)$"
+        replacement: "$1"
+
+  lastName:
+    replacements:
+      -
+        pattern: "^([^,]),.*$"
+        replacement: "$1"
+  firstName:
+    replacements:
+      -
+        pattern: "^[^,],(.*)$"
+        replacement: "$1"
+
+  arrestNameId:
+    replacements:
+      -
+        pattern: "^NAM:(.*)$"
+        replacement: "$1"
+
+  arrestDob:
+    replacements:
+      -
+        pattern: "^DOB:(.*)$"
+        replacement: "$1"
+
+  chargeNumber:
+    replacements:
+      -
+        pattern: "^CNT:(.*)$"
+        replacement: "$1"
+
+  chargeId:
+    replacements:
+      -
+        pattern: "^#(.*)$"
+        replacement: "$1"
+
+  appearanceNameId:
+    replacements:
+      -
+        pattern: "^NAM:(.*)$"
+        replacement: "$1"
+
+  dispoChargeNumber:
+    replacements:
+      -
+        pattern: "^CNT:(.*)$"
+        replacement: "$1"
+
+  dispoChargeId:
+    replacements:
+      -
+        pattern: "^#(.*)$"
+        replacement: "$1"
+
+  dispo:
+    replacements:
+      -
+        pattern: "^\\*DISPO:(.*)$"
+        replacement: "$1"
+
+  dispoConvStatus:
+    replacements:
+      -
+        pattern: "^CONV STATUS:(.*)$"
+        replacement: "$1"
+
+  dispoSentence:
+    replacements:
+      -
+        pattern: "^SEN:(.*)$"
+        replacement: "$1"
+
+initialState: "INIT"
+
+states:
+  INIT:
+    transitions:
+      -
+        condition: re
+        nextState: re
+
+  re:
+    include: false
+    transitions:
+      -
+        condition: sameLine
+        nextState: requester
+
+  requester:
+    startRecord: true
+    transitions:
+      -
+        condition: requestDate
+        nextState: requestDate
+
+  requestDate:
+    transitions:
+      -
+        condition: requestTime
+        nextState: requestTime
+
+  requestTime:
+    transitions:
+      -
+        condition: nextLine
+        nextState: restricted
+
+  restricted:
+    include: false
+    transitions:
+      -
+        condition: sameLine
+        nextState: restricted
+      -
+        condition: attn
+        nextState: attn
+
+  attn:
+    transitions:
+      -
+        condition: sameLine
+        nextState: attn
+      -
+        condition: any
+        nextState: header
+
+  header:
+    transitions:
+      -
+        condition: liveScan
+        nextState: liveScan
+      -
+        condition: any
+        nextState: header
+
+  liveScan:
+    include: false
+    transitions:
+      -
+        condition: sameLine
+        nextState: liveScan
+      -
+        condition: caDojId
+        nextState: caDojId
+
+  caDojId:
+    transitions:
+      -
+        condition: dob
+        nextState: dob
+
+  dob:
+    transitions:
+      -
+        condition: sex
+        nextState: sex
+
+  sex:
+    transitions:
+      -
+        condition: race
+        nextState: race
+
+  race:
+    transitions:
+      -
+        condition: height
+        nextState: height
+
+  height:
+    transitions:
+      -
+        condition: weight
+        nextState: weight
+
+  weight:
+    transitions:
+      -
+        condition: eyeColor
+        nextState: eyeColor
+
+  eyeColor:
+    transitions:
+      -
+        condition: hairColor
+        nextState: hairColor
+
+  hairColor:
+    transitions:
+      -
+        condition: birthState
+        nextState: birthState
+
+  birthState:
+    transitions:
+      -
+        condition: nam01
+        nextState: nameId
+
+  nameId:
+    startRecord: true
+    transitions:
+      -
+        condition: sameLine
+        nextState: name
+
+  nameId:
+    startRecord: true
+    transitions:
+      -
+        condition: sameLine
+        nextState: name
+
+  name:
+    valueTypes: [ lastName, firstName ]
+    transitions:
+      -
+        condition: sameLine
+        nextState: name
+      -
+        condition: nameId
+        nextState: nameId
+      -
+        condition: cycleDelimiterStart
+        nextState: cycleDelimiter
+
+  cycleDelimiter:
+    include: false
+    transitions:
+      -
+        condition: cycleDelimiterContinue
+        nextState: cycleDelimiter
+      -
+        condition: arrest
+        nextState: arrest
+
+  arrest:
+    include: false
+    transitions:
+      -
+        condition: eventNameId
+        nextState: arrestNameId
+
+  arrestNameId:
+    startRecord: true
+    transitions:
+      -
+        condition: arrestDob
+        nextState: arrestDob
+
+  arrestDob:
+    transitions:
+      -
+        condition: eventDate
+        nextState: arrestDate
+
+  arrestDate:
+    transitions:
+      -
+        condition: sameLine
+        nextState: arrestLocation
+
+  arrestLocation:
+    transitions:
+      -
+        condition: sameLine
+        nextState: arrestLocation
+      -
+        condition: chargeNumber
+        nextState: chargeNumber
+
+  chargeNumber:
+    startRecord: true
+    transitions:
+      -
+        condition: chargeId
+        nextState: chargeId
+      -
+        condition: chargeCode
+        nextState: chargeCode
+
+  chargeId:
+    transitions:
+      -
+        condition: chargeCode
+        nextState: chargeCode
+
+  chargeCode:
+    transitions:
+      -
+        condition: sameLine
+        nextState: chargeName
+
+  chargeName:
+    transitions:
+      -
+        condition: sameLine
+        nextState: chargeName
+      -
+        condition: chargeDesc
+        nextState: chargeDesc
+      -
+        condition: chargeNumber
+        nextState: chargeNumber
+      -
+        condition: eventDelimiterStart
+        nextState: eventDelimiter
+      -
+        condition: endStart
+        nextState: endStart
+
+  chargeDesc:
+    transitions:
+      -
+        condition: chargeNumber
+        nextState: chargeNumber
+      -
+        condition: chargeDesc
+        nextState: chargeDesc
+      -
+        condition: endStart
+        nextState: endStart
+
+  eventDelimiter:
+    include: false
+    transitions:
+      -
+        condition: eventDelimiterContinue
+        nextState: eventDelimiter
+      -
+        condition: court
+        nextState: court
+
+  court:
+    include: false
+    transitions:
+      -
+        condition: eventNameId
+        nextState: appearanceNameId
+
+  appearanceNameId:
+    startRecord: true
+    transitions:
+      -
+        condition: eventDate
+        nextState: appearanceDate
+
+  appearanceDate:
+    transitions:
+      -
+        condition: sameLine
+        nextState: appearanceCourt
+
+  appearanceCourt:
+    transitions:
+      -
+        condition: sameLine
+        nextState: appearanceCourt
+      -
+        condition: chargeNumber
+        nextState: dispoChargeNumber
+
+  dispoChargeNumber:
+    startRecord: true
+    transitions:
+      -
+        condition: chargeId
+        nextState: dispoChargeId
+      -
+        condition: chargeCode
+        nextState: dispoChargeCode
+
+  dispoChargeId:
+    transitions:
+      -
+        condition: chargeCode
+        nextState: dispoChargeCode
+
+  dispoChargeCode:
+    transitions:
+      -
+        condition: sameLine
+        nextState: dispoChargeName
+
+  dispoChargeName:
+    transitions:
+      -
+        condition: sameLine
+        nextState: dispoChargeName
+      -
+        condition: dispo
+        nextState: dispo
+
+  dispo:
+    transitions:
+      -
+        condition: sameLine
+        nextState: dispo
+      -
+        condition: dispoConv
+        nextState: dispoConvStatus
+      -
+        condition: endStart
+        nextState: endStart
+
+  dispoConvStatus:
+    transitions:
+      -
+        condition: sameLine
+        nextState: dispoConvStatus
+      -
+        condition: dispoWrap
+        nextState: dispoConvStatus
+      -
+        condition: dispoSentence
+        nextState: dispoSentence
+      -
+        condition: chargeNumber
+        nextState: dispoChargeNumber
+      -
+        condition: eventDelimiterStart
+        nextState: eventDelimiter
+      -
+        condition: cycleDelimiterStart
+        nextState: cycleDelimiter
+      -
+        condition: endStart
+        nextState: endStart
+
+  dispoSentence:
+    transitions:
+      -
+        condition: sameLine
+        nextState: dispoSentence
+      -
+        condition: dispoWrap
+        nextState: dispoSentence
+      -
+        condition: chargeNumber
+        nextState: dispoChargeNumber
+      -
+        condition: eventDelimiterStart
+        nextState: eventDelimiter
+      -
+        condition: cycleDelimiterStart
+        nextState: cycleDelimiter
+      -
+        condition: endStart
+        nextState: endStart
+
+  endStart:
+    include: false
+    transitions:
+      -
+        condition: asterisk
+        nextState: end2
+  end2:
+    include: false
+    transitions:
+      -
+        condition: asterisk
+        nextState: end3
+  end3:
+    include: false
+    transitions:
+      -
+        condition: endOfMessage
+        nextState: end
+  end:
+    include: false
+    transitions:
+      -
+        condition: any
+        nextState: end
+
+conditions:
+
+  any: '0 = 0'
+
+  sameLine: '-2 <= uly_rel <= 2'
+
+  nextLine: 'uly_rel > 2'
+
+  re: '53 < ulx < 54 and text = "RE:"'
+
+  requestDate: 'text =~ /^DATE:.*/'
+
+  requestTime: 'text =~ /^TIME:.*/'
+
+  attn: 'text =~ /^ATTN:.*/'
+
+  liveScan: '53 <= ulx <= 54 and text = "**LIVE"'
+
+  caDojId: 'text =~ /^CII\/.*/'
+
+  dob: 'text =~ /^DOB\/.*/'
+
+  sex: 'text =~ /^SEX\/.*/'
+
+  race : 'text =~ /^RAC\/.*/'
+
+  height: 'text =~ /^HGT\/.*/'
+
+  weight: 'text =~ /^WGT\/.*/'
+
+  eyeColor: 'text =~ /^EYE\/.*/'
+
+  hairColor: 'text =~ /^HAIR\/.*/'
+
+  birthState: 'text =~ /^POB\/.*/'
+
+  nam01: 'text = "NAM/01"'
+
+  nameId: '76 <= ulx <= 77 and text =~ /^[0-9]+$/'
+
+  cycleDelimiterStart: '53 < ulx < 54 and text = "*"'
+  cycleDelimiterContinue: '-2 <= uly_rel <= 2 and text = "*"'
+
+  arrest: '53 < ulx < 54 and text = "ARR/DET/CITE:"'
+
+  eventNameId: 'text =~ /^NAM:[0-9]+$/'
+
+  arrestDob: 'text =~ /^DOB:[0-9]+$/'
+
+  eventDate: '53 < ulx < 54 and text =~ /^[0-9]+$/'
+
+  chargeNumber: '53 < ulx < 54 and text =~ /^CNT:[0-9]+$/'
+
+  chargeId: '-2 <= uly_rel <= 2 and text =~ /^#[0-9]+$/'
+
+  chargeCode: '65 < ulx < 66 and text =~ /^[0-9]+$/'
+
+  chargeDesc: '70 < ulx'
+
+  eventDelimiterStart: '53 < ulx < 54 and text = "-"'
+
+  eventDelimiterContinue: '-2 <= uly_rel <= 2 and text = "-"'
+
+  court: '53 < ulx < 54 and text = "COURT:"'
+
+  dispo: '53 < ulx < 54 and text =~ /^\\*DISPO:.*$/'
+
+  dispoConv: '70 < ulx < 71 and text = "CONV"'
+
+  dispoSentence: '70 < ulx < 71 and text = "SEN:"'
+
+  dispoWrap: '100 < ulx'
+
+  endStart: '82 < ulx < 83 and text = "*"'
+
+  asterisk: '-2 <= uly_rel <= 2 and text = "*"'
+
+  endOfMessage: '-2 <= uly_rel <= 2 and text = "END"'
