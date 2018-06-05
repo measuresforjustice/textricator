@@ -17,6 +17,9 @@
 			<directory>${project.basedir}</directory>
 			<includes>
 				<include>README.*</include>
+				<include>NOTICE</include>
+				<include>COPYING</include>
+				<include>examples/</include>
 			</includes>
 		</fileSet>
 	</fileSets>
