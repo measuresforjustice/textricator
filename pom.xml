@@ -7,7 +7,27 @@
   <groupId>io.mfj</groupId>
   <artifactId>textricator</artifactId>
   <version>9.0-SNAPSHOT</version>
+
+  <name>${project.groupId}:${project.artifactId}</name>
   <description>A tool to extract text from documents and generate structured data</description>
+
+  <url>https://textricator.mfj.io/</url>
+
+  <developers>
+    <developer>
+      <name>Measures for Justice</name>
+      <email>opensource@measuresforjustice.org</email>
+      <organization>Measures for Justice</organization>
+      <organizationUrl>https://measuresforjustice.org/</organizationUrl>
+    </developer>
+  </developers>
+
+  <licenses>
+    <license>
+      <name>GNU Affero General Public License, Version 3</name>
+      <url>https://www.gnu.org/licenses/agpl-3.0.txt</url>
+    </license>
+  </licenses>
 
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
