@@ -88,7 +88,7 @@ open class ValueType(
       // otherwise check all possible regex patterns for a match
       replacements.forEach { r ->
         // if the string matches a pattern, replace it with the regex replacement and return
-        if( this.matches(r.regexPattern) ) {
+        if ( r.regexPattern.containsMatchIn( this ) ) {
           return r.regexPattern.replace(this, r.replacement)
         }
       }
