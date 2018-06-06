@@ -44,7 +44,7 @@
     <dependency>
       <groupId>io.mfj</groupId>
       <artifactId>expr</artifactId>
-      <version>4.0.12</version>
+      <version>4.0.13</version>
       <!-- Apache 2.0 -->
     </dependency>
 
