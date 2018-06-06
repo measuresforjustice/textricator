@@ -33,7 +33,7 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <kotlin.version>1.2.31</kotlin.version>
-    <dokka.version>0.9.7</dokka.version>
+    <dokka.version>0.9.17</dokka.version>
     <copyright.year>2018</copyright.year>
     <source.location>https://github.com/measuresforjustice/textricator</source.location>
   </properties>
@@ -247,9 +247,11 @@
         <version>${dokka.version}</version>
         <executions>
           <execution>
-            <phase>pre-site</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>dokka</goal>
+              <goal>javadoc</goal>
+              <goal>javadocJar</goal>
             </goals>
           </execution>
         </executions>
@@ -257,6 +259,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
+        <version>3.0.1</version>
         <executions>
           <execution>
             <id>attach-sources</id>
