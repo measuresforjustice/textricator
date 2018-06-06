@@ -17,6 +17,7 @@ with this program.  If not, see <https://www.gnu.org/licenses/>.
 package io.mfj.textricator.form.config
 
 import java.io.File
+import java.io.InputStream
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
@@ -26,12 +27,10 @@ object FormParseConfigUtil {
 
   private val mapper = ObjectMapper(YAMLFactory()).registerKotlinModule()
 
-  fun parseYaml(file: File):FormParseConfig {
-    return parseYaml(file.readText())
-  }
+  fun parseYaml(file: File):FormParseConfig = parseYaml(file.readText())
 
-  fun parseYaml(text:String):FormParseConfig {
-    return mapper.readValue<FormParseConfig>(text)
-  }
+  fun parseYaml(input:InputStream):FormParseConfig = mapper.readValue(input)
+
+  fun parseYaml(text:String):FormParseConfig = mapper.readValue(text)
 
 }

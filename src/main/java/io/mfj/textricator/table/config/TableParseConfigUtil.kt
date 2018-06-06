@@ -17,16 +17,18 @@ with this program.  If not, see <https://www.gnu.org/licenses/>.
 package io.mfj.textricator.table.config
 
 import java.io.File
+import java.io.InputStream
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.*
-
 
 object TableParseConfigUtil {
 
   private val mapper = ObjectMapper(YAMLFactory()).registerKotlinModule()
 
   fun parseYaml(configFile:File):TableParseConfig = mapper.readValue( configFile.readText() )
+
+  fun parseYaml(input:InputStream):TableParseConfig = mapper.readValue(input)
 
 }

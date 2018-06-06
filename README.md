@@ -32,9 +32,9 @@ The CLI has three subcommands, to use the three main features of Textricator:
 - Show help
     - `./textricator --help`
 - Extract raw text from a PDF to standard out
-    - `./textricator text --input-format=pdf.pdfbox examples/school-employee-list.pdf`
+    - `./textricator text --input-format=pdf.pdfbox src/test/resources/io/mfj/textricator/examples/school-employee-list.pdf`
 - Parse a PDF to CSV
-    - `./textricator form --config=examples/school-employee-list.yml examples/school-employee-list.pdf examples/school-employee-list.csv`
+    - `./textricator form --config=src/test/resources/io/mfj/textricator/examples/school-employee-list.yml src/test/resources/io/mfj/textricator/examples/school-employee-list.pdf /tmp/school-employee-list.csv`
  
 ### Extractors
 
@@ -172,7 +172,7 @@ State transitions are selected by evaluating conditions. Conditions are expressi
 
 ### Example
 
-This is an example for `examples/school-employee-list.pdf`.
+This is an example for `src/test/resources/io/mfj/textricator/examples/school-employee-list.pdf`.
 
 ```yaml
 # Use the built-in PDF parser
