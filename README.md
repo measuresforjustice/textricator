@@ -16,8 +16,6 @@ We welcome feedback, bug reports, and contributions. Create an issue, send a pul
 or email us at <textricator@mfj.io>. If you use _Textricator_, please let us know.
 Send us your mailing address and we will mail you a sticker.
 
-Builds are available at [https://textricator.mfj.io/dist](https://textricator.mfj.io/dist).
-
 `io.mfj.textricator.Textricator` is the main entry point for library usage.
 
 `io.mfj.textricator.cli.TextricatorCli` is the command-line interface.
@@ -31,7 +29,7 @@ The CLI has three subcommands, to use the three main features of Textricator:
 
 ## Quick Start
 
-- Download the latest build from [https://textricator.mfj.io/dist](https://textricator.mfj.io/dist).
+- Download the latest build from [https://repo1.maven.org/maven2/io/mfj/textricator/](https://repo1.maven.org/maven2/io/mfj/textricator/) - click on the directory for the latest version and download `textricator-VERSION-bin.tgz`.
 - Extract it.
 - Show help
     - `./textricator --help`
