@@ -174,14 +174,10 @@ class FsmParser(val config:FormParseConfig,
             VAR_BG_COLOR -> text!!.backgroundColor
             VAR_WIDTH -> text!!.width
             VAR_HEIGHT -> text!!.height
-            VAR_ULX_REL -> if ( lastText != null ) text!!.ulx - lastText!!.ulx else { noLast(
-                VAR_ULX_REL); text!!.ulx }
-            VAR_ULY_REL -> if ( lastText != null ) text!!.uly - lastText!!.uly else { noLast(
-                VAR_ULY_REL); text!!.uly }
-            VAR_LRX_REL -> if ( lastText != null ) text!!.lrx - lastText!!.lrx else { noLast(
-                VAR_LRX_REL); text!!.lrx }
-            VAR_LRY_REL -> if ( lastText != null ) text!!.lry - lastText!!.lry else { noLast(
-                VAR_LRY_REL); text!!.lry }
+            VAR_ULX_REL -> if ( lastText != null ) text!!.ulx - lastText!!.ulx else { noLast( VAR_ULX_REL); text!!.ulx }
+            VAR_ULY_REL -> if ( lastText != null ) text!!.uly - lastText!!.uly else { noLast( VAR_ULY_REL); text!!.uly }
+            VAR_LRX_REL -> if ( lastText != null ) text!!.lrx - lastText!!.lrx else { noLast( VAR_LRX_REL); text!!.lrx }
+            VAR_LRY_REL -> if ( lastText != null ) text!!.lry - lastText!!.lry else { noLast( VAR_LRY_REL); text!!.lry }
             // fsm variables
             else -> vars[varName]
           }
