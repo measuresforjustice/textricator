@@ -36,7 +36,6 @@ class RecordParser( private val config:FormParseConfig, private val eventListene
     val parseState = ParseState()
 
     return seq
-        .filter { it.state.include }
         .map { stateTexts -> split(stateTexts) }.flatten()
         .map { stateValue -> splitValueTypes(stateValue) }.flatten()
         .plus( null as StateValue? ) // sentinel
@@ -71,7 +70,7 @@ class RecordParser( private val config:FormParseConfig, private val eventListene
           ?: listOf( st )
 
   private class ParseState {
-    val stateStack: Stack<Pair<String,Boolean>> = Stack()
+    val stateStack: Stack<Pair<String,Boolean>> = Stack() // <stateId,isNewRecord>
     var root: Record? = null
 
     // map of record to its member valueTypes.
@@ -93,63 +92,73 @@ class RecordParser( private val config:FormParseConfig, private val eventListene
     //log.debug( "parse ${st.state} - ${st.valueTypes}" )
     eventListener?.onStateValue( st )
 
-    val valueTypeId:String = st.state.valueTypes?.get(0) ?: st.stateId
-
-    // find the type the contains this state
-    val recordTypeId:String = findRecordTypeId( valueTypeId )
-
     // figure out if we should start a new record
     val newRecord = ( ! st.splitContinuation ) && isNewRecord( s, st.stateId )
+
+    if ( newRecord ) {
+      s.stateStack.popThrough { it.second && it.first == st.stateId }
+    }
+    s.stateStack.push( Pair( st.stateId, newRecord ) )
 
     // return value, if a new record is started return the current root
     var ret:Record? = null
 
-    // if new
-    val rec:Record = if ( newRecord ) {
+    // have to check this *after* the call to s.stateStack.push() so this state goes in the stack, even if not used.
+    if ( st.state.include ) {
 
-      // if the type is root
-      val rec:Record = if ( recordTypeId == config.rootRecordType) {
+      // there is only one because of splitValueTypes()
+      val valueTypeId:String = st.state.valueTypes?.get(0) ?: st.stateId
 
-        // return the old one and start a new root
-        ret = s.root?.setValues(s)
-        s.buffer.clear()
-        s.root = Record(st.pageNumber, recordTypeId)
-        s.root!!
+      // find the type the contains this state
+      val recordTypeId:String = findRecordTypeId( valueTypeId )
+
+      // if new
+      val rec:Record = if ( newRecord ) {
+
+        // if the type is root
+        val rec:Record = if ( recordTypeId == config.rootRecordType) {
+
+          // return the old one and start a new root
+          ret = s.root?.setValues(s)
+          s.buffer.clear()
+          s.root = Record(st.pageNumber, recordTypeId)
+          s.root!!
+
+        } else {
+          // find the parent record
+          val parent = findParentRecord( s, st.pageNumber, recordTypeId )
+
+          // start a new record
+          val rec = Record(st.pageNumber, recordTypeId)
+          parent.children.getOrPut( recordTypeId, { mutableListOf() } ).add( rec )
+          rec
+        }
+
+        //log.debug( "new ${rec.typeId} record" )
+        eventListener?.onNewRecord(rec.typeId)
+        rec
 
       } else {
-        // find the parent record
-        val parent = findParentRecord( s, st.pageNumber, recordTypeId )
+        if ( s.root == null ) {
+          // not explicitly starting a new record, but no record exists.
+          // create a new root to add to.
+          // TODO is this okay?
+          s.root = Record(st.pageNumber, config.rootRecordType)
+        }
 
-        // start a new record
-        val rec = Record(st.pageNumber, recordTypeId)
-        parent.children.getOrPut( recordTypeId, { mutableListOf() } ).add( rec )
+        // find the root
+        val rec = findRecord( s.root!!, recordTypeId )
+        //log.debug( "add to ${rec.typeId} record" )
+        eventListener?.onRecordAppend( rec.typeId )
         rec
       }
 
-      //log.debug( "new ${rec.typeId} record" )
-      eventListener?.onNewRecord(rec.typeId)
-      rec
-
-    } else {
-      if ( s.root == null ) {
-        // not explicitly starting a new record, but no record exists.
-        // create a new root to add to.
-        // TODO is this okay?
-        s.root = Record(st.pageNumber, config.rootRecordType)
-      }
-
-      // find the root
-      val rec = findRecord( s.root!!, recordTypeId )
-      //log.debug( "add to ${rec.typeId} record" )
-      eventListener?.onRecordAppend( rec.typeId )
-      rec
+      // add data
+      s.buffer
+          .getOrPut( rec, {mutableMapOf()} )
+          .getOrPut( valueTypeId, {mutableListOf()} )
+          .addAll( st.values )
     }
-
-    // add data
-    s.buffer
-        .getOrPut( rec, {mutableMapOf()} )
-        .getOrPut( valueTypeId, {mutableListOf()} )
-        .addAll( st.values )
 
     return ret
   }
@@ -210,15 +219,8 @@ class RecordParser( private val config:FormParseConfig, private val eventListene
 
     if ( state.startRecordForEachValue ) return true
 
-    val newRecord = state.startRecord && ( state.startRecordRequiredState == null
+    return state.startRecord && ( state.startRecordRequiredState == null
         || s.stateStack.hasIntermediateState( state.startRecordRequiredState ) )
-
-    if ( newRecord ) {
-      s.stateStack.popThrough { it.second && it.first == stateId }
-    }
-    s.stateStack.push( Pair( stateId, newRecord ) )
-
-    return newRecord
   }
 
   /** Map of value type ID to record type ID of the record that contains the value */

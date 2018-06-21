@@ -119,4 +119,51 @@ class RecordParserTest {
     assertEquals( "charge", rp.findAncestorThatIsAChildOf("charge","case") )
   }
 
+  /**
+   * Make sure that if a state that is required for another state to start a new record
+   * ([State.startRecordRequiredState])
+   * has [State.include] = false
+   * that the state is still still noticed for the purposes of [State.startRecordRequiredState].
+   *
+   * Previously, the [StateValue]s with [State.include]=false were filtered out too early and this did not work.
+   */
+  @Test
+  fun testStartRecordIfSeenIgnoredState() {
+    val model = FormParseConfig(rootRecordType = "person",
+        recordTypes = mutableMapOf(
+            "person" to RecordType(label = "Person", valueTypes = mutableListOf("name"))
+        ),
+        states = mutableMapOf(
+            "name" to State(startRecord = true, startRecordRequiredState = "label"),
+            "label" to State(include = false)
+        )
+    )
+    val stateValues = listOf(
+        StateValue(
+            pageNumber = 1,
+            values = listOf( "Fred" ),
+            state = model.states["name"]!!,
+            stateId = "name"
+        ),
+        StateValue(
+            pageNumber = 1,
+            values = listOf( "label" ),
+            state = model.states["label"]!!,
+            stateId = "label"
+        ),
+        StateValue(
+            pageNumber = 1,
+            values = listOf( "Sally" ),
+            state = model.states["name"]!!,
+            stateId = "name"
+        )
+    ).asSequence()
+
+    val records = RecordParser(model).parse( stateValues ).toList()
+
+    assertEquals( 2, records.size )
+    assertEquals( "Fred", records[0].values["name"] )
+    assertEquals( "Sally", records[1].values["name"] )
+  }
+
 }
