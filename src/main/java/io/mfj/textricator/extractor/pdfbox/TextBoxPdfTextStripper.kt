@@ -83,9 +83,6 @@ internal class TextBoxPdfTextStripper : PDFTextStripper() {
       val gs = graphicsState
       val color = gs.strokingColor.toRGB()
       val nscolor = gs.nonStrokingColor.toRGB()
-      if ( sb.toString() == "MOHAMMED" ) {
-        println( gs )
-      }
       maxHeight = Math.max(maxHeight, current.getHeight())
 
     }
