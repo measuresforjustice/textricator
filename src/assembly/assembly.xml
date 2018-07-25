@@ -10,6 +10,7 @@
 			<directory>${project.basedir}/src/scripts</directory>
 			<includes>
 				<include>textricator</include>
+				<include>textricator.bat</include>
 			</includes>
 			<fileMode>0755</fileMode>
 		</fileSet>
