@@ -86,7 +86,7 @@
     <dependency>
       <groupId>com.itextpdf</groupId>
       <artifactId>itextpdf</artifactId>
-      <version>5.5.12</version>
+      <version>5.5.13</version>
       <!-- AGPL -->
     </dependency>
     <dependency>
@@ -100,13 +100,13 @@
     <dependency>
       <groupId>com.itextpdf</groupId>
       <artifactId>kernel</artifactId>
-      <version>7.1.0</version>
+      <version>7.1.4</version>
       <!-- AGPL -->
     </dependency>
     <dependency>
       <groupId>com.itextpdf</groupId>
       <artifactId>layout</artifactId>
-      <version>7.1.0</version>
+      <version>7.1.4</version>
       <!-- AGPL -->
     </dependency>
 
