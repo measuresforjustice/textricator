@@ -32,7 +32,7 @@
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <kotlin.version>1.2.31</kotlin.version>
+    <kotlin.version>1.2.71</kotlin.version>
     <dokka.version>0.9.17</dokka.version>
     <copyright.year>2018</copyright.year>
     <source.location>https://github.com/measuresforjustice/textricator</source.location>
