@@ -86,6 +86,10 @@ tasks.create<Tar>("tgz") {
 	from( configurations.runtimeClasspath ) {
 		into( "lib" )
 	}
+	// examples
+	from( "src/test/resources/io/mfj/textricator/examples" ) {
+		into( "examples" )
+	}
 }
 
 // do not allow snapshot dependencies when building a release
