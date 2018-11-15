@@ -6,7 +6,7 @@
 
   <groupId>io.mfj</groupId>
   <artifactId>textricator</artifactId>
-  <version>9.0-SNAPSHOT</version>
+  <version>9.1-SNAPSHOT</version>
 
   <name>${project.groupId}:${project.artifactId}</name>
   <description>A tool to extract text from documents and generate structured data</description>
@@ -32,7 +32,7 @@
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <kotlin.version>1.2.71</kotlin.version>
+    <kotlin.version>1.3.10</kotlin.version>
     <dokka.version>0.9.17</dokka.version>
     <copyright.year>2018</copyright.year>
     <source.location>https://github.com/measuresforjustice/textricator</source.location>
@@ -41,7 +41,7 @@
   <dependencies>
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-stdlib-jre8</artifactId>
+      <artifactId>kotlin-stdlib-jdk8</artifactId>
       <version>${kotlin.version}</version>
       <!-- Apache 2.0 -->
     </dependency>
@@ -64,7 +64,7 @@
     <dependency>
       <groupId>io.mfj</groupId>
       <artifactId>expr</artifactId>
-      <version>4.0.13</version>
+      <version>4.1.14</version>
       <!-- Apache 2.0 -->
     </dependency>
 
@@ -137,14 +137,6 @@
           <artifactId>kotlin-reflect</artifactId>
         </exclusion>
       </exclusions>
-    </dependency>
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.12</version>
-      <!-- Eclipse 1.0 -->
-      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -269,7 +261,14 @@
           </execution>
         </executions>
       </plugin>
-
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.22.1</version>
+        <configuration>
+          <useSystemClassLoader>false</useSystemClassLoader>
+        </configuration>
+      </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <version>2.6</version>
