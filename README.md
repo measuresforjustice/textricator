@@ -29,15 +29,31 @@ The CLI has three subcommands, to use the three main features of Textricator:
 
 ## Quick Start
 
-- Download the latest build from [https://repo1.maven.org/maven2/io/mfj/textricator/](https://repo1.maven.org/maven2/io/mfj/textricator/) - click on the directory for the latest version and download `textricator-VERSION-bin.tgz`.
+- Install Java (version 8)
+  * Windows & Macos: Download from [https://java.com](https://java.com) and install.
+  * Linux: Use your package manager.
+- Download the latest build of _Textricator_ from [https://repo1.maven.org/maven2/io/mfj/textricator/](https://repo1.maven.org/maven2/io/mfj/textricator/) - click on the directory for the latest version and download `textricator-VERSION-bin.tgz`.
 - Extract it.
+  * Windows:
+    - Download and install [7-Zip](https://7-zip.org/).
+    - Right click on `textricator-VERSION-bin.tgz` > 7-Zip > Extract Here
+    - Right click on `textricator-VERSION-bin.tar` > 7-Zip > Extract Files...
+    - Extract to: `C:\Users\yourusername`
+    - Uncheck the checkbox to the left of `textricator-VERSION-bin\`
+- Run a shell
+  * Windows: run _Windows Powershell_ (it should be in the start menu)
+    * The following examples start with `./`. On Windows, use `.\`.
+  * MacOS: Run _Terminal_ (type "terminal" in Spotlight)
 - Show help
     - `./textricator --help`
+- Download the example files to the textricator directory:
+  * https://github.com/measuresforjustice/textricator/raw/master/src/test/resources/io/mfj/textricator/examples/school-employee-list.pdf
+  * https://raw.githubusercontent.com/measuresforjustice/textricator/master/src/test/resources/io/mfj/textricator/examples/school-employee-list.yml
 - Extract raw text from a PDF to standard out
-    - `./textricator text --input-format=pdf.pdfbox src/test/resources/io/mfj/textricator/examples/school-employee-list.pdf`
+    - `./textricator text --input-format=pdf.pdfbox school-employee-list.pdf`
 - Parse a PDF to CSV
-    - `./textricator form --config=src/test/resources/io/mfj/textricator/examples/school-employee-list.yml src/test/resources/io/mfj/textricator/examples/school-employee-list.pdf /tmp/school-employee-list.csv`
- 
+    - `./textricator form --config=school-employee-list.yml school-employee-list.pdf school-employee-list.csv`
+
 ### Extractors
 
 Extractors extract text (instances of `io.mfj.textricator.text.Text`) from a source.
