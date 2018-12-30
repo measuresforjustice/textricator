@@ -42,7 +42,7 @@ The CLI has three subcommands, to use the three main features of Textricator:
     - Uncheck the checkbox to the left of `textricator-VERSION-bin\`
 - Run a shell
   * Windows: run _Windows Powershell_ (it should be in the start menu)
-    * The following examples start with `./`. On Windows, use `.\`.
+    * The following examples start with `./textricator`. On Windows, use `.\textricator.bat`.
   * MacOS: Run _Terminal_ (type "terminal" in Spotlight)
 - Show help
     - `./textricator --help`
