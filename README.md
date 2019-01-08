@@ -32,14 +32,8 @@ The CLI has three subcommands, to use the three main features of Textricator:
 - Install Java (version 8)
   * Windows & Macos: Download from [https://java.com](https://java.com) and install.
   * Linux: Use your package manager.
-- Download the latest build of _Textricator_ from [https://repo1.maven.org/maven2/io/mfj/textricator/](https://repo1.maven.org/maven2/io/mfj/textricator/) - click on the directory for the latest version and download `textricator-VERSION-bin.tgz`.
+- Download the latest build of _Textricator_ from [https://repo1.maven.org/maven2/io/mfj/textricator/](https://repo1.maven.org/maven2/io/mfj/textricator/) - click on the directory for the latest version and download `textricator-VERSION-bin.tgz` (or `textricator-VERSION-bin.zip` for Windows).
 - Extract it.
-  * Windows:
-    - Download and install [7-Zip](https://7-zip.org/).
-    - Right click on `textricator-VERSION-bin.tgz` > 7-Zip > Extract Here
-    - Right click on `textricator-VERSION-bin.tar` > 7-Zip > Extract Files...
-    - Extract to: `C:\Users\yourusername`
-    - Uncheck the checkbox to the left of `textricator-VERSION-bin\`
 - Run a shell
   * Windows: run _Windows Powershell_ (it should be in the start menu)
     * The following examples start with `./textricator`. On Windows, use `.\textricator.bat`.
