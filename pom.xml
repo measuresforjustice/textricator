@@ -282,7 +282,8 @@
         </executions>
         <configuration>
           <descriptors>
-            <descriptor>src/assembly/assembly.xml</descriptor>
+            <descriptor>src/assembly/tgz.xml</descriptor>
+            <descriptor>src/assembly/zip.xml</descriptor>
           </descriptors>
         </configuration>
       </plugin>
