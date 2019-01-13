@@ -250,7 +250,7 @@ object Textricator {
   }
 
   @JvmStatic
-  private fun getExtractor( input:InputStream, inputFormat:String, options:TextExtractorOptions ): TextExtractor {
+  fun getExtractor( input:InputStream, inputFormat:String, options:TextExtractorOptions ): TextExtractor {
 
     val extractorName:String =
         if ( options.extractor == null ) {
