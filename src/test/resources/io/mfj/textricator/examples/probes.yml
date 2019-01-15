@@ -1,0 +1,35 @@
+extractor: "pdf.pdfbox"
+
+top: 88
+
+bottom: 170
+
+maxRowDistance: 2
+
+cols:
+  "name": 0
+  "launched": 132
+  "speed": 235
+  "cospar": 249
+  "power": 355
+  "mass": 415
+
+types:
+  "name":
+    label: "Name"
+
+  "launched":
+    label: "Launch Date"
+
+  "speed":
+    label: "Speed (km/s)"
+
+  "cospar":
+    label: "COSPAR ID"
+
+  "power":
+    label: "Power (watts)"
+
+  "mass":
+    label: "Mass (pounds)"
+
