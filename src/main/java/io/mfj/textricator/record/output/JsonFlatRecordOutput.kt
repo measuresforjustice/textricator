@@ -29,6 +29,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.ObjectMapper
+import kotlinx.coroutines.channels.ReceiveChannel
 
 class JsonFlatRecordOutput(private val config:RecordModel, output:OutputStream):
     RecordOutput {
@@ -55,6 +56,25 @@ class JsonFlatRecordOutput(private val config:RecordModel, output:OutputStream):
     }
 
     seq.forEach { rec ->
+
+      printRows(rec,notFirst)
+
+    }
+
+    w.append( "]" )
+  }
+
+  override suspend fun write(channel:ReceiveChannel<Record>) {
+    w.append( "[" )
+
+    val notFirst = AtomicBoolean(false)
+
+    if ( printHeader ) {
+      printHeader()
+      notFirst.set(true)
+    }
+
+		for ( rec in channel ) {
 
       printRows(rec,notFirst)
 

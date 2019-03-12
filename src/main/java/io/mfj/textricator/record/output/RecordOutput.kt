@@ -19,6 +19,9 @@ package io.mfj.textricator.record.output
 import io.mfj.textricator.record.Record
 import java.io.Closeable
 
+import kotlinx.coroutines.channels.ReceiveChannel
+
 interface RecordOutput: Closeable {
   fun write( seq:Sequence<Record> )
+  suspend fun write( channel:ReceiveChannel<Record>)
 }

@@ -26,6 +26,8 @@ import java.io.BufferedWriter
 import java.io.OutputStream
 import java.io.OutputStreamWriter
 
+import kotlinx.coroutines.channels.ReceiveChannel
+
 class CsvRecordOutput(private val config:RecordModel, output:OutputStream):RecordOutput {
 
   private val w = BufferedWriter(OutputStreamWriter(output))
@@ -37,10 +39,15 @@ class CsvRecordOutput(private val config:RecordModel, output:OutputStream):Recor
   var rowCount = 0
 
   override fun write( seq:Sequence<Record> ) {
-
     printHeader(p)
-
     seq.forEach { rec -> printRows(p,rec) }
+  }
+
+  override suspend fun write(channel:ReceiveChannel<Record>) {
+    printHeader(p)
+    for ( rec in channel ) {
+      printRows(p,rec)
+    }
   }
 
   override fun close() {

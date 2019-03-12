@@ -26,6 +26,8 @@ import java.io.OutputStream
 import java.io.OutputStreamWriter
 import java.io.Writer
 
+import kotlinx.coroutines.channels.ReceiveChannel
+
 class JsonRecordOutput(config:RecordModel,output:OutputStream):RecordOutput {
 
   private val w = BufferedWriter(OutputStreamWriter(output))
@@ -40,6 +42,25 @@ class JsonRecordOutput(config:RecordModel,output:OutputStream):RecordOutput {
     var first = true
 
     seq.forEach { rec ->
+
+      if ( first ) {
+        first = false
+      } else {
+        w.append( "," )
+      }
+
+      writeRec( w, rec )
+
+    }
+
+    w.append( "]" )
+  }
+
+  override suspend fun write(channel:ReceiveChannel<Record>) {
+    w.append( "[" )
+    var first = true
+
+		for ( rec in channel ) {
 
       if ( first ) {
         first = false

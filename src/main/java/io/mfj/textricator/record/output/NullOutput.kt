@@ -18,6 +18,8 @@ package io.mfj.textricator.record.output
 
 import io.mfj.textricator.record.Record
 
+import kotlinx.coroutines.channels.ReceiveChannel
+
 /**
  * Run through the records but do not do anything with them.
  */
@@ -25,5 +27,11 @@ object NullOutput:RecordOutput {
   override fun write(seq:Sequence<Record>) {
     seq.forEach {}
   }
+
+  override suspend fun write(channel:ReceiveChannel<Record>) {
+    for ( rec in channel ) {
+    }
+  }
+
   override fun close() {}
 }
