@@ -6,7 +6,7 @@
 
   <groupId>io.mfj</groupId>
   <artifactId>textricator</artifactId>
-  <version>9.2-SNAPSHOT</version>
+  <version>9.2.58</version>
 
   <name>${project.groupId}:${project.artifactId}</name>
   <description>A tool to extract text from documents and generate structured data</description>
@@ -32,11 +32,19 @@
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <kotlin.version>1.3.50</kotlin.version>
+    <kotlin.version>1.3.71</kotlin.version>
     <dokka.version>0.9.18</dokka.version>
     <copyright.year>2018</copyright.year>
     <source.location>https://github.com/measuresforjustice/textricator</source.location>
   </properties>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>jcenter</id>
+      <name>JCenter</name>
+      <url>https://jcenter.bintray.com/</url>
+    </pluginRepository>
+  </pluginRepositories>
 
   <dependencies>
     <dependency>
@@ -70,7 +78,7 @@
     <dependency>
       <groupId>io.mfj</groupId>
       <artifactId>expr</artifactId>
-      <version>4.1.17</version>
+      <version>4.1.16</version>
       <!-- Apache 2.0 -->
     </dependency>
 
