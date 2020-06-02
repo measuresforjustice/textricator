@@ -22,7 +22,7 @@ import java.beans.Transient
 class Record(
     val pageNumber:Int,
     val typeId:String,
-    val values:MutableMap<String,String> = mutableMapOf(),
+    val values:MutableMap<String,Value> = mutableMapOf(),
     val children:MutableMap<String,MutableList<Record>> = mutableMapOf()
 ) {
 
@@ -36,6 +36,8 @@ class Record(
       }
       return true
     }
+
+  fun getValue( valueTypeId:String, attribute:String? ): String? = values[valueTypeId]?.getValue(attribute)
 
   override fun hashCode():Int = pageNumber + typeId.hashCode() + 17 * values.size + 27 * children.size
 

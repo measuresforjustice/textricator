@@ -34,11 +34,11 @@ class RecordFilterTest {
         "d" to RecordType(label = "D", valueTypes = mutableListOf("d1", "d2"))))
 
     val records =
-        listOf(Record(1, "a", mutableMapOf("a1" to "Hello", "a2" to "World"), mutableMapOf(
-            "b" to mutableListOf(Record(1, "b", mutableMapOf("b1" to "1", "b2" to "2"))),
-            "c" to mutableListOf(Record(1, "c", mutableMapOf("c1" to "1", "c2" to "2"),
+        listOf(Record(1, "a", mutableMapOf("a1" to Value("Hello"), "a2" to Value("World")), mutableMapOf(
+            "b" to mutableListOf(Record(1, "b", mutableMapOf("b1" to Value("1"), "b2" to Value("2")))),
+            "c" to mutableListOf(Record(1, "c", mutableMapOf("c1" to Value("1"), "c2" to Value("2")),
                 mutableMapOf("d" to mutableListOf(
-                    Record(1, "d", mutableMapOf("d1" to "1", "d2" to "2"))))))))
+                    Record(1, "d", mutableMapOf("d1" to Value("1"), "d2" to Value("2")))))))))
         )
 
     val filtered = RecordFilter(model).filter(records.asSequence()).toList()
@@ -58,11 +58,11 @@ class RecordFilterTest {
         "d" to RecordType(label = "D", valueTypes = mutableListOf("d1", "d2"))))
 
     val records =
-        listOf(Record(1, "a", mutableMapOf("a1" to "Hello", "a2" to "World"), mutableMapOf(
-            "b" to mutableListOf(Record(1, "b", mutableMapOf("b1" to "1", "b2" to "2"))),
-            "c" to mutableListOf(Record(1, "c", mutableMapOf("c1" to "1", "c2" to "2"),
+        listOf(Record(1, "a", mutableMapOf("a1" to Value("Hello"), "a2" to Value("World")), mutableMapOf(
+            "b" to mutableListOf(Record(1, "b", mutableMapOf("b1" to Value("1"), "b2" to Value("2")))),
+            "c" to mutableListOf(Record(1, "c", mutableMapOf("c1" to Value("1"), "c2" to Value("2")),
                 mutableMapOf("d" to mutableListOf(
-                    Record(1, "d", mutableMapOf("d1" to "1", "d2" to "2"))))))))
+                    Record(1, "d", mutableMapOf("d1" to Value("1"), "d2" to Value("2")))))))))
         )
 
     val filtered = RecordFilter(model).filter(records.asSequence()).toList()
@@ -83,16 +83,16 @@ class RecordFilterTest {
         "d" to RecordType(label = "D", valueTypes = mutableListOf("d1", "d2"))))
 
     val records =
-        listOf(Record(1, "a", mutableMapOf("a1" to "Hello", "a2" to "World"), mutableMapOf(
-            "b" to mutableListOf(Record(1, "b", mutableMapOf("b1" to "1", "b2" to "2"))),
-            "c" to mutableListOf(Record(1, "c", mutableMapOf("c1" to "1", "c2" to "2"),
+        listOf(Record(1, "a", mutableMapOf("a1" to Value("Hello"), "a2" to Value("World")), mutableMapOf(
+            "b" to mutableListOf(Record(1, "b", mutableMapOf("b1" to Value("1"), "b2" to Value("2")))),
+            "c" to mutableListOf(Record(1, "c", mutableMapOf("c1" to Value("1"), "c2" to Value("2")),
                 mutableMapOf("d" to mutableListOf(
-                    Record(1, "d", mutableMapOf("d1" to "1", "d2" to "2"))))))))
+                    Record(1, "d", mutableMapOf("d1" to Value("1"), "d2" to Value("2")))))))))
         )
 
     val expected =
-        listOf(Record(1, "a", mutableMapOf("a1" to "Hello", "a2" to "World"), mutableMapOf(
-            "b" to mutableListOf(Record(1, "b", mutableMapOf("b1" to "1", "b2" to "2"))),
+        listOf(Record(1, "a", mutableMapOf("a1" to Value("Hello"), "a2" to Value("World")), mutableMapOf(
+            "b" to mutableListOf(Record(1, "b", mutableMapOf("b1" to Value("1"), "b2" to Value("2")))),
             "c" to mutableListOf()))
         )
 
@@ -114,22 +114,22 @@ class RecordFilterTest {
         "d" to RecordType(label = "D", valueTypes = mutableListOf("d1", "d2"))))
 
     val records =
-        listOf(Record(1, "a", mutableMapOf("a1" to "Hello", "a2" to "World"), mutableMapOf(
-            "b" to mutableListOf(Record(1, "b", mutableMapOf("b1" to "1", "b2" to "2"))),
-            "c" to mutableListOf(Record(1, "c", mutableMapOf("c1" to "1", "c2" to "2"),
+        listOf(Record(1, "a", mutableMapOf("a1" to Value("Hello"), "a2" to Value("World")), mutableMapOf(
+            "b" to mutableListOf(Record(1, "b", mutableMapOf("b1" to Value("1"), "b2" to Value("2")))),
+            "c" to mutableListOf(Record(1, "c", mutableMapOf("c1" to Value("1"), "c2" to Value("2")),
                 mutableMapOf("d" to mutableListOf(
-                    Record(1, "d", mutableMapOf("d1" to "1", "d2" to "2"))))),
-                Record(1, "c", mutableMapOf("c1" to "2", "c2" to "3"), mutableMapOf(
+                    Record(1, "d", mutableMapOf("d1" to Value("1"), "d2" to Value("2")))))),
+                Record(1, "c", mutableMapOf("c1" to Value("2"), "c2" to Value("3")), mutableMapOf(
                     "d" to mutableListOf(
-                        Record(1, "d", mutableMapOf("d1" to "1", "d2" to "2"))))))))
+                        Record(1, "d", mutableMapOf("d1" to Value("1"), "d2" to Value("2")))))))))
         )
 
     val expected =
-        listOf(Record(1, "a", mutableMapOf("a1" to "Hello", "a2" to "World"), mutableMapOf(
-            "b" to mutableListOf(Record(1, "b", mutableMapOf("b1" to "1", "b2" to "2"))),
-            "c" to mutableListOf(Record(1, "c", mutableMapOf("c1" to "2", "c2" to "3"),
+        listOf(Record(1, "a", mutableMapOf("a1" to Value("Hello"), "a2" to Value("World")), mutableMapOf(
+            "b" to mutableListOf(Record(1, "b", mutableMapOf("b1" to Value("1"), "b2" to Value("2")))),
+            "c" to mutableListOf(Record(1, "c", mutableMapOf("c1" to Value("2"), "c2" to Value("3")),
                 mutableMapOf("d" to mutableListOf(
-                    Record(1, "d", mutableMapOf("d1" to "1", "d2" to "2"))))))))
+                    Record(1, "d", mutableMapOf("d1" to Value("1"), "d2" to Value("2")))))))))
         )
 
     val filtered = RecordFilter(model).filter(records.asSequence()).toList()
@@ -159,18 +159,18 @@ class RecordFilterTest {
 
     val records =
         listOf(Record(1, "a",
-            mutableMapOf("str" to "a string", "int" to "4", "dbl" to "1.2", "none" to "member type not set",
-                "undef" to "member not defined")), Record(2, "a",
-            mutableMapOf("str" to "wrong", "int" to "4", "dbl" to "1.2", "none" to "member type not set",
-                "undef" to "member not defined")), Record(3, "a",
-            mutableMapOf("str" to "a string", "int" to "6", "dbl" to "1.2", "none" to "member type not set",
-                "undef" to "member not defined")), Record(4, "a",
-            mutableMapOf("str" to "a string", "int" to "4", "dbl" to "1.7", "none" to "member type not set",
-                "undef" to "member not defined")), Record(5, "a",
-            mutableMapOf("str" to "a string", "int" to "4", "dbl" to "1.2", "none" to "wrong",
-                "undef" to "member not defined")), Record(6, "a",
-            mutableMapOf("str" to "a string", "int" to "4", "dbl" to "1.2", "none" to "member type not set",
-                "undef" to "wrong"))
+            mutableMapOf("str" to Value("a string"), "int" to Value("4"), "dbl" to Value("1.2"), "none" to Value("member type not set"),
+                "undef" to Value("member not defined"))), Record(2, "a",
+            mutableMapOf("str" to Value("wrong"), "int" to Value("4"), "dbl" to Value("1.2"), "none" to Value("member type not set"),
+                "undef" to Value("member not defined"))), Record(3, "a",
+            mutableMapOf("str" to Value("a string"), "int" to Value("6"), "dbl" to Value("1.2"), "none" to Value("member type not set"),
+                "undef" to Value("member not defined"))), Record(4, "a",
+            mutableMapOf("str" to Value("a string"), "int" to Value("4"), "dbl" to Value("1.7"), "none" to Value("member type not set"),
+                "undef" to Value("member not defined"))), Record(5, "a",
+            mutableMapOf("str" to Value("a string"), "int" to Value("4"), "dbl" to Value("1.2"), "none" to Value("wrong"),
+                "undef" to Value("member not defined"))), Record(6, "a",
+            mutableMapOf("str" to Value("a string"), "int" to Value("4"), "dbl" to Value("1.2"), "none" to Value("member type not set"),
+                "undef" to Value("wrong")))
         )
 
     val filtered = RecordFilter(model).filter(records.asSequence()).toList()

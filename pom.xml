@@ -6,7 +6,7 @@
 
   <groupId>io.mfj</groupId>
   <artifactId>textricator</artifactId>
-  <version>9.2-SNAPSHOT</version>
+  <version>9.3-SNAPSHOT</version>
 
   <name>${project.groupId}:${project.artifactId}</name>
   <description>A tool to extract text from documents and generate structured data</description>
@@ -106,13 +106,13 @@
     <dependency>
       <groupId>com.itextpdf</groupId>
       <artifactId>kernel</artifactId>
-      <version>7.1.7</version>
+      <version>7.1.11</version>
       <!-- AGPL -->
     </dependency>
     <dependency>
       <groupId>com.itextpdf</groupId>
       <artifactId>layout</artifactId>
-      <version>7.1.7</version>
+      <version>7.1.11</version>
       <!-- AGPL -->
     </dependency>
 

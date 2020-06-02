@@ -18,6 +18,7 @@ package io.mfj.textricator.table
 
 import io.mfj.textricator.table.config.TableParseConfig
 import io.mfj.textricator.record.Record
+import io.mfj.textricator.record.Value
 import io.mfj.textricator.text.Page
 import io.mfj.textricator.text.PageFilter
 import io.mfj.textricator.text.Text
@@ -110,7 +111,7 @@ class TableParser( private val config:TableParseConfig) {
 
     config.cols.keys
         .forEachIndexed { i, colName ->
-          val cell = row[i]
+          val cell = row[i].map { text -> Value(text) }
           val value = valueTypes[colName]!!.calcValue( cell )
           record.values[colName] = value
         }

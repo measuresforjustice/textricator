@@ -16,12 +16,11 @@ with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package io.mfj.textricator.form
 
-import io.mfj.textricator.form.RecordParser
-import io.mfj.textricator.form.StateValue
 import io.mfj.textricator.record.Record
 import io.mfj.textricator.record.RecordType
 import io.mfj.textricator.form.config.FormParseConfig
 import io.mfj.textricator.form.config.State
+import io.mfj.textricator.record.Value
 
 import org.junit.Assert.*
 import org.junit.Test
@@ -48,7 +47,7 @@ class RecordParserTest {
 
   private fun sv( pageNumber:Int, stateId:String, vararg value:String ):StateValue = StateValue(
       pageNumber = pageNumber, stateId = stateId,
-      state = model.states[stateId] ?: throw Exception("Missing state ${stateId}"), values = value.toList())
+      state = model.states[stateId] ?: throw Exception("Missing state ${stateId}"), values = value.toList().map{ Value(it) })
 
   @Test
   fun testStructure() {
@@ -141,19 +140,19 @@ class RecordParserTest {
     val stateValues = listOf(
         StateValue(
             pageNumber = 1,
-            values = listOf( "Fred" ),
+            values = listOf( Value("Fred") ),
             state = model.states["name"]!!,
             stateId = "name"
         ),
         StateValue(
             pageNumber = 1,
-            values = listOf( "label" ),
+            values = listOf( Value("label") ),
             state = model.states["label"]!!,
             stateId = "label"
         ),
         StateValue(
             pageNumber = 1,
-            values = listOf( "Sally" ),
+            values = listOf( Value("Sally") ),
             state = model.states["name"]!!,
             stateId = "name"
         )
@@ -162,8 +161,8 @@ class RecordParserTest {
     val records = RecordParser(model).parse( stateValues ).toList()
 
     assertEquals( 2, records.size )
-    assertEquals( "Fred", records[0].values["name"] )
-    assertEquals( "Sally", records[1].values["name"] )
+    assertEquals( "Fred", records[0].values["name"]?.text )
+    assertEquals( "Sally", records[1].values["name"]?.text )
   }
 
 }

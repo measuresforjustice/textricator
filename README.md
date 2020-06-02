@@ -719,6 +719,37 @@ states:
       - firstName
 ```
 
+#### Hyperlinks
+
+If the text is a hyperlink, the URL can be used intead of the text by
+setting `valueTypes.attribute` to `url`.
+
+This is supported only by the `itext5` and `itext7` parsers.
+
+```yaml
+recordTypes:
+  company:
+    label: "Company"
+    valueTypes:
+      - name
+      - website
+
+valueTypes:
+  name:
+    label: "Company Name"
+  website:
+    label: "Website"
+    attribute: url # use the link URL instead of the text.
+
+states:
+  name:
+    # Put the value in both "name" and "website" to get both the
+    # text and the url into the output.
+    valueTypes:
+      - name
+      - website
+```
+
 #### Filtering records
 
 Records can be filtered before output by setting a filter on the `dataRecordType`. Root records

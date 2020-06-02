@@ -14,13 +14,16 @@ You should have received a copy of the GNU Affero General Public License along
 with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-package io.mfj.textricator.form
+package io.mfj.textricator.record
 
-import io.mfj.textricator.form.config.State
-import io.mfj.textricator.record.Value
-
-/**
- * @param pageNumber The pageNumber that the state started on.
- */
-class StateValue( val pageNumber:Int, val stateId:String, val state:State, val values:List<Value>,
-    val splitContinuation:Boolean=false )
+data class Value(
+		val text:String,
+		val link:String? = null
+) {
+	fun getValue( attribute:String? ): String? =
+			when(attribute) {
+				null -> text
+				"link" -> link
+				else -> throw IllegalArgumentException("Unhandled attribute \"${attribute}\"." )
+			}
+}

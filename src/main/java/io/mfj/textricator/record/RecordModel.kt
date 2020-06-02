@@ -49,16 +49,26 @@ open class ValueType(
      * Useful when the same data is repeated for each child record and you need it to mark new records. */
     val include:Boolean = true,
 
+    /** If set, use this attribute of [Value] instead of [Value.text]. */
+    val attribute:String? =null,
+
     /** Data type (used for [RecordType.filter]). */
     val type:String? = null // ExDataType
 
 ) {
 
-  fun calcValue( values:List<String> ): String =
-      values
-          .unrepeat()
-          .joinToString(separator)
-          .replace()
+  fun calcValue( values:List<Value> ): Value {
+    val text = values
+        .map(Value::text)
+        .unrepeat()
+        .joinToString(separator)
+        .replace()
+    val link = values
+        .asSequence()
+        .mapNotNull(Value::link)
+        .firstOrNull()
+    return Value(text,link)
+  }
 
   private fun List<String>.unrepeat(): List<String> {
     if ( ! unrepeat ) return this
@@ -100,8 +110,14 @@ open class ValueType(
 
 }
 
-fun ValueType?.calculateValue( values:List<String> ) =
-    if ( this != null ) this.calcValue(values) else values.joinToString(" ")
+private fun List<Value>.join(separator:String):Value {
+  val text = map(Value::text).joinToString(separator)
+  val link = asSequence().mapNotNull(Value::link).firstOrNull()
+  return Value(text,link)
+}
+
+fun ValueType?.calculateValue( values:List<Value> ): Value =
+    this?.calcValue(values) ?: values.join(" ")
 
 data class PatternReplacement(val pattern:String, val replacement:String ) {
   // lazy property to make regex from pattern

@@ -20,6 +20,7 @@ import io.mfj.textricator.form.config.FormParseConfig
 import io.mfj.textricator.form.config.State
 import io.mfj.textricator.record.PatternReplacement
 import io.mfj.textricator.record.RecordType
+import io.mfj.textricator.record.Value
 import io.mfj.textricator.record.ValueType
 
 import org.junit.Assert.*
@@ -42,7 +43,7 @@ class NodeMembersTest {
 
   private fun sv(pageNumber: Int, stateId: String, vararg value: String) :StateValue = StateValue(
       pageNumber = pageNumber, stateId = stateId,
-      state = model.states[stateId] ?: throw Exception("Missing State: ${stateId}"), values = value.toList())
+      state = model.states[stateId] ?: throw Exception("Missing State: ${stateId}"), values = value.toList().map{ Value(it) })
 
   @Test
   fun testNodeMembers() {
@@ -59,10 +60,10 @@ class NodeMembersTest {
 
     val records = rp.parse(stateValues.asSequence()).toList()
 
-    assertEquals("New York", records[0].values["city"])
-    assertEquals("NY", records[0].values["state"])
-    assertEquals("Rochester", records[1].values["city"])
-    assertEquals("NY", records[1].values["state"])
+    assertEquals("New York", records[0].values["city"]?.text)
+    assertEquals("NY", records[0].values["state"]?.text)
+    assertEquals("Rochester", records[1].values["city"]?.text)
+    assertEquals("NY", records[1].values["state"]?.text)
 
   }
 }

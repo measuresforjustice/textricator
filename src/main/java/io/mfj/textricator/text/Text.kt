@@ -31,6 +31,7 @@ import java.beans.Transient
  * @property uly upper-left y-coordinate
  * @property lrx lower-right x-coordinate
  * @property lry lower-right y-coordinate
+ * @property link link url
  * @property font Font name
  * @property fontSize Font size, in points
  * @property color Text color
@@ -48,8 +49,9 @@ data class Text(
     val lry:Float,
     val font:String,
     val fontSize:Float,
-    val color:String?,
-    val backgroundColor:String? ) {
+    val color:String? = null,
+    val backgroundColor:String? = null,
+    val link:String? = null ) {
 
   val width:Float
     @Transient

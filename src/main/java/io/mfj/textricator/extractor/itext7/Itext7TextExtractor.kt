@@ -15,7 +15,7 @@ with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 package io.mfj.textricator.extractor.itext7
-
+import io.mfj.textricator.extractor.TextExtractor
 import io.mfj.textricator.text.Text
 
 import java.io.InputStream
@@ -27,7 +27,6 @@ import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor
 import com.itextpdf.kernel.pdf.canvas.parser.data.IEventData
 import com.itextpdf.kernel.pdf.canvas.parser.data.TextRenderInfo
 import com.itextpdf.kernel.pdf.canvas.parser.listener.LocationTextExtractionStrategy
-import io.mfj.textricator.extractor.TextExtractor
 
 /**
  * Extract text using iText 7.
@@ -61,7 +60,28 @@ class Itext7TextExtractor(input:InputStream):TextExtractor {
 
     val page = doc.getPage(pageNumber)
 
-    val strategy = Strategy(pageNumber, page.pageSize.height)
+    val pageHeight = page.pageSize.height
+
+    val links:List<Link> = page.annotations
+        .filter { anno ->
+          anno.subtype == PdfName.Link
+        }
+        .map { anno ->
+          val aObj = anno.pdfObject[PdfName.A] as PdfDictionary
+          val uriObj = (aObj[PdfName.URI] ?: aObj[PdfName.URL]) as PdfString
+          val uri = uriObj.value
+          // get the bounding box
+          val rect = (anno.pdfObject[PdfName.Rect] as PdfArray).map { (it as PdfNumber).floatValue() }
+          Link(
+              url = uri,
+              ulx = rect[0],
+              uly = calcY(pageHeight, rect[3]),
+              lrx = rect[2],
+              lry = calcY(pageHeight, rect[1])
+          )
+        }
+
+    val strategy = Strategy(pageNumber, pageHeight, links)
 
     PdfTextExtractor.getTextFromPage(page,strategy)
 
@@ -69,7 +89,8 @@ class Itext7TextExtractor(input:InputStream):TextExtractor {
         .sortedWith( compareBy( {it.uly}, {it.ulx} ) )
   }
 
-  private class Strategy( private val pageNumber:Int, private val pageHeight:Float ) : LocationTextExtractionStrategy() {
+  private class Strategy( private val pageNumber:Int, private val pageHeight:Float, private val links:List<Link>):
+    LocationTextExtractionStrategy() {
     val texts = mutableListOf<Text>()
 
     override fun eventOccurred(data:IEventData?, type:EventType?) {
@@ -80,29 +101,32 @@ class Itext7TextExtractor(input:InputStream):TextExtractor {
         val matrix = ri.textMatrix
         val font = ri.font.fontProgram.fontNames.fontName
 
-        val x = matrix[6]
-        val y = calcY( matrix[7] )
+        val ulx = matrix[6]
+        val lry = calcY( pageHeight, matrix[7] )
         val width = ri.font.getWidth(content,ri.fontSize)
         val height = ri.font.getAscent(content, ri.fontSize)
+        val uly = lry - height
+        val lrx = ulx + width
 
         val color = ri.fillColor?.getHexColor()
 
+        val link = links
+            .firstOrNull { link ->
+              ulx >= link.ulx
+                  && uly >= link.uly
+                  && lrx <= link.lrx
+                  && lry <= link.lry
+            }
+            ?.url
+
         val text = Text(content = content, backgroundColor = null, pageNumber = pageNumber,
-            fontSize = ri.fontSize, font = font, color = color, ulx = x, uly = y - height, lrx = x + width, lry = y)
+            fontSize = ri.fontSize, font = font, color = color,
+            ulx = ulx, uly = uly, lrx = lrx, lry = lry,
+            link = link )
 
         texts.add( text )
       }
       super.eventOccurred(data, type)
-    }
-
-    // in iText, if y is positive, it is from the bottom, if y is negative, it is from the top.
-    // We calculate from the top.
-    fun calcY(y:Float):Float {
-      return if (y >= 0) {
-        pageHeight - y
-      } else {
-        y * -1
-      }
     }
 
     private fun Color.getHexColor(): String? =
@@ -118,6 +142,21 @@ class Itext7TextExtractor(input:InputStream):TextExtractor {
       val g = ( value[1] * 255 ).toInt()
       val b = ( value[2] * 255 ).toInt()
       return "#%02x%02x%02x".format( r, g, b )
+    }
+
+  }
+
+  companion object {
+    data class Link(val url:String, val lrx:Float, val lry:Float, val ulx:Float, val uly:Float)
+
+    // in iText, if y is positive, it is from the bottom, if y is negative, it is from the top.
+    // We calculate from the top.
+    fun calcY(pageHeight:Float, y:Float):Float {
+      return if (y >= 0) {
+        pageHeight - y
+      } else {
+        y * -1
+      }
     }
 
   }

@@ -109,7 +109,7 @@ class RecordFilter( private val config:RecordModel) {
                 override fun contains(varName:String):Boolean = record.values.contains( varName )
                 override fun get(varName:String):Any? {
                   val exDataType = getExDataType(varName)
-                  val s = record.values[varName]
+                  val s = record.values[varName]?.text // TODO filter based on other attributes
                   return ExConvert.convertStr( s, exDataType )
                 }
               }

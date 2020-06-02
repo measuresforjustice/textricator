@@ -20,6 +20,7 @@ import io.mfj.textricator.record.Record
 import io.mfj.textricator.record.calculateValue
 import io.mfj.textricator.form.config.FormParseConfig
 import io.mfj.textricator.form.config.State
+import io.mfj.textricator.record.Value
 
 import java.util.*
 
@@ -51,7 +52,7 @@ class RecordParser( private val config:FormParseConfig, private val eventListene
   private fun split( st:StateValue): List<StateValue> =
       if ( st.state.startRecordForEachValue ) {
         st.values.map { value ->
-          StateValue(st.pageNumber, st.stateId, st.state, listOf(value))
+          StateValue(st.pageNumber, st.stateId, st.state, listOf(value), false )
         }
       } else {
         listOf( st )
@@ -77,7 +78,7 @@ class RecordParser( private val config:FormParseConfig, private val eventListene
     // We build this up as a list of strings, then collapse it to a single string before returning.
     // see extension function Record.setValueTypes()
     // Using IdentityHashMap is important - we need to distinguish between equal empty Records.
-    val buffer: MutableMap<Record,MutableMap<String,MutableList<String>>> = IdentityHashMap()
+    val buffer: MutableMap<Record,MutableMap<String,MutableList<Value>>> = IdentityHashMap()
   }
 
   private fun parse( s:ParseState, st:StateValue? ): Record? {

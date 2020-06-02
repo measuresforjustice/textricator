@@ -119,7 +119,9 @@ class CsvRecordOutput(private val config:RecordModel, output:OutputStream):Recor
       recordType.valueTypes.forEach { valueTypeId ->
         val valueType = valueTypes[valueTypeId]
         if ( valueType?.include ?: true ) {
-          cells.add( rec?.values?.get(valueTypeId) ?: "" )
+          val attribute = valueType?.attribute
+          val value = rec?.getValue(valueTypeId,attribute) ?: ""
+          cells.add( value )
         }
       }
       recordType.children

@@ -16,6 +16,9 @@ with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package io.mfj.textricator.extractor.itext5
 
+import io.mfj.textricator.extractor.TextExtractor
+import io.mfj.textricator.text.Text
+
 import com.itextpdf.text.BaseColor
 import com.itextpdf.text.pdf.*
 import com.itextpdf.text.pdf.parser.ContentOperator
@@ -23,13 +26,13 @@ import com.itextpdf.text.pdf.parser.FilteredTextRenderListener
 import com.itextpdf.text.pdf.parser.LocationTextExtractionStrategy
 import com.itextpdf.text.pdf.parser.PdfContentStreamProcessor
 import com.itextpdf.text.pdf.parser.PdfTextExtractor
-import io.mfj.textricator.extractor.TextExtractor
-import io.mfj.textricator.text.Text
-import org.slf4j.LoggerFactory
+
 import java.io.InputStream
 
 import kotlin.math.min
 import kotlin.math.max
+
+import org.slf4j.LoggerFactory
 
 /**
  * Class to extract text from a PDF.
@@ -63,6 +66,7 @@ class Itext5TextExtractor(input:InputStream, boxPrecision:Float?, boxIgnoreColor
       return "#%02x%02x%02x".format( baseColor.red, baseColor.green, baseColor.blue )
     }
 
+    data class Link( val url:String, val lrx:Float, val lry:Float, val ulx:Float, val uly:Float)
   }
 
   override fun close() {
@@ -93,21 +97,6 @@ class Itext5TextExtractor(input:InputStream, boxPrecision:Float?, boxIgnoreColor
 
     val pageHeight = getPageSize(pageNumber).height
 
-    val boxes:List<Box> = boxtricator.getBoxes(pageNumber,pageHeight)
-
-    fun Buffer.toText():Text {
-      val content = content.toString().trim()
-      return Text(content, pageNumber, ulx, uly, lrx, lry, font, fontSize, fontColor,
-          getBackground(boxes, this, content))
-    }
-
-    val texts:MutableList<Text> = mutableListOf()
-
-    val strategy = FilteredTextRenderListener(LocationTextExtractionStrategy())
-
-    var buffer:Buffer? = null
-
-
     // in iText, if y is positive, it is from the bottom, if y is negative, it is from the top.
     // We calculate from the top.
     fun calcY(y:Float):Float {
@@ -117,6 +106,58 @@ class Itext5TextExtractor(input:InputStream, boxPrecision:Float?, boxIgnoreColor
         y * -1
       }
     }
+
+    val boxes:List<Box> = boxtricator.getBoxes(pageNumber,pageHeight)
+
+    val links = reader.getLinks(pageNumber)
+        .map { annotation ->
+          val a = annotation.parameters[PdfName.A] as PdfDictionary
+          val uriPdfString = a[PdfName.URI] as PdfString
+          val uri = uriPdfString.toUnicodeString()
+          val rect = annotation.rect.map { o -> ( o as PdfNumber ).floatValue() }
+          Link(
+              url = uri,
+              ulx = rect[0],
+              uly = calcY(rect[3]),
+              lrx = rect[2],
+              lry = calcY(rect[1])
+          )
+
+        }
+
+    fun Buffer.toText():Text {
+      val content = content.toString().trim()
+
+      val link = links
+          .firstOrNull { link ->
+            ulx >= link.ulx
+                && uly >= link.uly
+                && lrx <= link.lrx
+                && lry <= link.lry
+          }
+          ?.url
+
+      return Text(
+          content = content,
+          pageNumber = pageNumber,
+          ulx = ulx,
+          uly = uly,
+          lrx = lrx,
+          lry = lry,
+          font = font,
+          fontSize = fontSize,
+          color= fontColor,
+          backgroundColor = getBackground(boxes, this, content),
+          link = link )
+    }
+
+    val texts:MutableList<Text> = mutableListOf()
+
+    val strategy = FilteredTextRenderListener(LocationTextExtractionStrategy())
+
+    var buffer:Buffer? = null
+
+
 
     // start a new text segment
     fun start(x:Float, y:Float, font:String, fontSize:Float, fontColor:String?) {

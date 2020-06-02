@@ -30,6 +30,7 @@ object LoggingEventListener: FormParseEventListener {
       log.debug("\tpageNumber: ${text.pageNumber} ul:[ ${text.ulx} , ${text.uly} ] lr: [ ${text.lrx} , ${text.lry} ]")
       log.debug("\tfont: ${text.font} - ${text.fontSize}")
       log.debug("\tbgcolor: ${text.backgroundColor}")
+      log.debug("\tlink: ${text.link}")
     }
   }
 

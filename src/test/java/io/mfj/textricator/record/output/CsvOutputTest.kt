@@ -18,6 +18,7 @@ package io.mfj.textricator.record.output
 
 import io.mfj.textricator.record.Record
 import io.mfj.textricator.form.config.FormParseConfigUtil
+import io.mfj.textricator.record.Value
 
 import java.io.ByteArrayOutputStream
 
@@ -79,19 +80,19 @@ states:
   city: {}
 """ )
 
-    val root = Record(1, "person", mutableMapOf("name" to "John Doe", "dob" to "1/1/1980"),
+    val root = Record(1, "person", mutableMapOf("name" to Value("John Doe"), "dob" to Value("1/1/1980")),
         mutableMapOf("case" to mutableListOf(
-            Record(1, "case", mutableMapOf("caseId" to "1", "date" to "1/1/2018")),
-            Record(1, "case", mutableMapOf("caseId" to "2", "date" to "3/3/2018"),
+            Record(1, "case", mutableMapOf("caseId" to Value("1"), "date" to Value("1/1/2018"))),
+            Record(1, "case", mutableMapOf("caseId" to Value("2"), "date" to Value("3/3/2018")),
                 mutableMapOf("fee" to mutableListOf(Record(1, "fee",
-                    mutableMapOf("desc" to "court fee", "amount" to "99.95"))))),
-            Record(1, "case", mutableMapOf("caseId" to "3", "date" to "7/1/2018"),
+                    mutableMapOf("desc" to Value("court fee"), "amount" to Value("99.95")))))),
+            Record(1, "case", mutableMapOf("caseId" to Value("3"), "date" to Value("7/1/2018")),
                 mutableMapOf("fee" to mutableListOf(
-                    Record(1, "fee", mutableMapOf("desc" to "court fee", "amount" to "10")),
+                    Record(1, "fee", mutableMapOf("desc" to Value("court fee"), "amount" to Value("10"))),
                     Record(1, "fee",
-                        mutableMapOf("desc" to "jail fee", "amount" to "5.99")))))), "address" to mutableListOf(
-            Record(1, "address", mutableMapOf("city" to "Rochester", "state" to "NY")),
-            Record(1, "address", mutableMapOf("city" to "Pittsburgh", "state" to "PA")))))
+                        mutableMapOf("desc" to Value("jail fee"), "amount" to Value("5.99"))))))), "address" to mutableListOf(
+            Record(1, "address", mutableMapOf("city" to Value("Rochester"), "state" to Value("NY"))),
+            Record(1, "address", mutableMapOf("city" to Value("Pittsburgh"), "state" to Value("PA"))))))
 
     val buffer = ByteArrayOutputStream()
     CsvRecordOutput(model,buffer).use { it.write(sequenceOf(root) ) }

@@ -18,6 +18,7 @@ package io.mfj.textricator.form
 
 import io.mfj.expr.*
 import io.mfj.textricator.form.config.*
+import io.mfj.textricator.record.Value
 import io.mfj.textricator.text.Text
 import io.mfj.textricator.text.groupRows
 
@@ -243,15 +244,21 @@ class FsmParser(val config:FormParseConfig,
     /**
      * Convert the Texts into Strings, combining them according to [State.combineLimit].
      */
-    private fun parseValues(): List<String> {
-      val values:MutableList<String> = mutableListOf()
+    private fun parseValues(): List<Value> {
+      val values:MutableList<Value> = mutableListOf()
 
       var last:Text? = null
       for ( text in buffer ) {
         if ( last != null && shouldCombine( last, text ) ) {
-          values.addToLast( text.content )
+          val lastValue = values.removeLast()
+          val content = "${lastValue.text}${text.content}"
+          val link = last.link
+          if ( text.link != null && text.link != link ) {
+            log.warn( "Skipping link \"${text.link}\" from \"${text.content}\"; it does not overwrite link \"${link}\" from \"${lastValue.text}\"")
+          }
+          values.add( Value( content, link ) )
         } else {
-          values.add( text.content )
+          values.add( Value(text.content,text.link) )
         }
         last = text
       }
@@ -260,8 +267,6 @@ class FsmParser(val config:FormParseConfig,
     }
 
     private fun <T> MutableList<T>.removeLast(): T = removeAt( size-1 )
-
-    private fun MutableList<String>.addToLast( string:String ) = add( "${removeLast()}${string}" )
 
     private val combineLimitMap:Map<String,Float?> by lazy {
       val default:Float? = config.stateDefaults?.combineLimit

@@ -20,6 +20,7 @@ import io.mfj.textricator.form.config.FormParseConfig
 import io.mfj.textricator.form.config.State
 import io.mfj.textricator.record.PatternReplacement
 import io.mfj.textricator.record.RecordType
+import io.mfj.textricator.record.Value
 import io.mfj.textricator.record.ValueType
 
 import org.junit.Assert.*
@@ -44,7 +45,7 @@ class PatternReplacementTest {
 
   private fun sv(pageNumber: Int, stateId: String, vararg value: String) :StateValue = StateValue(
       pageNumber = pageNumber, stateId = stateId,
-      state = model.states[stateId] ?: throw Exception("Missing State: ${stateId}"), values = value.toList())
+      state = model.states[stateId] ?: throw Exception("Missing State: ${stateId}"), values = value.toList().map{ Value(it) })
 
   @Test
   fun testPatternReplacement() {
@@ -62,17 +63,17 @@ class PatternReplacementTest {
     val records = rp.parse(stateValues.asSequence()).toList()
 
     // test that removing 12/30/1899 from arrestDateTime works
-    assertEquals("02/15/2018 03:33:00 AM", records[0].values["arrestDateTime"])
+    assertEquals("02/15/2018 03:33:00 AM", records[0].values["arrestDateTime"]?.text)
 
     // test that nothing is removed from arrestDateTime when 12/30/1899 isn't there
-    assertEquals("02/13/2018 05:55:00 PM", records[1].values["arrestDateTime"])
+    assertEquals("02/13/2018 05:55:00 PM", records[1].values["arrestDateTime"]?.text)
 
     // test that correct replacement is used when there are multiple patterns as options
-    assertEquals("thirty", records[0].values["inmateAge"])
-    assertEquals("forty", records[1].values["inmateAge"])
+    assertEquals("thirty", records[0].values["inmateAge"]?.text)
+    assertEquals("forty", records[1].values["inmateAge"]?.text)
 
     // test that first replacement is used when there are multiple matching patterns
-    assertEquals("white", records[0].values["inmateRace"])
-    assertEquals("white", records[1].values["inmateRace"])
+    assertEquals("white", records[0].values["inmateRace"]?.text)
+    assertEquals("white", records[1].values["inmateRace"]?.text)
   }
 }

@@ -152,7 +152,9 @@ class JsonFlatRecordOutput(private val config:RecordModel, output:OutputStream):
       type.valueTypes.forEach { valueTypeId ->
         val valueType = valueTypes[valueTypeId]
         if ( valueType?.include ?: true ) {
-          row[valueTypeId] = rec?.values?.get(valueTypeId) ?: ""
+          val attribute = valueType?.attribute
+          val value = rec?.getValue(valueTypeId,attribute) ?: ""
+          row[valueTypeId] = value
         }
       }
       type.children
