@@ -27,7 +27,7 @@ The CLI has three subcommands, to use the three main features of Textricator:
 
 ## Quick Start
 
-- Install Java (version 8)
+- Install Java (version 8+)
   * Windows & Macos: Download from [https://java.com](https://java.com) and install.
   * Linux: Use your package manager.
 - Download the latest build of _Textricator_ from [https://repo1.maven.org/maven2/io/mfj/textricator/](https://repo1.maven.org/maven2/io/mfj/textricator/) - click on the directory for the latest version and download `textricator-VERSION-bin.tgz` (or `textricator-VERSION-bin.zip` for Windows).
