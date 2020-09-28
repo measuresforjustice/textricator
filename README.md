@@ -142,19 +142,19 @@ State transitions are selected by evaluating conditions. Conditions are expressi
 
 #### Available variables:
 
-  * `ulx`
-  * `uly`
-  * `lrx`
-  * `lry`
-  * `text`
-  * `page`
+  * `ulx` - x coordinate of the upper-left corner of the text box
+  * `uly` - y coordinate of the upper-left corner of the text box
+  * `lrx` - x coordinate of the lower-right corner of the text box
+  * `lry` - y coordinate of the lower-right corner of the text box
+  * `text` - the text
+  * `page` - page number
   * `page_prev` - page number of the previous text
-  * `fontSize`
-  * `font`
-  * `color`
-  * `bgcolor`
-  * `width`
-  * `height`
+  * `fontSize` - font size
+  * `font` - font name
+  * `color` - text color
+  * `bgcolor` - background color
+  * `width` - width of the text box
+  * `height` - height of the text box
   * `ulx_rel` - difference in `ulx` between the previous and current texts
   * `uly_rel` - difference in `uly` between the previous and current texts
   * `lrx_rel` - difference in `lrx` between the previous and current texts

@@ -112,6 +112,7 @@ class RecordFilter( private val config:RecordModel) {
                   val s = record.values[varName]?.text // TODO filter based on other attributes
                   return ExConvert.convertStr( s, exDataType )
                 }
+                override fun getKnownVars():Set<String> = record.values.keys
               }
           )
           ?: true // accept if no filter

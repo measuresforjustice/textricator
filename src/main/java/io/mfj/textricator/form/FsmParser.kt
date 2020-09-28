@@ -38,46 +38,59 @@ class FsmParser(val config:FormParseConfig,
   companion object {
     private val log = LoggerFactory.getLogger(FsmParser::class.java)
 
-    // built-in variables
-    private val VAR_ULX = "ulx"
-    private val VAR_ULY = "uly"
-    private val VAR_LRX = "lrx"
-    private val VAR_LRY = "lry"
-    private val VAR_TEXT = "text"
-    private val VAR_PAGE = "page"
-    private val VAR_PAGE_PREV = "page_prev"
-    private val VAR_FONT_SIZE = "fontSize"
-    private val VAR_FONT = "font"
-    private val VAR_COLOR = "color"
-    private val VAR_BG_COLOR = "bgcolor"
-    private val VAR_WIDTH = "width"
-    private val VAR_HEIGHT = "height"
-    private val VAR_ULX_REL = "ulx_rel"
-    private val VAR_ULY_REL = "uly_rel"
-    private val VAR_LRX_REL = "lrx_rel"
-    private val VAR_LRY_REL = "lry_rel"
+    /**
+     * Built-in variables.
+     * The enum names match exactly the variables in the expression.
+     */
+    private enum class BuiltInVar(val type:ExDataType) {
+      /** x coordinate of the upper-left corner of the text box */
+      ulx(ExDataType.DOUBLE),
+      /** y coordinate of the upper-left corner of the text box */
+      uly(ExDataType.DOUBLE),
+      /** x coordinate of the lower-right corner of the text box */
+      lrx(ExDataType.DOUBLE),
+      /** y coordinate of the lower-right corner of the text box */
+      lry(ExDataType.DOUBLE),
+      /** The text. */
+      text(ExDataType.STRING),
+      /** page number . */
+      page(ExDataType.INTEGER),
+      /** page number of the previous text */
+      page_prev(ExDataType.INTEGER),
+      /** font size */
+      fontSize(ExDataType.DOUBLE),
+      /** font name */
+      font(ExDataType.STRING),
+      /** text color */
+      color(ExDataType.STRING),
+      /** background color  */
+      bgcolor(ExDataType.STRING),
+      /** width of the text box */
+      width(ExDataType.DOUBLE),
+      /** height of the text box */
+      height(ExDataType.DOUBLE),
+      /** Difference in [ulx] from the previous text to this one */
+      ulx_rel(ExDataType.DOUBLE),
+      /** Difference in [uly] from the previous text to this one */
+      uly_rel(ExDataType.DOUBLE),
+      /** Difference in [lrx] from the previous text to this one */
+      lrx_rel(ExDataType.DOUBLE),
+      /** Difference in [lry] from the previous text to this one */
+      lry_rel(ExDataType.DOUBLE),
+    }
+
+    private val builtInVarNames = BuiltInVar.values().map(BuiltInVar::name).toSet()
 
     // expr var type provider
     // If you add a type, add it to ParseState.vp
     private val VTP = ChainVarTypeProvider(
         MapVarTypeProvider(
-            VAR_ULX to ExDataType.DOUBLE,
-            VAR_ULY to ExDataType.DOUBLE,
-            VAR_LRX to ExDataType.DOUBLE,
-            VAR_LRY to ExDataType.DOUBLE,
-            VAR_TEXT to ExDataType.STRING,
-            VAR_PAGE to ExDataType.INTEGER,
-            VAR_PAGE_PREV to ExDataType.INTEGER,
-            VAR_FONT_SIZE to ExDataType.DOUBLE,
-            VAR_FONT to ExDataType.STRING,
-            VAR_COLOR to ExDataType.STRING,
-            VAR_BG_COLOR to ExDataType.STRING,
-            VAR_WIDTH to ExDataType.DOUBLE,
-            VAR_HEIGHT to ExDataType.DOUBLE,
-            VAR_ULX_REL to ExDataType.DOUBLE,
-            VAR_ULY_REL to ExDataType.DOUBLE,
-            VAR_LRX_REL to ExDataType.DOUBLE,
-            VAR_LRY_REL to ExDataType.DOUBLE
+            BuiltInVar
+                .values()
+                .map { builtInVar ->
+                  builtInVar.name to builtInVar.type
+                }
+                .toMap()
         ),
         object: VarTypeProvider {
           override fun contains(varName:String):Boolean = true
@@ -158,31 +171,35 @@ class FsmParser(val config:FormParseConfig,
 
       override fun contains(varName:String):Boolean = true // if it is not built in, anything else is allowed as String
 
-      override operator fun get( varName: String ): Any? =
-          when ( varName ) {
+      override operator fun get( varName: String ): Any? {
+        return if ( builtInVarNames.contains(varName) ) {
+          val builtInVar = BuiltInVar.valueOf(varName)
+          when ( builtInVar ) {
             // built-ins
-            VAR_ULX -> text!!.ulx
-            VAR_ULY -> text!!.uly
-            VAR_LRX -> text!!.lrx
-            VAR_LRY -> text!!.lry
-            VAR_TEXT -> text!!.content
-            VAR_PAGE -> text!!.pageNumber
-            VAR_PAGE_PREV -> if ( lastText != null ) lastText!!.pageNumber else { noLast(
-                VAR_PAGE_PREV); -1 }
-            VAR_FONT_SIZE -> text!!.fontSize
-            VAR_FONT -> text!!.font
-            VAR_COLOR -> text!!.color
-            VAR_BG_COLOR -> text!!.backgroundColor
-            VAR_WIDTH -> text!!.width
-            VAR_HEIGHT -> text!!.height
-            VAR_ULX_REL -> if ( lastText != null ) text!!.ulx - lastText!!.ulx else { noLast( VAR_ULX_REL); text!!.ulx }
-            VAR_ULY_REL -> if ( lastText != null ) text!!.uly - lastText!!.uly else { noLast( VAR_ULY_REL); text!!.uly }
-            VAR_LRX_REL -> if ( lastText != null ) text!!.lrx - lastText!!.lrx else { noLast( VAR_LRX_REL); text!!.lrx }
-            VAR_LRY_REL -> if ( lastText != null ) text!!.lry - lastText!!.lry else { noLast( VAR_LRY_REL); text!!.lry }
-            // fsm variables
-            else -> vars[varName]
+            BuiltInVar.ulx -> text!!.ulx
+            BuiltInVar.uly -> text!!.uly
+            BuiltInVar.lrx -> text!!.lrx
+            BuiltInVar.lry -> text!!.lry
+            BuiltInVar.text -> text!!.content
+            BuiltInVar.page -> text!!.pageNumber
+            BuiltInVar.page_prev -> if ( lastText != null ) lastText!!.pageNumber else { noLast( varName ); -1 }
+            BuiltInVar.fontSize -> text!!.fontSize
+            BuiltInVar.font -> text!!.font
+            BuiltInVar.color -> text!!.color
+            BuiltInVar.bgcolor -> text!!.backgroundColor
+            BuiltInVar.width -> text!!.width
+            BuiltInVar.height -> text!!.height
+            BuiltInVar.ulx_rel -> if ( lastText != null ) text!!.ulx - lastText!!.ulx else { noLast( varName ); text!!.ulx }
+            BuiltInVar.uly_rel -> if ( lastText != null ) text!!.uly - lastText!!.uly else { noLast( varName ); text!!.uly }
+            BuiltInVar.lrx_rel -> if ( lastText != null ) text!!.lrx - lastText!!.lrx else { noLast( varName ); text!!.lrx }
+            BuiltInVar.lry_rel -> if ( lastText != null ) text!!.lry - lastText!!.lry else { noLast( varName ); text!!.lry }
           }
+        } else {
+          vars[varName]
+        }
+      }
 
+      override fun getKnownVars():Set<String> = builtInVarNames.plus( vars.keys )
     }
 
     /**
