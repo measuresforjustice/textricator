@@ -110,19 +110,24 @@ class Itext5TextExtractor(input:InputStream, boxPrecision:Float?, boxIgnoreColor
     val boxes:List<Box> = boxtricator.getBoxes(pageNumber,pageHeight)
 
     val links = reader.getLinks(pageNumber)
-        .map { annotation ->
-          val a = annotation.parameters[PdfName.A] as PdfDictionary
-          val uriPdfString = a[PdfName.URI] as PdfString
-          val uri = uriPdfString.toUnicodeString()
-          val rect = annotation.rect.map { o -> ( o as PdfNumber ).floatValue() }
-          Link(
-              url = uri,
-              ulx = rect[0],
-              uly = calcY(rect[3]),
-              lrx = rect[2],
-              lry = calcY(rect[1])
-          )
-
+        .mapNotNull { annotation ->
+          val a = annotation.parameters[PdfName.A]
+          if ( a is PdfDictionary ) {
+            val uriPdfString = a[PdfName.URI] as PdfString
+            val uri = uriPdfString.toUnicodeString()
+            val rect = annotation.rect.map { o -> ( o as PdfNumber ).floatValue() }
+            Link(
+                url = uri,
+                ulx = rect[0],
+                uly = calcY(rect[3]),
+                lrx = rect[2],
+                lry = calcY(rect[1])
+            )
+          } else {
+            // Found a file where it is a com.itextpdf.text.pdf.PRIndirectReference.
+            // Did not need to get links from that document, so did not figure out what to do.
+            null
+          }
         }
 
     fun Buffer.toText():Text {
