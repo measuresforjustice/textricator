@@ -33,7 +33,8 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <kotlin.version>1.4.10</kotlin.version>
-    <dokka.version>0.10.1</dokka.version>
+    <!-- This will not work with jdk 11+, but dokka 1.4 does not work at all -->
+    <dokka.version>0.9.18</dokka.version>
     <copyright.year>2020</copyright.year>
     <source.location>https://github.com/measuresforjustice/textricator</source.location>
   </properties>
@@ -228,24 +229,12 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.4.0</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>java</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>org.jetbrains.dokka</groupId>
         <artifactId>dokka-maven-plugin</artifactId>
         <version>${dokka.version}</version>
         <executions>
           <execution>
-            <phase>pre-site</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>dokka</goal>
               <goal>javadoc</goal>
@@ -253,20 +242,11 @@
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <dokkaPlugins>
-            <plugin>
-              <groupId>org.jetbrains.dokka</groupId>
-              <artifactId>kotlin-as-java-plugin</artifactId>
-              <version>${dokka.version}</version>
-            </plugin>
-          </dokkaPlugins>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>3.0.1</version>
+        <version>3.2.1</version>
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -285,8 +265,9 @@
         </configuration>
       </plugin>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
-        <version>2.6</version>
+        <version>3.3.0</version>
         <executions>
           <execution>
             <phase>package</phase>
