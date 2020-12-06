@@ -32,9 +32,9 @@
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <kotlin.version>1.4.10</kotlin.version>
+    <kotlin.version>1.4.20</kotlin.version>
     <!-- This will not work with jdk 11+, but dokka 1.4 does not work at all -->
-    <dokka.version>0.9.18</dokka.version>
+    <dokka.version>1.4.20</dokka.version>
     <copyright.year>2020</copyright.year>
     <source.location>https://github.com/measuresforjustice/textricator</source.location>
   </properties>
