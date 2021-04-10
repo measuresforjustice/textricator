@@ -6,7 +6,7 @@
 
   <groupId>io.mfj</groupId>
   <artifactId>textricator</artifactId>
-  <version>9.3-SNAPSHOT</version>
+  <version>9.4-SNAPSHOT</version>
 
   <name>${project.groupId}:${project.artifactId}</name>
   <description>A tool to extract text from documents and generate structured data</description>
@@ -32,10 +32,10 @@
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <kotlin.version>1.4.20</kotlin.version>
+    <kotlin.version>1.4.32</kotlin.version>
     <!-- This will not work with jdk 11+, but dokka 1.4 does not work at all -->
-    <dokka.version>1.4.20</dokka.version>
-    <copyright.year>2020</copyright.year>
+    <dokka.version>1.4.30</dokka.version>
+    <copyright.year>2021</copyright.year>
     <source.location>https://github.com/measuresforjustice/textricator</source.location>
   </properties>
 
@@ -71,7 +71,7 @@
     <dependency>
       <groupId>io.mfj</groupId>
       <artifactId>expr</artifactId>
-      <version>4.2.23</version>
+      <version>5.0-SNAPSHOT</version>
       <!-- Apache 2.0 -->
     </dependency>
 

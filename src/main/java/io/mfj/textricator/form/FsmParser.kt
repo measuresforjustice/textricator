@@ -44,21 +44,21 @@ class FsmParser(val config:FormParseConfig,
      */
     private enum class BuiltInVar(val type:ExDataType) {
       /** x coordinate of the upper-left corner of the text box */
-      ulx(ExDataType.DOUBLE),
+      ulx(ExDataType.NUMBER),
       /** y coordinate of the upper-left corner of the text box */
-      uly(ExDataType.DOUBLE),
+      uly(ExDataType.NUMBER),
       /** x coordinate of the lower-right corner of the text box */
-      lrx(ExDataType.DOUBLE),
+      lrx(ExDataType.NUMBER),
       /** y coordinate of the lower-right corner of the text box */
-      lry(ExDataType.DOUBLE),
+      lry(ExDataType.NUMBER),
       /** The text. */
       text(ExDataType.STRING),
       /** page number . */
-      page(ExDataType.INTEGER),
+      page(ExDataType.NUMBER),
       /** page number of the previous text */
-      page_prev(ExDataType.INTEGER),
+      page_prev(ExDataType.NUMBER),
       /** font size */
-      fontSize(ExDataType.DOUBLE),
+      fontSize(ExDataType.NUMBER),
       /** font name */
       font(ExDataType.STRING),
       /** text color */
@@ -66,17 +66,17 @@ class FsmParser(val config:FormParseConfig,
       /** background color  */
       bgcolor(ExDataType.STRING),
       /** width of the text box */
-      width(ExDataType.DOUBLE),
+      width(ExDataType.NUMBER),
       /** height of the text box */
-      height(ExDataType.DOUBLE),
+      height(ExDataType.NUMBER),
       /** Difference in [ulx] from the previous text to this one */
-      ulx_rel(ExDataType.DOUBLE),
+      ulx_rel(ExDataType.NUMBER),
       /** Difference in [uly] from the previous text to this one */
-      uly_rel(ExDataType.DOUBLE),
+      uly_rel(ExDataType.NUMBER),
       /** Difference in [lrx] from the previous text to this one */
-      lrx_rel(ExDataType.DOUBLE),
+      lrx_rel(ExDataType.NUMBER),
       /** Difference in [lry] from the previous text to this one */
-      lry_rel(ExDataType.DOUBLE),
+      lry_rel(ExDataType.NUMBER),
     }
 
     private val builtInVarNames = BuiltInVar.values().map(BuiltInVar::name).toSet()
