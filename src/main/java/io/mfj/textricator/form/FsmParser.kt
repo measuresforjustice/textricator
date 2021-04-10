@@ -119,8 +119,26 @@ class FsmParser(val config:FormParseConfig,
         // group by state (run the FSM)
         .plus( null as Text? ) // sentinel
         .map { text -> parse( parseState, text ) }
-        .filter { it != null }.map { it!! }
+        .filterNotNull()
+        // remove skipped states and combine now-adjacent siblings of the same state
+        .filter { sv -> ! sv.state.skip }.combine()
+  }
 
+  /**
+   * Combine adjacent siblings with the same state.
+   */
+  private fun Sequence<StateValue>.combine():Sequence<StateValue> = sequence {
+    var last:StateValue? = null
+    forEach { sv ->
+      last = when {
+        last == null -> sv
+        last!!.state == sv.state -> last!!.copy( values = last!!.values + sv.values )
+        else -> {
+          yield(last!!)
+          sv
+        }
+      }
+    }
   }
 
   private class ParseState( private val config:FormParseConfig, private val eventListener:FsmEventListener? ) {
@@ -245,6 +263,7 @@ class FsmParser(val config:FormParseConfig,
         null
       }
       buffer.clear()
+      last = null
 
       return stateTexts
     }
@@ -349,9 +368,15 @@ class FsmParser(val config:FormParseConfig,
       // state change
 
       if ( ret != null ) {
-        // Somehow a pageNumber transition happened, and texts were already added.
-        // Texts should not have been added.
-        throw Exception( "BUG" )
+        // pageNumber transition happened
+        if ( s.lastText != null ) {
+          // texts were already added.
+          // Texts should not have been added.
+          throw Exception( "BUG" )
+        } else {
+          // just happened, the new page state had nothing added to it. That's fine.
+          ret = null
+        }
       }
 
       eventListener?.onStateChange(text.pageNumber, nextStateId)

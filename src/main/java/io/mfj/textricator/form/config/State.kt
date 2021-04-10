@@ -23,6 +23,10 @@ import java.util.*
  */
 
 data class State(
+    /** If true, remove text in this state before record processing. */
+    val skip:Boolean = false,
+    /** If false, do not create records for this state, but still include it in record processing
+     * so it can split adjacent states and affect if the next sibling starts a record. */
     val include:Boolean = true,
     val transitions: MutableList<Transition> = ArrayList(),
     val startRecord: Boolean = false,

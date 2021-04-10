@@ -22,5 +22,5 @@ import io.mfj.textricator.record.Value
 /**
  * @param pageNumber The pageNumber that the state started on.
  */
-class StateValue( val pageNumber:Int, val stateId:String, val state:State, val values:List<Value>,
+data class StateValue( val pageNumber:Int, val stateId:String, val state:State, val values:List<Value>,
     val splitContinuation:Boolean=false )
