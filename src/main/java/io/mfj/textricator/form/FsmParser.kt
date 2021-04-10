@@ -374,14 +374,19 @@ class FsmParser(val config:FormParseConfig,
           // Texts should not have been added.
           throw Exception( "BUG" )
         } else {
-          // just happened, the new page state had nothing added to it. That's fine.
-          ret = null
+          // PageNumber transition just happened, the new page state had nothing added to it.
+          // That's fine.
+          // Set the new state, but ignore the returned StateValue because it is empty
+          // (because of the page transition).
+          s.setState( nextStateId )
+          s.addText()
         }
+      } else {
+        eventListener?.onStateChange(text.pageNumber, nextStateId)
+        ret = s.setState( nextStateId )
+        s.addText()
       }
 
-      eventListener?.onStateChange(text.pageNumber, nextStateId)
-      ret = s.setState( nextStateId )
-      s.addText()
     }
 
     return ret
