@@ -126,6 +126,28 @@ object Textricator {
 
   @JvmStatic
   fun parseForm(
+      inputFile:File,
+      outputFile:File,
+      config:FormParseConfig ) {
+
+    val inputFormat = inputFile.extension.toLowerCase()
+    val outputFormat = outputFile.extension.toLowerCase()
+
+    inputFile.inputStream().use { input ->
+      outputFile.outputStream().use { output ->
+
+        parseForm(
+            input, inputFormat,
+            output, outputFormat,
+            config )
+
+      }
+
+    }
+  }
+
+  @JvmStatic
+  fun parseForm(
       input:InputStream, inputFormat:String,
       output:OutputStream, outputFormat:String,
       config:FormParseConfig,
