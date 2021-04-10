@@ -23,9 +23,11 @@ import com.itextpdf.text.BaseColor
 import com.itextpdf.text.pdf.*
 import com.itextpdf.text.pdf.parser.ContentOperator
 import com.itextpdf.text.pdf.parser.FilteredTextRenderListener
+import com.itextpdf.text.pdf.parser.GraphicsState
 import com.itextpdf.text.pdf.parser.LocationTextExtractionStrategy
 import com.itextpdf.text.pdf.parser.PdfContentStreamProcessor
 import com.itextpdf.text.pdf.parser.PdfTextExtractor
+import com.itextpdf.text.pdf.parser.Vector
 
 import java.io.InputStream
 
@@ -202,14 +204,15 @@ class Itext5TextExtractor(input:InputStream, boxPrecision:Float?, boxIgnoreColor
       val bytes = string.bytes
       val gs = processor.gs()
       val text = gs.font.decode(bytes, 0, bytes.size)
-      val width = gs.font.getWidthPoint(text, gs.fontSize)
+      val fontSize = getFontSize(processor)
+      val width = gs.font.getWidthPoint(text, fontSize)
       val fontColor = color(gs.fillColor)
 
       flush()
 
       log.debug("{${pageNumber}} string [ ${x}, ${y} ] ${text}")
-      start(x, y, gs.font.postscriptFontName, gs.fontSize, fontColor)
-      append(x + width, y, text, gs.font.postscriptFontName, gs.fontSize, fontColor )
+      start(x, y, gs.font.postscriptFontName, fontSize, fontColor)
+      append(x + width, y, text, gs.font.postscriptFontName, fontSize, fontColor )
     }
 
     // capture continuation of previous string - append to existing segment
@@ -221,12 +224,13 @@ class Itext5TextExtractor(input:InputStream, boxPrecision:Float?, boxIgnoreColor
       val bytes = string.bytes
       val gs = processor.gs()
       val text = gs.font.decode(bytes, 0, bytes.size)
-      val width = gs.font.getWidthPoint(text, gs.fontSize)
+      val fontSize = getFontSize(processor)
+      val width = gs.font.getWidthPoint(text, fontSize)
       val fontColor = color(gs.fillColor)
 
       // continuation from stringOperator
       log.debug("{${pageNumber}} continue [ ${x}, ${y} ] ${text}")
-      append(x + width, y, " ${text}", gs.font.postscriptFontName, gs.fontSize, fontColor)
+      append(x + width, y, " ${text}", gs.font.postscriptFontName, fontSize, fontColor)
     }
 
     // capture pdfarray - this is all one segment
@@ -236,6 +240,7 @@ class Itext5TextExtractor(input:InputStream, boxPrecision:Float?, boxIgnoreColor
       val x = matrix[6]
       val y = calcY( matrix[7] )
       val gs = processor.gs()
+      val fontSize = getFontSize(processor)
 
       // combine all PdfStrings in the PdfArray to one String
       val text = array.asSequence().filter { it is PdfString }.map { it as PdfString }.map { pdfString ->
@@ -243,14 +248,14 @@ class Itext5TextExtractor(input:InputStream, boxPrecision:Float?, boxIgnoreColor
         val bytes = pdfString.getBytes()
         gs.font.decode(bytes, 0, bytes.size)
       }.joinToString(separator = "")
-      val width = gs.font.getWidthPoint(text, gs.fontSize)
+      val width = gs.font.getWidthPoint(text, fontSize)
       val fontColor = color(gs.fillColor)
 
       flush()
 
       log.debug("{${pageNumber}} array [ ${x} , ${y} ] ${text}")
-      start(x, y, gs.font.postscriptFontName, gs.fontSize, fontColor)
-      append(x + width, y, text, gs.font.postscriptFontName, gs.fontSize, fontColor)
+      start(x, y, gs.font.postscriptFontName, fontSize, fontColor)
+      append(x + width, y, text, gs.font.postscriptFontName, fontSize, fontColor)
       flush()
     }
 
@@ -286,6 +291,13 @@ class Itext5TextExtractor(input:InputStream, boxPrecision:Float?, boxIgnoreColor
         && box.uly <= min( buffer.uly + boxPrecision, buffer.lry )
         && box.lrx >= max( buffer.lrx - boxPrecision, buffer.ulx )
         && box.lry >= max( buffer.lry - boxPrecision, buffer.uly )
+  }
+
+  private fun getFontSize( processor:PdfContentStreamProcessor ):Float {
+    val gs = processor.gs()
+    val effMatrix = processor.textMatrix.multiply( gs.ctm )
+    val fontSize = Vector(0f,gs.fontSize,0f).cross(effMatrix)[1]
+    return fontSize
   }
 
 }

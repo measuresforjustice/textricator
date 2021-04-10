@@ -21,6 +21,7 @@ import io.mfj.textricator.text.Text
 import java.io.InputStream
 
 import com.itextpdf.kernel.colors.*
+import com.itextpdf.kernel.geom.Vector
 import com.itextpdf.kernel.pdf.*
 import com.itextpdf.kernel.pdf.canvas.parser.EventType
 import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor
@@ -119,8 +120,11 @@ class Itext7TextExtractor(input:InputStream):TextExtractor {
             }
             ?.url
 
+        val effMatrix = ri.textMatrix.multiply( ri.graphicsState.ctm )
+        val fontSize = Vector(0f,ri.fontSize,0f).cross(effMatrix)[1]
+
         val text = Text(content = content, backgroundColor = null, pageNumber = pageNumber,
-            fontSize = ri.fontSize, font = font, color = color,
+            fontSize = fontSize, font = font, color = color,
             ulx = ulx, uly = uly, lrx = lrx, lry = lry,
             link = link )
 
