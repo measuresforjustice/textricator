@@ -139,6 +139,7 @@ class FsmParser(val config:FormParseConfig,
         }
       }
     }
+    last?.let { yield(it) }
   }
 
   private class ParseState( private val config:FormParseConfig, private val eventListener:FsmEventListener? ) {
