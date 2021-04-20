@@ -71,7 +71,7 @@
     <dependency>
       <groupId>io.mfj</groupId>
       <artifactId>expr</artifactId>
-      <version>5.0-SNAPSHOT</version>
+      <version>5.0.25</version>
       <!-- Apache 2.0 -->
     </dependency>
 
