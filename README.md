@@ -60,7 +60,8 @@ You may see the following warning printed:
     WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
     WARNING: All illegal access operations will be denied in a future release
 
-Textricator still works, it is just a warning printed by a library Textricator uses. See #18.
+Textricator still works, it is just a warning printed by a library Textricator uses.
+See [Issue #18](https://github.com/measuresforjustice/textricator/issues/18).
 
 ## Extracting text
 
