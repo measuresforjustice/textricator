@@ -62,6 +62,19 @@ You may see the following warning printed:
 
 Textricator still works, it is just a warning printed by a library Textricator uses. See #18.
 
+## Extracting text
+
+To extract the text from a PDF, run
+`textrictor text --input-format=pdf.itext5 input.pdf input-text.csv`
+for any `input.pdf` and then open `input-text.csv` in your favorite spreadsheet program.
+It will show you every bit of text that Textricator sees with its position, size,
+and font information. This information is very useful for building configuration to parse
+tables or forms using Textricator (see the following two sections).
+
+Try `--input-format=pdf.itext7` and `--input-format=pdf.pdfbox` to see how Textricator
+extracts the texts using the different parser engines. Some work better for some documents
+than others.
+
 ## Table
 
 In table mode, the data is grouped into columns based on the x-coordinate of the text.
