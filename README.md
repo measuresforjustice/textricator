@@ -56,6 +56,8 @@ In table mode, the data is grouped into columns based on the x-coordinate of the
 
 ### Example
 
+This is an example for `src/test/resources/io/mfj/textricator/examples/probes.pdf`.
+
 ```yaml
 # All measurements are in points. 1 point = 1/72 of an inch.
 # x-coordinates are from the left edge of the page.
@@ -64,68 +66,52 @@ In table mode, the data is grouped into columns based on the x-coordinate of the
 # Use the built-in pdfbox extractor
 extractor: "pdf.pdfbox"
 
-# Ignore everything above 85pt from the top
-top: 85
+# Ignore everything above 88pt from the top
+top: 88
 
-# Ignore everything below 553pt from the top
-bottom: 553
-
-# ignore to the right of 720pt from the left edge.
-right: 720
-
-# There is no "left", because everything to the left of the first column is ignored.
-
-pageConfig:
-  1:
-    # On page 1, ignore everything above 100pt from the top. Overrides top:85 above.
-    top: 100
-     # could also define bottom and right here.
-  123:
-    # skip page 123 entirely.
-    skip: true
+# Ignore everything below 170pt from the top
+bottom: 170
 
 # If multiple text segments are withing 2pt vertically, consider them in the same row.
 maxRowDistance: 2
 
 # Define the columns, based on the x-coordinate where the column starts:
 cols:
-  "bookingNum": 27
-  "name": 83
-  "class": 247
-  "sex": 359
-  "race": 389
-  "dob": 420
-  "bookDate": 475
-  "arrestingOfficer": 545
-  "releaseDate": 689
+  "name": 0
+  "launched": 132
+  "speed": 235
+  "cospar": 249
+  "power": 355
+  "mass": 415
 
 types:
-  # Set bookingNum type so it can be used in filter
-  "bookingNum":
-    type: "integer"
+  "name":
+    label: "Name"
 
-  # Do not include arrestingOffcier
-  "arrestingOfficer":
-    include: "false"
+  "launched":
+    label: "Launch Date"
 
-  "bookDate":
-    label: "Booking Date"
+  "speed":
+    label: "Speed (km/s)"
+    type: "number"
 
-  # Replace "M" with "Male", "F" with "Female"
-  "sex":
+  "cospar":
+    label: "COSPAR ID"
+
+  "power":
+    label: "Power (watts)"
+    type: "number"
+
+  "mass":
+    label: "Mass (pounds)"
+    # Add .0 to the end of mass
     replacements:
       -
-        pattern: "M"
-        replacement: "Male"
-      -
-        pattern: "F"
-        replacement: "Female"
-      -
         pattern: "^(.*)$"
-        replacement: "Unknown: $1"
+        replacement: "$1.0"
 
-# Omit if bookingNum is negative
-filter: 'bookingNum > 0'
+# Omit if Power is less than 200
+filter: 'power >= 200'
 ```
 
 ## Form
@@ -760,7 +746,7 @@ Filters are expressions parsed by
 [Expr](https://github.com/measuresforjustice/expr)
 
 The variables are the fields in the record. The default type for variables is `STRING`.
-The type can be set by setting `type` in the `dataRecordMember` to `string`, `integer`, or `double`.
+The type can be set by setting `type` in the `dataRecordMember` to `string` or `number`.
 
 ```yaml
 recordTypes:
@@ -784,7 +770,7 @@ recordTypes:
 
 valueTypes:
   year:
-    type: integer
+    type: number
 ```
 
 Filtering happens after replacements and before member include checking.

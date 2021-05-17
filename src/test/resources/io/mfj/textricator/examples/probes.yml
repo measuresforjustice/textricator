@@ -1,11 +1,20 @@
+# All measurements are in points. 1 point = 1/72 of an inch.
+# x-coordinates are from the left edge of the page.
+# y-coordinates are from the top edge of the page.
+
+# Use the built-in pdfbox extractor
 extractor: "pdf.pdfbox"
 
+# Ignore everything above 88pt from the top
 top: 88
 
+# Ignore everything below 170pt from the top
 bottom: 170
 
+# If multiple text segments are withing 2pt vertically, consider them in the same row.
 maxRowDistance: 2
 
+# Define the columns, based on the x-coordinate where the column starts:
 cols:
   "name": 0
   "launched": 132
@@ -23,13 +32,22 @@ types:
 
   "speed":
     label: "Speed (km/s)"
+    type: "number"
 
   "cospar":
     label: "COSPAR ID"
 
   "power":
     label: "Power (watts)"
+    type: "number"
 
   "mass":
     label: "Mass (pounds)"
+    # Add .0 to the end of mass
+    replacements:
+      -
+        pattern: "^(.*)$"
+        replacement: "$1.0"
 
+# Omit if Power is less than 200
+filter: 'power >= 200'
