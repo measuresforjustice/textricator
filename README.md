@@ -50,6 +50,18 @@ The CLI has three subcommands, to use the three main features of Textricator:
         See the [Form](#form) section for details.
         If your PDF has a tabular layout, see the [Table](#table) section.
 
+## Illegal Reflective Access Warning
+
+You may see the following warning printed:
+
+    WARNING: An illegal reflective access operation has occurred
+    WARNING: Illegal reflective access by org.parboiled.transform.AsmUtils (file:/F:/pathto/lib/parboiled-java-1.3.1.jar) to method java.lang.ClassLoader.findLoadedClass(java.lang.String)
+    WARNING: Please consider reporting this to the maintainers of org.parboiled.transform.AsmUtils
+    WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+    WARNING: All illegal access operations will be denied in a future release
+
+Textricator still works, it is just a warning printed by a library Textricator uses. See #18.
+
 ## Table
 
 In table mode, the data is grouped into columns based on the x-coordinate of the text.
