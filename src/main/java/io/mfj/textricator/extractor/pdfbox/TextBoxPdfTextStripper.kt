@@ -116,7 +116,7 @@ internal class TextBoxPdfTextStripper : PDFTextStripper() {
       val expanded = expandNonPrintableUnicode(sb.toString())
 
       val textBox = Text(content = expanded, pageNumber = currentPageNo, ulx = first.x,
-          uly = first.y - first.height, lrx = previous.x + previous.width, lry = first.y, font = first.font.name,
+          uly = first.y - first.height, lrx = previous.x + previous.width, lry = first.y, font = first.font?.name ?: "",
           fontSize = first.fontSize, color = null, // TODO
           backgroundColor = null)
 
