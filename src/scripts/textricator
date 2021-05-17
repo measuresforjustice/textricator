@@ -1,2 +1,15 @@
 #!/usr/bin/env bash
-java -cp "$(dirname $0)/lib/*" ${JAVA_OPTS} io.mfj.textricator.cli.TextricatorCli "$@"
+
+# Find script directory ($SCRIPT_DIR).
+# On linux (and cygwin) "SCRIPT_DIR=$(basedir $(readlink -f $0))" works,
+# but Macos' readlink is very different.
+# This works on linux, cygwin, and macos:
+SCRIPT_DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SCRIPT_DIR=$SCRIPT_DIR/$(basename -- "$0")
+while [[ -h "$SCRIPT_DIR" ]]; do
+    DIR=$(dirname -- "$SCRIPT_DIR")
+    SYM=$(readlink "$SCRIPT_DIR")
+    SCRIPT_DIR=$(cd "$DIR" && cd "$(dirname -- "$SYM")" && pwd)/$(basename -- "$SYM")
+done
+SCRIPT_DIR=$(dirname -- "$SCRIPT_DIR")
+
+java -cp "${SCRIPT_DIR}/lib/*" ${JAVA_OPTS} ${JAVA_OPTS} io.mfj.textricator.cli.TextricatorCli "$@"
