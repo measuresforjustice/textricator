@@ -39,8 +39,8 @@ The CLI has three subcommands, to use the three main features of Textricator:
 - Show help
     - `./textricator --help`
 - Download the example files to the textricator directory:
-  * https://github.com/measuresforjustice/textricator/raw/master/src/test/resources/io/mfj/textricator/examples/school-employee-list.pdf
-  * https://raw.githubusercontent.com/measuresforjustice/textricator/master/src/test/resources/io/mfj/textricator/examples/school-employee-list.yml
+  * https://github.com/measuresforjustice/textricator/blob/main/src/test/resources/io/mfj/textricator/examples/school-employee-list.pdf
+  * https://github.com/measuresforjustice/textricator/blob/main/src/test/resources/io/mfj/textricator/examples/school-employee-list.yml
 - Extract raw text from a PDF to standard out
     - `./textricator text --input-format=pdf.pdfbox school-employee-list.pdf`
 - Parse a PDF to CSV
