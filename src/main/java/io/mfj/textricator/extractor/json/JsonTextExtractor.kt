@@ -51,7 +51,7 @@ class JsonTextExtractor(input:InputStream):TextExtractor {
     }
 
     this.texts = map
-    this.pageCount = texts.keys.max() ?: 0
+    this.pageCount = texts.keys.maxOrNull() ?: 0
   }
 
   override fun getPageCount():Int {

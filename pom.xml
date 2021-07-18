@@ -32,8 +32,8 @@
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <kotlin.version>1.4.32</kotlin.version>
-    <dokka.version>1.4.32</dokka.version>
+    <kotlin.version>1.5.21</kotlin.version>
+    <dokka.version>1.5.0</dokka.version>
     <copyright.year>2021</copyright.year>
     <source.location>https://github.com/measuresforjustice/textricator</source.location>
   </properties>
@@ -42,7 +42,7 @@
     <dependency>
       <groupId>org.jetbrains.kotlinx</groupId>
       <artifactId>kotlinx-coroutines-core</artifactId>
-      <version>1.4.3</version>
+      <version>1.5.1</version>
     </dependency>
 
     <dependency>
@@ -78,13 +78,13 @@
     <dependency>
       <groupId>org.apache.pdfbox</groupId>
       <artifactId>pdfbox</artifactId>
-      <version>2.0.23</version>
+      <version>2.0.24</version>
       <!-- Apache 2.0 -->
     </dependency>
     <dependency>
       <groupId>org.apache.pdfbox</groupId>
       <artifactId>pdfbox-tools</artifactId>
-      <version>2.0.23</version>
+      <version>2.0.24</version>
       <!-- Apache 2.0 -->
     </dependency>
 
@@ -98,7 +98,7 @@
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcprov-jdk15on</artifactId>
-      <version>1.68</version>
+      <version>1.69</version>
       <!-- MIT -->
     </dependency>
 
@@ -106,32 +106,32 @@
     <dependency>
       <groupId>com.itextpdf</groupId>
       <artifactId>kernel</artifactId>
-      <version>7.1.15</version>
+      <version>7.1.16</version>
       <!-- AGPL -->
     </dependency>
     <dependency>
       <groupId>com.itextpdf</groupId>
       <artifactId>layout</artifactId>
-      <version>7.1.15</version>
+      <version>7.1.16</version>
       <!-- AGPL -->
     </dependency>
 
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.12.3</version>
+      <version>2.12.4</version>
       <!-- Apache 2.0 -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-yaml</artifactId>
-      <version>2.12.3</version>
+      <version>2.12.4</version>
       <!-- Apache 2.0 -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-kotlin</artifactId>
-      <version>2.12.3</version>
+      <version>2.12.4</version>
       <!-- Apache 2.0 -->
       <exclusions>
         <exclusion>
