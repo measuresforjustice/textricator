@@ -6,7 +6,7 @@
 
   <groupId>io.mfj</groupId>
   <artifactId>textricator</artifactId>
-  <version>9.4-SNAPSHOT</version>
+  <version>10.0-SNAPSHOT</version>
 
   <name>${project.groupId}:${project.artifactId}</name>
   <description>A tool to extract text from documents and generate structured data</description>
@@ -30,10 +30,11 @@
   </licenses>
 
   <properties>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <kotlin.version>1.5.21</kotlin.version>
-    <dokka.version>1.5.0</dokka.version>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <kotlin.compiler.jvmTarget>11</kotlin.compiler.jvmTarget>
+    <kotlin.version>1.5.31</kotlin.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <copyright.year>2021</copyright.year>
     <source.location>https://github.com/measuresforjustice/textricator</source.location>
   </properties>
@@ -42,7 +43,7 @@
     <dependency>
       <groupId>org.jetbrains.kotlinx</groupId>
       <artifactId>kotlinx-coroutines-core</artifactId>
-      <version>1.5.1</version>
+      <version>1.5.2</version>
     </dependency>
 
     <dependency>
@@ -70,7 +71,7 @@
     <dependency>
       <groupId>io.mfj</groupId>
       <artifactId>expr</artifactId>
-      <version>5.0.25</version>
+      <version>6.0.28</version>
       <!-- Apache 2.0 -->
     </dependency>
 
@@ -119,19 +120,19 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.12.4</version>
+      <version>2.13.0</version>
       <!-- Apache 2.0 -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-yaml</artifactId>
-      <version>2.12.4</version>
+      <version>2.13.0</version>
       <!-- Apache 2.0 -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-kotlin</artifactId>
-      <version>2.12.4</version>
+      <version>2.13.0</version>
       <!-- Apache 2.0 -->
       <exclusions>
         <exclusion>
@@ -161,7 +162,7 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-csv</artifactId>
-      <version>1.8</version>
+      <version>1.9.0</version>
       <!-- Apache 2.0 -->
     </dependency>
 
@@ -230,7 +231,7 @@
       <plugin>
         <groupId>org.jetbrains.dokka</groupId>
         <artifactId>dokka-maven-plugin</artifactId>
-        <version>${dokka.version}</version>
+        <version>1.5.31</version>
         <executions>
           <execution>
             <phase>prepare-package</phase>
