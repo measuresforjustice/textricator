@@ -348,13 +348,6 @@ states:
         condition: sameLine
         nextState: name
 
-  nameId:
-    startRecord: true
-    transitions:
-      -
-        condition: sameLine
-        nextState: name
-
   name:
     valueTypes: [ lastName, firstName ]
     transitions:
