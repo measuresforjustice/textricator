@@ -50,6 +50,10 @@ The CLI has three subcommands, to use the three main features of Textricator:
         See the [Form](#form) section for details.
         If your PDF has a tabular layout, see the [Table](#table) section.
 
+## Logging
+
+Add the `--debug` flag to log everything.
+
 ## Extracting text
 
 To extract the text from a PDF, run

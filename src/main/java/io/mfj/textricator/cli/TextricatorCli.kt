@@ -25,7 +25,12 @@ import io.mfj.textricator.text.toPageFilter
 
 import java.io.File
 
+import ch.qos.logback.classic.Logger
+import ch.qos.logback.classic.Level
+
 import org.docopt.Docopt
+
+import org.slf4j.LoggerFactory
 
 /**
  * Command-line interface to [Textricator].
@@ -46,9 +51,9 @@ object TextricatorCli {
     Output is to standard out if not specified.
 
     Usage:
-      textricator text [--pages=<pages>] [--max-row-distance=<max-row-distance>] [--box-precision=<points>] [--box-ignore-colors=<colors>] [--input-format=<input-format>] [--output-format=<output-format>] <input> [<output>]
-      textricator form --config=<config> [--pages=<pages>] [--input-format=<input-format>] [--output-format=<output-format>] <input> [<output>]
-      textricator table --config=<config> [--pages=<pages>] [--input-format=<input-format>] [--output-format=<output-format>] <input> [<output>]
+      textricator text [--debug] [--pages=<pages>] [--max-row-distance=<max-row-distance>] [--box-precision=<points>] [--box-ignore-colors=<colors>] [--input-format=<input-format>] [--output-format=<output-format>] <input> [<output>]
+      textricator form [--debug] --config=<config> [--pages=<pages>] [--input-format=<input-format>] [--output-format=<output-format>] <input> [<output>]
+      textricator table [--debug] --config=<config> [--pages=<pages>] [--input-format=<input-format>] [--output-format=<output-format>] <input> [<output>]
       textricator -h | --help
       textricator --version
 
@@ -67,6 +72,7 @@ object TextricatorCli {
                                     ${Textricator.RECORD_OUTPUT_FORMAT_JSON}
                                     ${Textricator.RECORD_OUTPUT_FORMAT_JSON_FLAT}
                                     ${Textricator.RECORD_OUTPUT_FORMAT_NULL} (no output)
+      --debug                     Enable debug logging
       --version                   Show version, copyright, and license information.
     """.trimIndent().trim()
 
@@ -82,6 +88,10 @@ object TextricatorCli {
         .withHelp(true)
         .withExit(true)
         .parse(args.toList())
+
+    if (opts.boolean("--debug")) {
+      ( LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as Logger ).level = Level.DEBUG
+    }
 
     try {
       when {
