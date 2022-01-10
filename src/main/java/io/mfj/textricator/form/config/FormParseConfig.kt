@@ -37,6 +37,9 @@ class FormParseConfig(
     override var rootRecordType: String = "root",
     override var recordTypes: Map<String, RecordType> = emptyMap(),
     override var valueTypes: Map<String, ValueType> = emptyMap(),
+    /** Any [Text]s that match any of these condition names (the key in [conditions])
+     *  are excluded; never processed by the finite-state machine. */
+    var excludeConditions: List<String> = emptyList(),
     extractor:String? = null,
     pages:String? = null,
     maxRowDistance:Float = 0f,

@@ -26,6 +26,7 @@ interface FsmEventListener {
   fun onFooter( text:Text)
   fun onLeftMargin( text:Text)
   fun onRightMargin( text:Text)
+  fun onExclude( text:Text, condition:String )
 
   fun onCheckTransition( currentState:String, condition:String, nextState:String )
   fun onCheckTransition( currentState:String, condition:String, nextState:String, match:Boolean, message:String? )

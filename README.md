@@ -635,6 +635,22 @@ recordTypes:
     pagePriority: 2
 ```
 
+#### Exclude 
+
+Text segments can be excluded before processing by the finite-state machine
+by adding condition name to the `excludeConditions` list.
+If any of the conditions match, the text segment is excluded.
+
+For example, to exclude all text segments that consist solely of underscores:
+
+```yaml
+excludeConditions:
+  - underline
+  
+conditions:
+  underline: 'text =~ /_+/'
+```
+
 #### Starting new records for each value
 
 TODO
