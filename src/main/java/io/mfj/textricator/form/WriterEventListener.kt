@@ -47,7 +47,11 @@ class WriterEventListener(private val w:Writer): FormParseEventListener {
   }
 
   override fun onRightMargin(text:Text) {
-    write("\tpart of rigth gutter. skip")
+    write("\tpart of right gutter. skip")
+  }
+
+  override fun onExclude(text: Text, condition: String) {
+    write("\texcluded by condition \"${condition}\"")
   }
 
   override fun onCheckTransition(currentState:String, condition:String, nextState:String) {

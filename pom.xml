@@ -6,7 +6,7 @@
 
   <groupId>io.mfj</groupId>
   <artifactId>textricator</artifactId>
-  <version>10.0-SNAPSHOT</version>
+  <version>10.1-SNAPSHOT</version>
 
   <name>${project.groupId}:${project.artifactId}</name>
   <description>A tool to extract text from documents and generate structured data</description>
@@ -149,14 +149,13 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.30</version>
+      <version>1.7.32</version>
       <!-- MIT -->
     </dependency>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>1.7.30</version>
-      <!-- MIT -->
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.2.3</version>
     </dependency>
 
     <dependency>

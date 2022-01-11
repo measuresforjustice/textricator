@@ -50,18 +50,9 @@ The CLI has three subcommands, to use the three main features of Textricator:
         See the [Form](#form) section for details.
         If your PDF has a tabular layout, see the [Table](#table) section.
 
-## Illegal Reflective Access Warning
+## Logging
 
-You may see the following warning printed:
-
-    WARNING: An illegal reflective access operation has occurred
-    WARNING: Illegal reflective access by org.parboiled.transform.AsmUtils (file:/F:/pathto/lib/parboiled-java-1.3.1.jar) to method java.lang.ClassLoader.findLoadedClass(java.lang.String)
-    WARNING: Please consider reporting this to the maintainers of org.parboiled.transform.AsmUtils
-    WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
-    WARNING: All illegal access operations will be denied in a future release
-
-Textricator still works, it is just a warning printed by a library Textricator uses.
-See [Issue #18](https://github.com/measuresforjustice/textricator/issues/18).
+Add the `--debug` flag to log everything.
 
 ## Extracting text
 
@@ -642,6 +633,22 @@ recordTypes:
       - chargeNumber
     # Highest priority. Use charge's page number.
     pagePriority: 2
+```
+
+#### Exclude 
+
+Text segments can be excluded before processing by the finite-state machine
+by adding condition name to the `excludeConditions` list.
+If any of the conditions match, the text segment is excluded.
+
+For example, to exclude all text segments that consist solely of underscores:
+
+```yaml
+excludeConditions:
+  - underline
+  
+conditions:
+  underline: 'text =~ /_+/'
 ```
 
 #### Starting new records for each value

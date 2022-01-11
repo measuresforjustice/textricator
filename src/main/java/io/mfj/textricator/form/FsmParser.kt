@@ -37,73 +37,6 @@ class FsmParser(val config:FormParseConfig,
 
   companion object {
     private val log = LoggerFactory.getLogger(FsmParser::class.java)
-
-    /**
-     * Built-in variables.
-     * The enum names match exactly the variables in the expression.
-     */
-    private enum class BuiltInVar(val type:ExDataType) {
-      /** x coordinate of the upper-left corner of the text box */
-      ulx(ExDataType.NUMBER),
-      /** y coordinate of the upper-left corner of the text box */
-      uly(ExDataType.NUMBER),
-      /** x coordinate of the lower-right corner of the text box */
-      lrx(ExDataType.NUMBER),
-      /** y coordinate of the lower-right corner of the text box */
-      lry(ExDataType.NUMBER),
-      /** The text. */
-      text(ExDataType.STRING),
-      /** page number . */
-      page(ExDataType.NUMBER),
-      /** page number of the previous text */
-      page_prev(ExDataType.NUMBER),
-      /** font size */
-      fontSize(ExDataType.NUMBER),
-      /** font name */
-      font(ExDataType.STRING),
-      /** text color */
-      color(ExDataType.STRING),
-      /** background color  */
-      bgcolor(ExDataType.STRING),
-      /** width of the text box */
-      width(ExDataType.NUMBER),
-      /** height of the text box */
-      height(ExDataType.NUMBER),
-      /** Difference in [ulx] from the previous text to this one */
-      ulx_rel(ExDataType.NUMBER),
-      /** Difference in [uly] from the previous text to this one */
-      uly_rel(ExDataType.NUMBER),
-      /** Difference in [lrx] from the previous text to this one */
-      lrx_rel(ExDataType.NUMBER),
-      /** Difference in [lry] from the previous text to this one */
-      lry_rel(ExDataType.NUMBER),
-    }
-
-    private val builtInVarNames = BuiltInVar.values().map(BuiltInVar::name).toSet()
-
-    // expr var type provider
-    // If you add a type, add it to ParseState.vp
-    private val VTP = ChainVarTypeProvider(
-        MapVarTypeProvider(
-            BuiltInVar
-                .values()
-                .map { builtInVar ->
-                  builtInVar.name to builtInVar.type
-                }
-                .toMap()
-        ),
-        object: VarTypeProvider {
-          override fun contains(varName:String):Boolean = true
-          override operator fun get(varName: String): ExDataType = ExDataType.STRING
-        } )
-
-    /**
-     * Compile the specified expression
-     */
-    private fun compile( e:String ): Expr {
-      return ExprParser.parseToExpr(e, VTP)
-    }
-
   }
 
   fun parse( texts:Sequence<Text> ): Sequence<StateValue> {
@@ -142,28 +75,77 @@ class FsmParser(val config:FormParseConfig,
     last?.let { yield(it) }
   }
 
-  private class ParseState( private val config:FormParseConfig, private val eventListener:FsmEventListener? ) {
+  private class ExprState(val config:FormParseConfig, val eventListener: FsmEventListener?) {
 
-    val vars:MutableMap<String,String?> = mutableMapOf()
+    companion object {
 
-    // text currently being parsed
-    private var current:Text? = null
-    var text:Text?
-      get() = current
-      set(text) {
-        last = current
-        current = text
+      /**
+       * Built-in variables.
+       * The enum names match exactly the variables in the expression.
+       */
+      private enum class BuiltInVar(val type:ExDataType) {
+        /** x coordinate of the upper-left corner of the text box */
+        ulx(ExDataType.NUMBER),
+        /** y coordinate of the upper-left corner of the text box */
+        uly(ExDataType.NUMBER),
+        /** x coordinate of the lower-right corner of the text box */
+        lrx(ExDataType.NUMBER),
+        /** y coordinate of the lower-right corner of the text box */
+        lry(ExDataType.NUMBER),
+        /** The text. */
+        text(ExDataType.STRING),
+        /** page number . */
+        page(ExDataType.NUMBER),
+        /** page number of the previous text */
+        page_prev(ExDataType.NUMBER),
+        /** font size */
+        fontSize(ExDataType.NUMBER),
+        /** font name */
+        font(ExDataType.STRING),
+        /** text color */
+        color(ExDataType.STRING),
+        /** background color  */
+        bgcolor(ExDataType.STRING),
+        /** width of the text box */
+        width(ExDataType.NUMBER),
+        /** height of the text box */
+        height(ExDataType.NUMBER),
+        /** Difference in [ulx] from the previous text to this one */
+        ulx_rel(ExDataType.NUMBER),
+        /** Difference in [uly] from the previous text to this one */
+        uly_rel(ExDataType.NUMBER),
+        /** Difference in [lrx] from the previous text to this one */
+        lrx_rel(ExDataType.NUMBER),
+        /** Difference in [lry] from the previous text to this one */
+        lry_rel(ExDataType.NUMBER),
       }
 
-    // last parsed text
-    private var last:Text? = null
-    val lastText:Text?
-      get() = last
+      private val builtInVarNames = BuiltInVar.values().map(BuiltInVar::name).toSet()
 
-    var stateId:String
-    var state:State
+      // expr var type provider
+      // If you add a type, add it to ParseState.vp
+      private val VTP = ChainVarTypeProvider(
+        MapVarTypeProvider(
+          BuiltInVar
+              .values()
+              .map { builtInVar ->
+                builtInVar.name to builtInVar.type
+              }
+              .toMap()
+        ),
+        object: VarTypeProvider {
+          override fun contains(varName:String):Boolean = true
+          override operator fun get(varName: String): ExDataType = ExDataType.STRING
+        } )
 
-    private val buffer:MutableList<Text> = mutableListOf()
+      /**
+       * Compile the specified expression
+       */
+      private fun compile( e:String ): Expr {
+        return ExprParser.parseToExpr(e, VTP)
+      }
+
+    }
 
     // cache of parsed expression
     private val exprCache:MutableMap<String,Pair<String,Expr>> = mutableMapOf()
@@ -177,11 +159,13 @@ class FsmParser(val config:FormParseConfig,
           Pair( e, compile(e))
         }
 
-    init {
-      val stateId = config.initialState
-      this.state = config.states[stateId] ?: throw Exception( "Missing initial state ${stateId}" )
-      this.stateId = stateId
-    }
+    /** The text referenced by "last" in the expressions. */
+    private var lastText:Text? = null
+
+    /** The text referenced by "text" in the expressions. */
+    private var text:Text? = null
+
+    val vars:MutableMap<String,String?> = mutableMapOf()
 
     /** Expr variable provider */
     val vp: VarProvider = object : VarProvider {
@@ -221,17 +205,63 @@ class FsmParser(val config:FormParseConfig,
       override fun getKnownVars():Set<String> = builtInVarNames.plus( vars.keys )
     }
 
-    /**
-     * Determine if the current state matches the specified condition.
-     */
-    internal fun matches( conditionId:String ): Boolean {
+    fun matches( conditionId:String, last:Text?, text:Text ): Boolean {
       val (exprStr,expr) = getCondition(conditionId)
+
+      this.lastText = last
+      this.text = text
 
       val match = Eval.evaluate( expr, vp )
 
       eventListener?.onCheckCondition( conditionId, exprStr, match )
 
       return match
+    }
+  }
+
+  private class ParseState( private val config:FormParseConfig, private val eventListener:FsmEventListener? ) {
+
+    val exprState = ExprState(config,eventListener)
+
+    // text currently being parsed
+    private var current:Text? = null
+    var text:Text?
+      get() = current
+      set(text) {
+        last = current
+        current = text
+      }
+
+    // last parsed text
+    private var last:Text? = null
+    val lastText:Text?
+      get() = last
+
+    var stateId:String
+    var state:State
+
+    private val buffer:MutableList<Text> = mutableListOf()
+
+
+    init {
+      val stateId = config.initialState
+      this.state = config.states[stateId] ?: throw Exception( "Missing initial state ${stateId}" )
+      this.stateId = stateId
+    }
+
+    /**
+     * Determine if the current state matches the specified condition.
+     */
+    fun matches( conditionId:String ): Boolean {
+      return exprState.matches(conditionId,last,text!!)
+    }
+
+    /**
+     * Determine if the next state matches the specified condition.
+     * Uses the current text as "last" and the supplied [next] text a "text".
+     */
+    fun matches( conditionId:String, next:Text ):Boolean {
+      return exprState.matches(conditionId,text,next)
     }
 
     fun setState( stateId:String ): StateValue? {
@@ -251,7 +281,7 @@ class FsmParser(val config:FormParseConfig,
           .filter { it.name != null }
           .forEach { vs:VariableSet ->
             val value = getVariableValue( vs.value )
-            vars[vs.name!!] = value
+            exprState.vars[vs.name!!] = value
             eventListener?.onVariableSet( stateId, vs.name, value )
             Unit
           }
@@ -273,7 +303,7 @@ class FsmParser(val config:FormParseConfig,
         if ( value == null ) {
           null
         } else if ( value.startsWith( "{" ) && value.endsWith( "}" ) ) {
-          vp[ value.drop(1).dropLast(1) ]?.toString()
+          exprState.vp[ value.drop(1).dropLast(1) ]?.toString()
         } else {
           value
         }
@@ -329,6 +359,20 @@ class FsmParser(val config:FormParseConfig,
 
     if ( text.content.isBlank() ) return null
 
+    //text.debug()
+    eventListener?.onText(text)
+
+    // excludes
+    if ( config.excludeConditions.isNotEmpty() ) {
+      for ( conditionId in config.excludeConditions ) {
+        if ( s.matches(conditionId,text) ) {
+          eventListener?.onExclude(text,conditionId)
+          s.text = s.lastText
+          return null
+        }
+      }
+    }
+
     s.text = text
 
     var ret:StateValue? = null // return value
@@ -338,9 +382,6 @@ class FsmParser(val config:FormParseConfig,
       ret = s.setState( config.newPageState!! )
       eventListener?.onPageStateChange(text.pageNumber, config.newPageState!! )
     }
-
-    //text.debug()
-    eventListener?.onText(text)
 
     // find transition
     var transition: Transition? = null

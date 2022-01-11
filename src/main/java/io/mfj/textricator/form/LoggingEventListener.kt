@@ -47,7 +47,11 @@ object LoggingEventListener: FormParseEventListener {
   }
 
   override fun onRightMargin(text:Text) {
-    log.debug("\tpart of rigth gutter. skip")
+    log.debug("\tpart of right gutter. skip")
+  }
+
+  override fun onExclude(text: Text, condition: String) {
+    log.debug("\texcluded by condition \"${condition}\"")
   }
 
   override fun onCheckTransition(currentState:String, condition:String, nextState:String) {
