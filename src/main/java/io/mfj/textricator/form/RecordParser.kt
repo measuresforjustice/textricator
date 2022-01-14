@@ -52,7 +52,7 @@ class RecordParser( private val config:FormParseConfig, private val eventListene
   private fun split( st:StateValue): List<StateValue> =
       if ( st.state.startRecordForEachValue ) {
         st.values.map { value ->
-          StateValue(st.pageNumber, st.stateId, st.state, listOf(value), false )
+          StateValue(st.source, st.pageNumber, st.stateId, st.state, listOf(value), false )
         }
       } else {
         listOf( st )
@@ -66,7 +66,7 @@ class RecordParser( private val config:FormParseConfig, private val eventListene
       st.state.valueTypes
           ?.mapIndexed { index, valueTypeId ->
             val state = st.state.copy( valueTypes = mutableListOf( valueTypeId ) )
-            StateValue(st.pageNumber, st.stateId, state, st.values, (index > 0))
+            StateValue(st.source, st.pageNumber, st.stateId, state, st.values, (index > 0))
           }
           ?: listOf( st )
 
@@ -122,15 +122,15 @@ class RecordParser( private val config:FormParseConfig, private val eventListene
           // return the old one and start a new root
           ret = s.root?.setValues(s)
           s.buffer.clear()
-          s.root = Record(st.pageNumber, recordTypeId)
+          s.root = Record(st.source, st.pageNumber, recordTypeId)
           s.root!!
 
         } else {
           // find the parent record
-          val parent = findParentRecord( s, st.pageNumber, recordTypeId )
+          val parent = findParentRecord( s, st.source, st.pageNumber, recordTypeId )
 
           // start a new record
-          val rec = Record(st.pageNumber, recordTypeId)
+          val rec = Record(st.source, st.pageNumber, recordTypeId)
           parent.children.getOrPut( recordTypeId, { mutableListOf() } ).add( rec )
           rec
         }
@@ -144,7 +144,7 @@ class RecordParser( private val config:FormParseConfig, private val eventListene
           // not explicitly starting a new record, but no record exists.
           // create a new root to add to.
           // TODO is this okay?
-          s.root = Record(st.pageNumber, config.rootRecordType)
+          s.root = Record(st.source, st.pageNumber, config.rootRecordType)
         }
 
         // find the root
@@ -315,7 +315,7 @@ class RecordParser( private val config:FormParseConfig, private val eventListene
         // the desired record is either this child type or under it
         val children:MutableList<Record> = rec.children.getOrPut( childTypeId, { mutableListOf() } )
         if ( children.isEmpty() ) {
-          children.add(Record(rec.pageNumber, childTypeId))
+          children.add(Record(rec.source, rec.pageNumber, childTypeId))
         }
         return findRecord( children.last(), recordTypeId )
       } else {
@@ -324,9 +324,9 @@ class RecordParser( private val config:FormParseConfig, private val eventListene
     }
   }
 
-  private fun findParentRecord( s:ParseState, pageNumber:Int, recordTypeId:String ):Record {
+  private fun findParentRecord( s:ParseState, source:String?, pageNumber:Int, recordTypeId:String ):Record {
     if ( s.root == null ) {
-      s.root = Record(pageNumber, config.rootRecordType)
+      s.root = Record(source, pageNumber, config.rootRecordType)
     }
     return findParentRecord( s.root!!, recordTypeId )
   }
@@ -352,7 +352,7 @@ class RecordParser( private val config:FormParseConfig, private val eventListene
           // the desired type is a child of the child type
           val children:MutableList<Record> = rec.children.getOrPut( childRecordTypeId, { mutableListOf() } )
           if ( children.isEmpty() ) {
-            children.add(Record(rec.pageNumber, childRecordTypeId))
+            children.add(Record(rec.source, rec.pageNumber, childRecordTypeId))
           }
           val last = children.last()
           return if ( last.typeId == recordTypeId) {

@@ -46,7 +46,8 @@ class RecordParserTest {
   val rp = RecordParser(model)
 
   private fun sv( pageNumber:Int, stateId:String, vararg value:String ):StateValue = StateValue(
-      pageNumber = pageNumber, stateId = stateId,
+    source = "test",
+    pageNumber = pageNumber, stateId = stateId,
       state = model.states[stateId] ?: throw Exception("Missing state ${stateId}"), values = value.toList().map{ Value(it) })
 
   @Test
@@ -139,19 +140,22 @@ class RecordParserTest {
     )
     val stateValues = listOf(
         StateValue(
+            source = "test",
             pageNumber = 1,
             values = listOf( Value("Fred") ),
             state = model.states["name"]!!,
             stateId = "name"
         ),
         StateValue(
+            source = "test",
             pageNumber = 1,
             values = listOf( Value("label") ),
             state = model.states["label"]!!,
             stateId = "label"
         ),
         StateValue(
-            pageNumber = 1,
+          source = "test",
+          pageNumber = 1,
             values = listOf( Value("Sally") ),
             state = model.states["name"]!!,
             stateId = "name"

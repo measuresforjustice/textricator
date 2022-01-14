@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory
  * @param config FSM config
  * @param eventListener event listener
  */
-class FsmParser(val config:FormParseConfig,
+class FsmParser( val source:String?, val config:FormParseConfig,
     private val eventListener:FsmEventListener? =null ) {
 
   companion object {
@@ -42,7 +42,7 @@ class FsmParser(val config:FormParseConfig,
   fun parse( texts:Sequence<Text> ): Sequence<StateValue> {
 
     // parse state is a passed object instead of object-level to keep this thread-safe
-    val parseState = ParseState(config, eventListener)
+    val parseState = ParseState(source,config, eventListener)
 
     return texts.groupRows(config.maxRowDistance)
 
@@ -75,7 +75,7 @@ class FsmParser(val config:FormParseConfig,
     last?.let { yield(it) }
   }
 
-  private class ExprState(val config:FormParseConfig, val eventListener: FsmEventListener?) {
+  private class ExprState(val source:String?, val config:FormParseConfig, val eventListener: FsmEventListener?) {
 
     companion object {
 
@@ -118,6 +118,8 @@ class FsmParser(val config:FormParseConfig,
         lrx_rel(ExDataType.NUMBER),
         /** Difference in [lry] from the previous text to this one */
         lry_rel(ExDataType.NUMBER),
+        /** Data source; e.g. file name. */
+        source(ExDataType.STRING),
       }
 
       private val builtInVarNames = BuiltInVar.values().map(BuiltInVar::name).toSet()
@@ -196,6 +198,7 @@ class FsmParser(val config:FormParseConfig,
             BuiltInVar.uly_rel -> if ( lastText != null ) text!!.uly - lastText!!.uly else { noLast( varName ); text!!.uly }
             BuiltInVar.lrx_rel -> if ( lastText != null ) text!!.lrx - lastText!!.lrx else { noLast( varName ); text!!.lrx }
             BuiltInVar.lry_rel -> if ( lastText != null ) text!!.lry - lastText!!.lry else { noLast( varName ); text!!.lry }
+            BuiltInVar.source -> source
           }
         } else {
           vars[varName]
@@ -219,9 +222,9 @@ class FsmParser(val config:FormParseConfig,
     }
   }
 
-  private class ParseState( private val config:FormParseConfig, private val eventListener:FsmEventListener? ) {
+  private class ParseState( private val source:String?, private val config:FormParseConfig, private val eventListener:FsmEventListener? ) {
 
-    val exprState = ExprState(config,eventListener)
+    val exprState = ExprState(source,config,eventListener)
 
     // text currently being parsed
     private var current:Text? = null
@@ -289,7 +292,7 @@ class FsmParser(val config:FormParseConfig,
 
     fun flush(): StateValue? {
       val stateTexts:StateValue? = if ( buffer.isNotEmpty() ) {
-        StateValue(buffer.first().pageNumber, stateId, state, parseValues())
+        StateValue(source,buffer.first().pageNumber, stateId, state, parseValues())
       } else {
         null
       }
