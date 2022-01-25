@@ -54,6 +54,7 @@ object Textricator {
   val RECORD_OUTPUT_FORMAT_JSON = "json"
   val RECORD_OUTPUT_FORMAT_JSON_FLAT = "json-flat"
   val RECORD_OUTPUT_FORMAT_NULL = "null"
+  val RECORD_OUTPUT_FORMAT_XML = "xml"
 
   private val log = LoggerFactory.getLogger( Textricator::class.java )
 
@@ -204,6 +205,7 @@ object Textricator {
       RECORD_OUTPUT_FORMAT_CSV -> CsvRecordOutput(config,output)
       RECORD_OUTPUT_FORMAT_JSON -> JsonRecordOutput(config,output)
       RECORD_OUTPUT_FORMAT_JSON_FLAT -> JsonFlatRecordOutput(config,output)
+      RECORD_OUTPUT_FORMAT_XML -> XmlRecordOutput(config,output)
       RECORD_OUTPUT_FORMAT_NULL -> NullOutput
       else -> throw IllegalArgumentException( "Unsupported output format \"${outputFormat}\"." )
     }

@@ -3,7 +3,7 @@
 _Textricator_ is a tool to extract text from documents and generate structured data.
 
 If you have a bunch of PDFs with the same format (or one big, consistently formatted PDF)
-and you want to extract the data to CSV or JSON, _Textricator_ can help!
+and you want to extract the data to CSV, XML, or JSON, _Textricator_ can help!
 It can even work on OCR'ed documents!
 
 _Textricator_ is released under the
