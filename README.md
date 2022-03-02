@@ -179,7 +179,7 @@ header:
     # ignore anything less than this many points from the top, default and per-page
   default: 130
 footer:
-    # ignore anything more than this many points from the bottom, default and per-page
+    # ignore anything more than this many points from the top, default and per-page
   default: 700
 
 # Text segments are generally parsed in order, top to bottom, left to right.
