@@ -12,4 +12,4 @@ while [[ -h "$SCRIPT_DIR" ]]; do
 done
 SCRIPT_DIR=$(dirname -- "$SCRIPT_DIR")
 
-java -cp "${SCRIPT_DIR}/lib/*" ${JAVA_OPTS} ${JAVA_OPTS} io.mfj.textricator.cli.TextricatorCli "$@"
+java -cp "${SCRIPT_DIR}/lib/*" ${JAVA_OPTS} io.mfj.textricator.cli.TextricatorCli "$@"
