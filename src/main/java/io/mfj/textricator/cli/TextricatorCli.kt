@@ -179,7 +179,7 @@ object TextricatorCli {
 
     val config = FormParseConfigUtil.parseYaml(configFile)
 
-    opts.string("pages")?.apply { config.pages = this }
+    opts.string("--pages")?.apply { config.pages = this }
 
     inputFile.inputStream().use { input ->
 
@@ -217,7 +217,7 @@ object TextricatorCli {
 
     val config = TableParseConfigUtil.parseYaml(configFile)
 
-    opts.string("pages")?.apply { config.pages = this }
+    opts.string("--pages")?.apply { config.pages = this }
 
     inputFile.inputStream().use { input ->
 
