@@ -63,7 +63,7 @@ class RecordFilter( private val config:RecordModel) {
               throw IllegalArgumentException( "No such var \"${varName}\"" )
             }
         override fun getKnownVars():Map<String, ExDataType> =
-            type.valueTypes.associate { it to getExDataType(it) }
+            type.valueTypes.associateWith { getExDataType(it) }
       }
       ExprParser.parseToExpr( filter, vtp )
     } else {
