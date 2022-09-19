@@ -26,7 +26,7 @@ interface TextExtractorFactory {
   companion object {
 
     /** path to properties files in classpath that has name=fqcn. */
-    private val FACTORY_PROPERTIES = "io/mfj/textricator/extractor/textExtractor.properties"
+    private const val FACTORY_PROPERTIES = "io/mfj/textricator/extractor/textExtractor.properties"
 
     /** Map of name->factory class, loaded from all io/mfj/unbox/factory.properties on classpath. */
     val classMap:Map<String,Class<TextExtractorFactory>> by lazy {
