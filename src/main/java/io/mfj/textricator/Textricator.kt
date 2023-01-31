@@ -108,8 +108,8 @@ object Textricator {
       configFile:File ) {
 
     val config = FormParseConfigUtil.parseYaml(configFile)
-    val inputFormat = inputFile.extension.toLowerCase()
-    val outputFormat = outputFile.extension.toLowerCase()
+    val inputFormat = inputFile.extension.lowercase()
+    val outputFormat = outputFile.extension.lowercase()
 
     inputFile.inputStream().use { input ->
       outputFile.outputStream().use { output ->
@@ -130,8 +130,8 @@ object Textricator {
       outputFile:File,
       config:FormParseConfig ) {
 
-    val inputFormat = inputFile.extension.toLowerCase()
-    val outputFormat = outputFile.extension.toLowerCase()
+    val inputFormat = inputFile.extension.lowercase()
+    val outputFormat = outputFile.extension.lowercase()
 
     inputFile.inputStream().use { input ->
       outputFile.outputStream().use { output ->
@@ -218,8 +218,8 @@ object Textricator {
       configFile:File ) {
 
     val config = TableParseConfigUtil.parseYaml(configFile)
-    val inputFormat = inputFile.extension.toLowerCase()
-    val outputFormat = outputFile.extension.toLowerCase()
+    val inputFormat = inputFile.extension.lowercase()
+    val outputFormat = outputFile.extension.lowercase()
 
     inputFile.inputStream().use { input ->
       outputFile.outputStream().use { output ->

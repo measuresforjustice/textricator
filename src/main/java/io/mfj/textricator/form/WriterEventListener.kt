@@ -107,7 +107,7 @@ class WriterEventListener(private val w:Writer): FormParseEventListener {
 
   private fun write( s:String ) {
     try {
-      w.appendln(s)
+      w.appendLine(s)
       if ( writes++ % 100L == 0L ) w.flush()
     } catch ( e:Exception ) {
       log.error(e.message,e)
