@@ -36,7 +36,7 @@ class RecordFilter( private val config:RecordModel) {
 
   /** Map of value type id to ExDataType */
   private val valueTypeMap = config.valueTypes.map { (id,member) ->
-    id to ( member.type?.let { ExDataType.valueOf( it.toUpperCase() ) } ?: DEFAULT_TYPE)
+    id to ( member.type?.let { ExDataType.valueOf( it.uppercase() ) } ?: DEFAULT_TYPE)
   }.toMap()
 
   /** Get the ExDataType for the specified member. */

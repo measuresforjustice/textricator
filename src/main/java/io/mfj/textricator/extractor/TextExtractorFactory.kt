@@ -63,7 +63,7 @@ interface TextExtractorFactory {
 
     fun getFactory( name:String ):TextExtractorFactory {
       val factoryClass = classMap[name] ?: throw Exception( "No factory \"${name}\"" )
-      val factory = factoryClass.newInstance()
+      val factory = factoryClass.getDeclaredConstructor().newInstance()
       return factory
     }
 
