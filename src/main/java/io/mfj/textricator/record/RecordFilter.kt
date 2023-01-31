@@ -43,10 +43,11 @@ class RecordFilter( private val config:RecordModel) {
   private fun getExDataType( valueTypeId:String ) = valueTypeMap[valueTypeId] ?: DEFAULT_TYPE
 
   /** Map of record type ID to the Expr to filter it, or null if no filter. */
-  private val recordTypeToExpr:Map<String,Expr?> = config.recordTypes.entries
-      .map { (recordTypeId,recordType) ->
-        recordTypeId to buildExpr( recordType )
-      }.toMap()
+  private val recordTypeToExpr:Map<String,Expr?> =
+      config.recordTypes.entries
+          .associate { (recordTypeId, recordType) ->
+            recordTypeId to buildExpr(recordType)
+          }
 
   /**
    * Build Expr for the specified record type. Null if no filter.
@@ -63,7 +64,7 @@ class RecordFilter( private val config:RecordModel) {
               throw IllegalArgumentException( "No such var \"${varName}\"" )
             }
         override fun getKnownVars():Map<String, ExDataType> =
-            type.valueTypes.associate { it to getExDataType(it) }
+            type.valueTypes.associateWith { getExDataType(it) }
       }
       ExprParser.parseToExpr( filter, vtp )
     } else {

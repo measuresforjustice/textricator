@@ -126,12 +126,11 @@ class FsmParser(val config:FormParseConfig,
       // If you add a type, add it to ParseState.vp
       private val VTP = ChainVarTypeProvider(
         MapVarTypeProvider(
-          BuiltInVar
-              .values()
-              .map { builtInVar ->
-                builtInVar.name to builtInVar.type
-              }
-              .toMap()
+            BuiltInVar
+                .values()
+                .associate {
+                  it.name to it.type
+                }
         ),
         object: VarTypeProvider {
           override fun contains(varName:String):Boolean = true
