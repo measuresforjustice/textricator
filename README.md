@@ -27,7 +27,7 @@ The CLI has three subcommands, to use the three main features of Textricator:
 
 ## Quick Start
 
-- Install Java (version 8+)
+- Install Java (version 11+)
   * Windows & Macos: Download from [https://java.com](https://java.com) and install.
   * Linux: Use your package manager.
 - Download the latest build of _Textricator_ from [https://repo1.maven.org/maven2/io/mfj/textricator/](https://repo1.maven.org/maven2/io/mfj/textricator/) - click on the directory for the latest version and download `textricator-VERSION-bin.tgz` (or `textricator-VERSION-bin.zip` for Windows).
@@ -179,7 +179,7 @@ header:
     # ignore anything less than this many points from the top, default and per-page
   default: 130
 footer:
-    # ignore anything less than this many points from the bottom, default and per-page
+    # ignore anything more than this many points from the top, default and per-page
   default: 700
 
 # Text segments are generally parsed in order, top to bottom, left to right.

@@ -153,9 +153,9 @@ class RecordFilterTest {
                   and
                   undef = "member not defined"
                    """, valueTypes = mutableListOf("str", "int", "dbl", "none", "undef"), children = mutableListOf())),
-        valueTypes = mutableMapOf("str" to ValueType(type = ExDataType.STRING.name.toLowerCase()),
-            "int" to ValueType(type = ExDataType.NUMBER.name.toLowerCase()),
-            "dbl" to ValueType(type = ExDataType.NUMBER.name.toLowerCase()), "none" to ValueType( /* type not set */)))
+        valueTypes = mutableMapOf("str" to ValueType(type = ExDataType.STRING.name.lowercase()),
+            "int" to ValueType(type = ExDataType.NUMBER.name.lowercase()),
+            "dbl" to ValueType(type = ExDataType.NUMBER.name.lowercase()), "none" to ValueType( /* type not set */)))
 
     val records =
         listOf(Record(1, "a",
