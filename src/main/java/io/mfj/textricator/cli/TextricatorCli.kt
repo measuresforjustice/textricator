@@ -126,7 +126,7 @@ object TextricatorCli {
   private fun text( opts:Map<String,Any> ) {
 
     val inputFile = opts.file("<input>")!!
-    val inputFormat = opts.string("--input-format") ?: inputFile.extension.toLowerCase()
+    val inputFormat = opts.string("--input-format") ?: inputFile.extension.lowercase()
 
     val outputFile = opts.file("<output>")
     if ( outputFile != null ) outputFile.absoluteFile.parentFile.mkdirs()
@@ -134,7 +134,7 @@ object TextricatorCli {
         if ( outputFile == null ) {
           Textricator.TEXT_OUTPUT_FORMAT_CSV
         } else {
-          outputFile.extension.toLowerCase()
+          outputFile.extension.lowercase()
         }
 
     val pages = opts.string("--pages").toPageFilter()
@@ -167,7 +167,7 @@ object TextricatorCli {
   private fun form( opts:Map<String,Any> ) {
 
     val inputFile = opts.file("<input>")!!
-    val inputFormat = opts.string("--input-format") ?: inputFile.extension.toLowerCase()
+    val inputFormat = opts.string("--input-format") ?: inputFile.extension.lowercase()
 
     val outputFile = opts.file("<output>")
     if ( outputFile != null ) outputFile.absoluteFile.parentFile.mkdirs()
@@ -175,14 +175,14 @@ object TextricatorCli {
         if ( outputFile == null ) {
           throw SystemExitException( "--output-format is required if <output> is omitted.", 1 )
         } else {
-          outputFile.extension.toLowerCase()
+          outputFile.extension.lowercase()
         }
 
     val configFile = opts.file("--config")!!
 
     val config = FormParseConfigUtil.parseYaml(configFile)
 
-    opts.string("pages")?.apply { config.pages = this }
+    opts.string("--pages")?.apply { config.pages = this }
 
     inputFile.inputStream().use { input ->
 
@@ -242,7 +242,7 @@ object TextricatorCli {
   private fun table( opts:Map<String,Any> ) {
 
     val inputFile = opts.file("<input>")!!
-    val inputFormat = opts.string("--input-format") ?: inputFile.extension.toLowerCase()
+    val inputFormat = opts.string("--input-format") ?: inputFile.extension.lowercase()
 
     val outputFile = opts.file("<output>")
     if ( outputFile != null ) outputFile.absoluteFile.parentFile.mkdirs()
@@ -250,14 +250,14 @@ object TextricatorCli {
         if ( outputFile == null ) {
           throw SystemExitException( "--output-format is required if <output> is omitted.", 1 )
         } else {
-          outputFile.extension.toLowerCase()
+          outputFile.extension.lowercase()
         }
 
     val configFile = opts.file("--config")!!
 
     val config = TableParseConfigUtil.parseYaml(configFile)
 
-    opts.string("pages")?.apply { config.pages = this }
+    opts.string("--pages")?.apply { config.pages = this }
 
     inputFile.inputStream().use { input ->
 

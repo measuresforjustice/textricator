@@ -45,15 +45,15 @@ import org.slf4j.LoggerFactory
  */
 object Textricator {
 
-  val DEFAULT_PDF_PARSER = "pdf.itext5"
+  const val DEFAULT_PDF_PARSER = "pdf.itext5"
 
-  val TEXT_OUTPUT_FORMAT_CSV = "csv"
-  val TEXT_OUTPUT_FORMAT_JSON = "json"
+  const val TEXT_OUTPUT_FORMAT_CSV = "csv"
+  const val TEXT_OUTPUT_FORMAT_JSON = "json"
 
-  val RECORD_OUTPUT_FORMAT_CSV = "csv"
-  val RECORD_OUTPUT_FORMAT_JSON = "json"
-  val RECORD_OUTPUT_FORMAT_JSON_FLAT = "json-flat"
-  val RECORD_OUTPUT_FORMAT_NULL = "null"
+  const val RECORD_OUTPUT_FORMAT_CSV = "csv"
+  const val RECORD_OUTPUT_FORMAT_JSON = "json"
+  const val RECORD_OUTPUT_FORMAT_JSON_FLAT = "json-flat"
+  const val RECORD_OUTPUT_FORMAT_NULL = "null"
 
   private val log = LoggerFactory.getLogger( Textricator::class.java )
 
@@ -108,8 +108,8 @@ object Textricator {
       configFile:File ) {
 
     val config = FormParseConfigUtil.parseYaml(configFile)
-    val inputFormat = inputFile.extension.toLowerCase()
-    val outputFormat = outputFile.extension.toLowerCase()
+    val inputFormat = inputFile.extension.lowercase()
+    val outputFormat = outputFile.extension.lowercase()
 
     inputFile.inputStream().use { input ->
       outputFile.outputStream().use { output ->
@@ -130,8 +130,8 @@ object Textricator {
       outputFile:File,
       config:FormParseConfig ) {
 
-    val inputFormat = inputFile.extension.toLowerCase()
-    val outputFormat = outputFile.extension.toLowerCase()
+    val inputFormat = inputFile.extension.lowercase()
+    val outputFormat = outputFile.extension.lowercase()
 
     inputFile.inputStream().use { input ->
       outputFile.outputStream().use { output ->
@@ -243,8 +243,8 @@ object Textricator {
       configFile:File ) {
 
     val config = TableParseConfigUtil.parseYaml(configFile)
-    val inputFormat = inputFile.extension.toLowerCase()
-    val outputFormat = outputFile.extension.toLowerCase()
+    val inputFormat = inputFile.extension.lowercase()
+    val outputFormat = outputFile.extension.lowercase()
 
     inputFile.inputStream().use { input ->
       outputFile.outputStream().use { output ->
