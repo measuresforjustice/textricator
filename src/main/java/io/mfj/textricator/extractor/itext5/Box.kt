@@ -31,5 +31,5 @@ internal data class Box(
     get() = lrx - ulx;
   val height:Float
     @Transient
-    get() = uly - lry;
+    get() = lry - uly;
 }
