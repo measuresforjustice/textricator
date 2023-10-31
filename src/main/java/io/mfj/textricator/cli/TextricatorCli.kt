@@ -73,6 +73,7 @@ object TextricatorCli {
                                     ${Textricator.RECORD_OUTPUT_FORMAT_CSV} (default if output to standard out)
                                     ${Textricator.RECORD_OUTPUT_FORMAT_JSON}
                                     ${Textricator.RECORD_OUTPUT_FORMAT_JSON_FLAT}
+                                    ${Textricator.RECORD_OUTPUT_FORMAT_XML}
                                     ${Textricator.RECORD_OUTPUT_FORMAT_NULL} (no output)
       --debug                     Enable debug logging
       --version                   Show version, copyright, and license information.

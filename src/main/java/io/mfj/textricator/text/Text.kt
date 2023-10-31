@@ -59,5 +59,5 @@ data class Text(
 
   val height:Float
     @Transient
-    get() = uly - lry;
+    get() = lry - uly;
 }
