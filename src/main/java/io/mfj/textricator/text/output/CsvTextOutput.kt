@@ -28,10 +28,11 @@ import java.io.OutputStreamWriter
 class CsvTextOutput(output:OutputStream):TextOutput {
 
   private val w = OutputStreamWriter(output)
-  private val p = CSVPrinter( w, CSVFormat.DEFAULT.withRecordSeparator("\n") )
+  private val p = CSVPrinter(w, CSV_FORMAT)
 
   companion object {
     private val log = LoggerFactory.getLogger(CsvTextOutput::class.java)
+    val CSV_FORMAT = CSVFormat.DEFAULT.withRecordSeparator("\n")
   }
 
   override fun close() {
@@ -68,7 +69,8 @@ class CsvTextOutput(output:OutputStream):TextOutput {
     )
   }
 
-  private fun write( text:Text) {
+  private fun write(text:Text) {
+    // If you change this, change CsvTextExtractor.parseRec(CSVRecord) to match.
     p.printRecord(
         text.pageNumber,
         text.ulx,
