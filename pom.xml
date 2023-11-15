@@ -6,7 +6,7 @@
 
   <groupId>io.mfj</groupId>
   <artifactId>textricator</artifactId>
-  <version>10.1-SNAPSHOT</version>
+  <version>10.2-SNAPSHOT</version>
 
   <name>${project.groupId}:${project.artifactId}</name>
   <description>A tool to extract text from documents and generate structured data</description>
@@ -33,7 +33,7 @@
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
     <kotlin.compiler.jvmTarget>11</kotlin.compiler.jvmTarget>
-    <kotlin.version>1.5.31</kotlin.version>
+    <kotlin.version>1.9.20</kotlin.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <copyright.year>2023</copyright.year>
     <source.location>https://github.com/measuresforjustice/textricator</source.location>
@@ -43,7 +43,7 @@
     <dependency>
       <groupId>org.jetbrains.kotlinx</groupId>
       <artifactId>kotlinx-coroutines-core</artifactId>
-      <version>1.5.2</version>
+      <version>1.7.3</version>
     </dependency>
 
     <dependency>
@@ -79,13 +79,13 @@
     <dependency>
       <groupId>org.apache.pdfbox</groupId>
       <artifactId>pdfbox</artifactId>
-      <version>2.0.24</version>
+      <version>2.0.30</version>
       <!-- Apache 2.0 -->
     </dependency>
     <dependency>
       <groupId>org.apache.pdfbox</groupId>
       <artifactId>pdfbox-tools</artifactId>
-      <version>2.0.24</version>
+      <version>2.0.30</version>
       <!-- Apache 2.0 -->
     </dependency>
 
@@ -93,13 +93,13 @@
     <dependency>
       <groupId>com.itextpdf</groupId>
       <artifactId>itextpdf</artifactId>
-      <version>5.5.13.2</version>
+      <version>5.5.13.3</version>
       <!-- AGPL -->
     </dependency>
     <dependency>
       <groupId>org.bouncycastle</groupId>
-      <artifactId>bcprov-jdk15on</artifactId>
-      <version>1.69</version>
+      <artifactId>bcprov-jdk18on</artifactId>
+      <version>1.76</version>
       <!-- MIT -->
     </dependency>
 
@@ -107,13 +107,13 @@
     <dependency>
       <groupId>com.itextpdf</groupId>
       <artifactId>kernel</artifactId>
-      <version>7.2.5</version>
+      <version>8.0.2</version>
       <!-- AGPL -->
     </dependency>
     <dependency>
       <groupId>com.itextpdf</groupId>
       <artifactId>layout</artifactId>
-      <version>7.1.16</version>
+      <version>8.0.2</version>
       <!-- AGPL -->
     </dependency>
 
@@ -155,19 +155,19 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.32</version>
+      <version>2.0.9</version>
       <!-- MIT -->
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.2.9</version>
+      <version>1.4.11</version>
     </dependency>
 
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-csv</artifactId>
-      <version>1.9.0</version>
+      <version>1.10.0</version>
       <!-- Apache 2.0 -->
     </dependency>
 
