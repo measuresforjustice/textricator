@@ -87,6 +87,10 @@ object TextricatorCli {
   @JvmStatic
   fun main(args: Array<String>) {
 
+    // setup logging. This is done in main() (as opposed to with a logback.xml) so applications using Textricator
+    // as a library are not affected by our logging config.
+    System.setProperty("logback.configurationFile", "io/mfj/textricator/logback.xml")
+
     val opts = Docopt(help)
         .withHelp(true)
         .withExit(true)

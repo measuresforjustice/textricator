@@ -52,7 +52,13 @@ The CLI has three subcommands, to use the three main features of Textricator:
 
 ## Logging
 
-Add the `--debug` flag to log everything.
+Use the `--debug` flag to log everything.
+Logging is written to standard error.
+
+Textricator uses [SLF4J](https://slf4j.org) for logging, with the [Logback](https://logback.qos.ch) implementation.
+If you are using Textricator as a library, you may want to exclude `ch.qos.logback:logback-classic`.
+Textricator does *not* include a `/logback.xml`, so it will not conflict with other logging configurations,
+so long as `TextricatorCli.main()` is not invoked.
 
 ## Extracting text
 
