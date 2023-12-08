@@ -35,7 +35,7 @@ import java.beans.Transient
  * @property font Font name
  * @property fontSize Font size, in points
  * @property color Text color
- * @property background Background color
+ * @property backgroundColor Background color
  *
  * @property width Width
  * @property height Height

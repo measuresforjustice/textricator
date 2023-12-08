@@ -22,8 +22,6 @@ import io.mfj.textricator.table.config.TableParseConfigUtil
 
 import java.io.BufferedReader
 import java.io.File
-import java.io.InputStream
-import java.io.OutputStream
 
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -81,11 +79,27 @@ class ExamplesTest( private val name:String, private val type:Type) {
     try {
       // run textricator
       outCsv.outputStream().use { out ->
-        ExamplesTest::class.java.getResourceAsStream( "${name}.yml" ).use { config ->
-          ExamplesTest::class.java.getResourceAsStream( "${name}.pdf" ).use { pdf ->
+        ExamplesTest::class.java.getResourceAsStream( "${name}.yml" )!!.use { config ->
+          ExamplesTest::class.java.getResourceAsStream( "${name}.pdf" )!!.use { pdf ->
             when ( type ) {
-              Type.FORM -> testForm( config, pdf, out )
-              Type.TABLE -> testTable( config, pdf, out )
+              Type.FORM -> {
+                Textricator.parseForm(
+                    input = pdf,
+                    inputFormat = "pdf",
+                    output = out,
+                    outputFormat = "csv",
+                    config = FormParseConfigUtil.parseYaml( config )
+                )
+              }
+              Type.TABLE -> {
+                Textricator.parseTable(
+                    input = pdf,
+                    inputFormat = "pdf",
+                    output = out,
+                    outputFormat = "csv",
+                    config = TableParseConfigUtil.parseYaml( config )
+                )
+              }
             }
           }
         }
@@ -93,7 +107,7 @@ class ExamplesTest( private val name:String, private val type:Type) {
 
       // make sure CSVs match
       outCsv.bufferedReader().use { b ->
-        ExamplesTest::class.java.getResourceAsStream( "${name}.csv" ).bufferedReader().use { a ->
+        ExamplesTest::class.java.getResourceAsStream( "${name}.csv" )!!.bufferedReader().use { a ->
           compare(a, b)
         }
       }
@@ -103,14 +117,128 @@ class ExamplesTest( private val name:String, private val type:Type) {
 
   }
 
-  private fun testForm( configStream:InputStream, pdf:InputStream, out:OutputStream) {
-    val config = FormParseConfigUtil.parseYaml( configStream )
-    Textricator.parseForm(input = pdf, inputFormat = "pdf", output = out, outputFormat = "csv", config = config)
+  /**
+   * Test that if we extract text to JSON and then use that as input, it works.
+   */
+  @Test
+  fun testJson() {
+    val textJson = File.createTempFile( name, "-text.json" )
+    textJson.deleteOnExit()
+    val outCsv = File.createTempFile( name, ".csv")
+    outCsv.deleteOnExit()
+    try {
+      // pdf -> json
+      textJson.outputStream().use { out ->
+        ExamplesTest::class.java.getResourceAsStream( "${name}.yml" )!!.use { config ->
+          ExamplesTest::class.java.getResourceAsStream( "${name}.pdf" )!!.use { pdf ->
+            when ( type ) {
+              Type.FORM -> {
+                Textricator.extractText(
+                    input = pdf,
+                    inputFormat = "pdf",
+                    output = out,
+                    outputFormat = "json",
+                    textExtractorOptions = FormParseConfigUtil.parseYaml( config )
+                )
+              }
+              Type.TABLE -> TODO()
+            }
+          }
+        }
+      }
+
+      // json -> csv
+      outCsv.outputStream().use { csv ->
+        textJson.inputStream().use { json ->
+          ExamplesTest::class.java.getResourceAsStream( "${name}.yml" )!!.use { config ->
+            when ( type ) {
+              Type.FORM -> {
+                Textricator.parseForm(
+                    input = json,
+                    inputFormat = "json",
+                    output = csv,
+                    outputFormat = "csv",
+                    config = FormParseConfigUtil.parseYaml( config )
+                )
+              }
+              Type.TABLE -> TODO()
+            }
+          }
+        }
+      }
+
+      // make sure CSVs match
+      outCsv.bufferedReader().use { b ->
+        ExamplesTest::class.java.getResourceAsStream( "${name}.csv" )!!.bufferedReader().use { a ->
+          compare(a, b)
+        }
+      }
+    } finally {
+      outCsv.delete()
+      textJson.delete()
+    }
   }
 
-  private fun testTable( configStream:InputStream, pdf:InputStream, out:OutputStream ) {
-    val config = TableParseConfigUtil.parseYaml( configStream )
-    Textricator.parseTable(input = pdf, inputFormat = "pdf", output = out, outputFormat = "csv", config = config)
+  /**
+   * Test that if we extract text to CSV and then use that as input, it works.
+   */
+  @Test
+  fun testCSV() {
+    val textCsv = File.createTempFile( name, "-text.csv" )
+    textCsv.deleteOnExit()
+    val outCsv = File.createTempFile( name, ".csv")
+    outCsv.deleteOnExit()
+    try {
+      // pdf -> json
+      textCsv.outputStream().use { out ->
+        ExamplesTest::class.java.getResourceAsStream( "${name}.yml" )!!.use { config ->
+          ExamplesTest::class.java.getResourceAsStream( "${name}.pdf" )!!.use { pdf ->
+            when ( type ) {
+              Type.FORM -> {
+                Textricator.extractText(
+                    input = pdf,
+                    inputFormat = "pdf",
+                    output = out,
+                    outputFormat = "csv",
+                    textExtractorOptions = FormParseConfigUtil.parseYaml( config )
+                )
+              }
+              Type.TABLE -> TODO()
+            }
+          }
+        }
+      }
+
+      // json -> csv
+      outCsv.outputStream().use { csv ->
+        textCsv.inputStream().use { textCsv ->
+          ExamplesTest::class.java.getResourceAsStream( "${name}.yml" )!!.use { config ->
+            when ( type ) {
+              Type.FORM -> {
+                Textricator.parseForm(
+                    input = textCsv,
+                    inputFormat = "csv",
+                    output = csv,
+                    outputFormat = "csv",
+                    config = FormParseConfigUtil.parseYaml( config )
+                )
+              }
+              Type.TABLE -> TODO()
+            }
+          }
+        }
+      }
+
+      // make sure CSVs match
+      outCsv.bufferedReader().use { b ->
+        ExamplesTest::class.java.getResourceAsStream( "${name}.csv" )!!.bufferedReader().use { a ->
+          compare(a, b)
+        }
+      }
+    } finally {
+      outCsv.delete()
+      textCsv.delete()
+    }
   }
 
 }
