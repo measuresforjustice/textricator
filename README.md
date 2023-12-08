@@ -816,6 +816,12 @@ Filtering happens after replacements and before member include checking.
 This allows splitting a field (e.g.: extracting a year from a date)
 to use in the filter, and not including the split field in the output.
 
+#### Processing multiple files together
+
+Multiple files using the same form config can be parsed and written to a single output
+with the `forms` CLI subcommand or with `io.mfj.textricator.Textricator.parseForms`.
+The output will include the source file name for each record.
+
 ## Extractors
 
 Extractors extract text (instances of `io.mfj.textricator.text.Text`) from a source.

@@ -24,6 +24,7 @@ import io.mfj.textricator.table.config.TableParseConfigUtil
 import io.mfj.textricator.text.toPageFilter
 
 import java.io.File
+import java.io.InputStream
 
 import ch.qos.logback.classic.Logger
 import ch.qos.logback.classic.Level
@@ -53,6 +54,7 @@ object TextricatorCli {
     Usage:
       textricator text [--debug] [--pages=<pages>] [--max-row-distance=<max-row-distance>] [--box-precision=<points>] [--box-ignore-colors=<colors>] [--input-format=<input-format>] [--output-format=<output-format>] <input> [<output>]
       textricator form [--debug] --config=<config> [--pages=<pages>] [--input-format=<input-format>] [--output-format=<output-format>] <input> [<output>]
+      textricator forms [--debug] --config=<config> --input-format=<input-format> [--output-format=<output-format>] <input-dir> [<output>]
       textricator table [--debug] --config=<config> [--pages=<pages>] [--input-format=<input-format>] [--output-format=<output-format>] <input> [<output>]
       textricator -h | --help
       textricator --version
@@ -104,6 +106,7 @@ object TextricatorCli {
         opts.boolean("text") -> text(opts)
         opts.boolean("table") -> table(opts)
         opts.boolean("form") -> form(opts)
+        opts.boolean("forms") -> forms(opts)
       }
     } catch ( e:SystemExitException) {
       System.err.println(e.message)
@@ -202,6 +205,43 @@ object TextricatorCli {
     }
 
 
+  }
+
+  private fun forms( opts:Map<String,Any> ) {
+
+    val inputDir = opts.file("<input-dir>")!!
+
+    val inputFormat = opts.string("--input-format")!!
+    val inputFormatUpper = inputFormat.uppercase()
+
+    val outputFile = opts.file("<output>")
+    if ( outputFile != null ) outputFile.absoluteFile.parentFile.mkdirs()
+    val outputFormat = opts.string("--output-format") ?:
+      if ( outputFile == null ) {
+        throw SystemExitException( "--output-format is required if <output> is omitted.", 1 )
+      } else {
+        outputFile.extension.lowercase()
+      }
+
+    val configFile = opts.file("--config")!!
+
+    val config = FormParseConfigUtil.parseYaml(configFile)
+
+    val inputs:Sequence<Triple<String,()->InputStream,String>> = inputDir.walk().asSequence()
+        .filter { file -> file.isFile }
+        .filter { file -> file.extension.uppercase() == inputFormatUpper }
+        .sorted()
+        .map { inputFile ->
+          Triple( inputFile.relativeTo(inputDir).path, { inputFile.inputStream() }, inputFormat )
+        }
+
+    ( outputFile?.outputStream() ?: System.out ).use { output ->
+      Textricator.parseForms(
+        inputs = inputs,
+        output = output, outputFormat = outputFormat,
+        config = config
+      )
+    }
   }
 
   private fun table( opts:Map<String,Any> ) {

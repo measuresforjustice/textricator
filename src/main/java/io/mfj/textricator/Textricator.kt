@@ -156,20 +156,44 @@ object Textricator {
       ) {
 
     getExtractor( input, inputFormat, config ).use { extractor ->
-      getRecordOutput( outputFormat, output, config ).use { recordOutput ->
-        parseForm( extractor, recordOutput, config, eventListener )
+      getRecordOutput( outputFormat, output, config, includeSource=false ).use { recordOutput ->
+        parseForm( source=null, extractor, recordOutput, config, eventListener )
       }
     }
   }
 
   @JvmStatic
+  fun parseForms(
+    inputs:Sequence<Triple<String,()->InputStream,String>>,
+    output:OutputStream, outputFormat:String,
+    config:FormParseConfig,
+    eventListener:FormParseEventListener = LoggingEventListener
+  ) {
+    getRecordOutput( outputFormat, output, config, includeSource=true ).use { recordOutput ->
+      val records = sequence<Record> {
+        inputs.forEach { (filename,input,inputFormat) ->
+          input().use { inputStream ->
+            getExtractor( inputStream, inputFormat, config ).use { extractor ->
+              val records = parseForm(filename,extractor,config,eventListener)
+              yieldAll(records)
+            }
+          }
+        }
+      }
+      recordOutput.write(records)
+    }
+  }
+
+  @JvmStatic
   fun parseForm(
+      source:String?=null,
       extractor:TextExtractor,
       recordOutput:RecordOutput,
       config:FormParseConfig,
       eventListener:FormParseEventListener = LoggingEventListener
   ) {
     val records = parseForm(
+        source,
         extractor,
         config,
         eventListener )
@@ -179,6 +203,7 @@ object Textricator {
 
   @JvmStatic
   fun parseForm(
+      source:String?,
       extractor:TextExtractor,
       config:FormParseConfig,
       eventListener:FormParseEventListener = LoggingEventListener
@@ -188,7 +213,7 @@ object Textricator {
     val textSeq = extract( extractor, config.pages.toPageFilter() ).groupRows( config.maxRowDistance )
 
     // FSMParser parse sequence of Text to sequence of StateValue
-    val stateTextsSeq = FsmParser( config, eventListener ).parse( textSeq )
+    val stateTextsSeq = FsmParser( source, config, eventListener ).parse( textSeq )
 
     // RecordParser parses sequence of StateValue to sequence of Record
     val recSeq = RecordParser( config, eventListener ).parse( stateTextsSeq )
@@ -200,11 +225,11 @@ object Textricator {
   }
 
   @JvmStatic
-  private fun getRecordOutput( outputFormat:String, output:OutputStream, config:RecordModel):RecordOutput {
+  private fun getRecordOutput( outputFormat:String, output:OutputStream, config:RecordModel, includeSource:Boolean):RecordOutput {
     return when ( outputFormat ) {
-      RECORD_OUTPUT_FORMAT_CSV -> CsvRecordOutput(config,output)
+      RECORD_OUTPUT_FORMAT_CSV -> CsvRecordOutput(config,output,includeSource)
       RECORD_OUTPUT_FORMAT_JSON -> JsonRecordOutput(config,output)
-      RECORD_OUTPUT_FORMAT_JSON_FLAT -> JsonFlatRecordOutput(config,output)
+      RECORD_OUTPUT_FORMAT_JSON_FLAT -> JsonFlatRecordOutput(config,output,includeSource)
       RECORD_OUTPUT_FORMAT_XML -> XmlRecordOutput(config,output)
       RECORD_OUTPUT_FORMAT_NULL -> NullOutput
       else -> throw IllegalArgumentException( "Unsupported output format \"${outputFormat}\"." )
@@ -240,7 +265,7 @@ object Textricator {
       config:TableParseConfig) {
 
     getExtractor( input, inputFormat, config ).use { extractor ->
-      getRecordOutput(outputFormat,output,config).use { output ->
+      getRecordOutput(outputFormat,output,config,includeSource=false).use { output ->
         parseTable( extractor, output, config )
       }
     }

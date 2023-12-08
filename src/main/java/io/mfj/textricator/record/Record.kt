@@ -20,11 +20,19 @@ import java.beans.Transient
 
 // cannot be a data class, because used as a map key in RecordParser.
 class Record(
+    val source:String?=null,
     val pageNumber:Int,
     val typeId:String,
     val values:MutableMap<String,Value> = mutableMapOf(),
     val children:MutableMap<String,MutableList<Record>> = mutableMapOf()
 ) {
+
+  constructor(
+    pageNumber:Int,
+    typeId:String,
+    values:MutableMap<String,Value> = mutableMapOf(),
+    children:MutableMap<String,MutableList<Record>> = mutableMapOf()
+  ) : this(null,pageNumber,typeId,values,children)
 
   val isLeaf:Boolean
     @Transient

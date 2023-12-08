@@ -42,6 +42,7 @@ class NodeMembersTest {
   val rp = RecordParser(model)
 
   private fun sv(pageNumber: Int, stateId: String, vararg value: String) :StateValue = StateValue(
+      source = "test",
       pageNumber = pageNumber, stateId = stateId,
       state = model.states[stateId] ?: throw Exception("Missing State: ${stateId}"), values = value.toList().map{ Value(it) })
 

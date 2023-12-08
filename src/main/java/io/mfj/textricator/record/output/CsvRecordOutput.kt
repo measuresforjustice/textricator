@@ -28,7 +28,8 @@ import java.io.OutputStreamWriter
 
 import kotlinx.coroutines.channels.ReceiveChannel
 
-class CsvRecordOutput(private val config:RecordModel, output:OutputStream):RecordOutput {
+class CsvRecordOutput(private val config:RecordModel, output:OutputStream,
+  private val includeSource:Boolean=false ):RecordOutput {
 
   private val w = BufferedWriter(OutputStreamWriter(output))
 
@@ -59,6 +60,7 @@ class CsvRecordOutput(private val config:RecordModel, output:OutputStream):Recor
 
   private fun printHeader(p:CSVPrinter) {
 
+    if ( includeSource ) p.print("source")
     p.print("page")
 
     fun printType( recordType:RecordType) {
@@ -134,6 +136,7 @@ class CsvRecordOutput(private val config:RecordModel, output:OutputStream):Recor
 
     printType(rootRecordType)
 
+    if ( includeSource ) p.print( map[rootRecordType]!!.source )
     p.print( pageNumber )
     p.printRecord( cells )
 

@@ -107,7 +107,7 @@ class TableParser( private val config:TableParseConfig) {
     // Create a single record per row.
     // It has no children, just values.
 
-    val record = Record(pageNumber = pageNumber, typeId = ROOT_TYPE)
+    val record = Record(source=null, pageNumber = pageNumber, typeId = ROOT_TYPE)
 
     config.cols.keys
         .forEachIndexed { i, colName ->

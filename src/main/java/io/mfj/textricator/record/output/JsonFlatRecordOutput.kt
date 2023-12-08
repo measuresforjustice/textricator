@@ -31,7 +31,7 @@ import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.ObjectMapper
 import kotlinx.coroutines.channels.ReceiveChannel
 
-class JsonFlatRecordOutput(private val config:RecordModel, output:OutputStream):
+class JsonFlatRecordOutput(private val config:RecordModel, output:OutputStream, private val includeSource:Boolean):
     RecordOutput {
 
   private val w = BufferedWriter(OutputStreamWriter(output))
@@ -90,6 +90,7 @@ class JsonFlatRecordOutput(private val config:RecordModel, output:OutputStream):
   private fun printHeader() {
 
     val row:MutableMap<String,String> = mutableMapOf()
+    if ( includeSource ) row["source"] = "source"
     row["page"] = "page"
 
     fun print( recordType:RecordType) {
@@ -167,6 +168,9 @@ class JsonFlatRecordOutput(private val config:RecordModel, output:OutputStream):
 
     printType(rootRecordType)
 
+    if ( includeSource ) {
+      row["source"] = map[rootRecordType]!!.source ?: ""
+    }
     row["page"] = pageNumber.toString()
 
     writer.writeValue(w,row)
