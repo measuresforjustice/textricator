@@ -18,9 +18,10 @@ package io.mfj.textricator.record
 
 import io.mfj.expr.ExDataType
 import io.mfj.textricator.form.config.FormParseConfig
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 
-import org.junit.Assert.*
-import org.junit.Test
 
 class RecordFilterTest {
 

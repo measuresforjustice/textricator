@@ -19,11 +19,11 @@ package io.mfj.textricator.record.output
 import io.mfj.textricator.record.Record
 import io.mfj.textricator.form.config.FormParseConfigUtil
 import io.mfj.textricator.record.Value
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 
 import java.io.ByteArrayOutputStream
 
-import org.junit.*
-import org.junit.Assert.*
 
 class CsvOutputTest {
 

@@ -20,7 +20,8 @@ import io.mfj.textricator.text.Text
 
 import java.io.OutputStream
 
-import org.apache.commons.csv.*
+import org.apache.commons.csv.CSVFormat
+import org.apache.commons.csv.CSVPrinter
 
 import org.slf4j.LoggerFactory
 import java.io.OutputStreamWriter

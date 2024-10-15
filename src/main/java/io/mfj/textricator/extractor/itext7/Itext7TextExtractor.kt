@@ -15,14 +15,22 @@ with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 package io.mfj.textricator.extractor.itext7
+import com.itextpdf.kernel.colors.Color
+import com.itextpdf.kernel.colors.DeviceCmyk
+import com.itextpdf.kernel.colors.DeviceRgb
 import io.mfj.textricator.extractor.TextExtractor
 import io.mfj.textricator.text.Text
 
 import java.io.InputStream
 
-import com.itextpdf.kernel.colors.*
 import com.itextpdf.kernel.geom.Vector
-import com.itextpdf.kernel.pdf.*
+import com.itextpdf.kernel.pdf.PdfArray
+import com.itextpdf.kernel.pdf.PdfDictionary
+import com.itextpdf.kernel.pdf.PdfDocument
+import com.itextpdf.kernel.pdf.PdfName
+import com.itextpdf.kernel.pdf.PdfNumber
+import com.itextpdf.kernel.pdf.PdfReader
+import com.itextpdf.kernel.pdf.PdfString
 import com.itextpdf.kernel.pdf.canvas.parser.EventType
 import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor
 import com.itextpdf.kernel.pdf.canvas.parser.data.IEventData

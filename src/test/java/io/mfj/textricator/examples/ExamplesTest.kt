@@ -29,15 +29,15 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 
 /**
  * Run the examples. They make pretty good tests.
  */
-@RunWith(Parameterized::class)
-class ExamplesTest( private val name:String, private val type:Type) {
+class ExamplesTest{
+  private lateinit var name: String
+  private lateinit var type: Type
 
   enum class Type { FORM, TABLE }
 
@@ -54,7 +54,6 @@ class ExamplesTest( private val name:String, private val type:Type) {
     )
 
     @JvmStatic
-    @Parameterized.Parameters(name="{1}:{0}")
     fun data() = examples.entries.map { (name,type) -> arrayOf( name, type ) }
 
     private fun compare( a:BufferedReader, b:BufferedReader ) = compare(
@@ -74,8 +73,11 @@ class ExamplesTest( private val name:String, private val type:Type) {
     }
   }
 
-  @Test
-  fun test() {
+  @ParameterizedTest
+  @MethodSource("data")
+  fun test(name: String, type: Type) {
+    this.name = name
+    this.type = type
     val outCsv = File.createTempFile( name, ".csv" )
     outCsv.deleteOnExit()
     try {

@@ -21,9 +21,10 @@ import io.mfj.textricator.record.RecordType
 import io.mfj.textricator.form.config.FormParseConfig
 import io.mfj.textricator.form.config.State
 import io.mfj.textricator.record.Value
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 
-import org.junit.Assert.*
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class RecordParserTest {
 
@@ -86,8 +87,8 @@ class RecordParserTest {
 
   private fun validateRecordsAgainstModel( records:List<Record> ) {
     records.forEach { record ->
-      assertEquals( "Root records must be of type \"${model.rootRecordType}\" -  found \"${record.typeId}\"",
-          model.rootRecordType, record.typeId )
+      assertEquals( model.rootRecordType,
+          record.typeId, "Root records must be of type \"${model.rootRecordType}\" -  found \"${record.typeId}\"")
 
       validateRecordAgainstModel( record )
     }
@@ -97,8 +98,7 @@ class RecordParserTest {
     val childAllowedTypes = model.recordTypes[record.typeId]!!.children.toSet()
 
     record.children.keys.forEach { childType ->
-      assertTrue( "Records of Type \"${record.typeId}\" may only contain children of types ${childAllowedTypes} - found \"${childType}\"",
-          childAllowedTypes.contains( childType ) )
+      assertTrue(childAllowedTypes.contains( childType ), "Records of Type \"${record.typeId}\" may only contain children of types ${childAllowedTypes} - found \"${childType}\"" )
     }
     record.children.values.forEach { children ->
       children.forEach { child ->

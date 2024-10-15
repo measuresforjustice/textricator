@@ -24,9 +24,9 @@ import io.mfj.textricator.record.Value
 import java.io.ByteArrayOutputStream
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 
-import org.junit.*
-import org.junit.Assert.*
 
 class XmlOutputTest {
 

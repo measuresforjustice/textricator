@@ -33,7 +33,7 @@
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
     <kotlin.compiler.jvmTarget>11</kotlin.compiler.jvmTarget>
-    <kotlin.version>1.5.31</kotlin.version>
+    <kotlin.version>1.9.0</kotlin.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <copyright.year>2023</copyright.year>
     <source.location>https://github.com/measuresforjustice/textricator</source.location>
@@ -43,7 +43,7 @@
     <dependency>
       <groupId>org.jetbrains.kotlinx</groupId>
       <artifactId>kotlinx-coroutines-core</artifactId>
-      <version>1.5.2</version>
+      <version>1.7.3</version>
     </dependency>
 
     <dependency>
@@ -79,27 +79,25 @@
     <dependency>
       <groupId>org.apache.pdfbox</groupId>
       <artifactId>pdfbox</artifactId>
-      <version>2.0.24</version>
-      <!-- Apache 2.0 -->
+      <version>2.0.29</version>
     </dependency>
     <dependency>
       <groupId>org.apache.pdfbox</groupId>
       <artifactId>pdfbox-tools</artifactId>
-      <version>2.0.24</version>
-      <!-- Apache 2.0 -->
+      <version>2.0.29</version>
     </dependency>
 
     <!-- iText 5 -->
     <dependency>
       <groupId>com.itextpdf</groupId>
-      <artifactId>itextpdf</artifactId>
-      <version>5.5.13.2</version>
+      <artifactId>kernel</artifactId>
+      <version>8.0.2</version>
       <!-- AGPL -->
     </dependency>
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcprov-jdk15on</artifactId>
-      <version>1.69</version>
+      <version>1.70</version>
       <!-- MIT -->
     </dependency>
 
@@ -107,7 +105,7 @@
     <dependency>
       <groupId>com.itextpdf</groupId>
       <artifactId>kernel</artifactId>
-      <version>7.2.5</version>
+      <version>8.0.2</version>
       <!-- AGPL -->
     </dependency>
     <dependency>
@@ -155,19 +153,19 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.32</version>
+      <version>2.0.9</version>
       <!-- MIT -->
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.2.9</version>
+      <version>1.4.11</version>
     </dependency>
 
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-csv</artifactId>
-      <version>1.9.0</version>
+      <version>1.10.0</version>
       <!-- Apache 2.0 -->
     </dependency>
 
@@ -176,6 +174,12 @@
       <artifactId>docopt</artifactId>
       <version>0.6.0.20150202</version>
       <!-- MIT -->
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>RELEASE</version>
+      <scope>test</scope>
     </dependency>
 
   </dependencies>
@@ -236,7 +240,7 @@
       <plugin>
         <groupId>org.jetbrains.dokka</groupId>
         <artifactId>dokka-maven-plugin</artifactId>
-        <version>1.5.31</version>
+        <version>1.9.10</version>
         <executions>
           <execution>
             <phase>prepare-package</phase>
@@ -251,7 +255,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>3.2.1</version>
+        <version>3.3.0</version>
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -264,7 +268,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.22.1</version>
+        <version>3.2.1</version>
         <configuration>
           <useSystemClassLoader>false</useSystemClassLoader>
         </configuration>
@@ -272,7 +276,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
-        <version>3.3.0</version>
+        <version>3.6.0</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -292,7 +296,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>1.4.1</version>
+        <version>3.4.1</version>
         <executions>
           <execution>
             <id>enforce-no-snapshots</id>
@@ -313,7 +317,34 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+      <groupId>org.jacoco</groupId>
+      <artifactId>jacoco-maven-plugin</artifactId>
+      <version>0.8.12</version>
+      <executions>
+        <execution>
+          <goals>
+            <goal>prepare-agent</goal>
+          </goals>
+        </execution>
+        <execution>
+          <id>report</id>
+          <phase>test</phase>
+          <goals>
+            <goal>report</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
     </plugins>
   </build>
-
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>3.2.1</version>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>
