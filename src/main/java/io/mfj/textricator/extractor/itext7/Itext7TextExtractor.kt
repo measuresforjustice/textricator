@@ -140,7 +140,7 @@ class Itext7TextExtractor(input:InputStream):TextExtractor {
           else -> null
         }
 
-    private fun getRgb( color:DeviceRgb ): String? {
+    private fun getRgb( color:DeviceRgb ): String {
       val value = color.colorValue
       val r = ( value[0] * 255 ).toInt()
       val g = ( value[1] * 255 ).toInt()

@@ -46,8 +46,8 @@ class JsonTextExtractor(input:InputStream):TextExtractor {
     val map:MutableMap<Int,MutableList<Text>> = mutableMapOf()
     list.forEach { text ->
       map
-          .getOrPut( text.pageNumber, { mutableListOf() } )
-          .add( text )
+          .getOrPut( text.pageNumber) { mutableListOf() }
+        .add( text )
     }
 
     this.texts = map

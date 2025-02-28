@@ -28,8 +28,8 @@ internal data class Box(
 ) {
   val width:Float
     @Transient
-    get() = lrx - ulx;
+    get() = lrx - ulx
   val height:Float
     @Transient
-    get() = lry - uly;
+    get() = lry - uly
 }

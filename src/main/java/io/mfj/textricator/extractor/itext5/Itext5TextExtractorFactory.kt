@@ -24,7 +24,7 @@ import java.io.InputStream
 
 class Itext5TextExtractorFactory:TextExtractorFactory {
 
-  override fun create( pdf:InputStream, options:TextExtractorOptions):TextExtractor =
-      Itext5TextExtractor( pdf, options.boxPrecision, options.boxIgnoreColors )
+  override fun create(input:InputStream, options:TextExtractorOptions):TextExtractor =
+      Itext5TextExtractor( input, options.boxPrecision, options.boxIgnoreColors )
 
 }

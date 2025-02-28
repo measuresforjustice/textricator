@@ -33,7 +33,7 @@
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
     <kotlin.compiler.jvmTarget>11</kotlin.compiler.jvmTarget>
-    <kotlin.version>1.9.20</kotlin.version>
+    <kotlin.version>1.9.25</kotlin.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <copyright.year>2023</copyright.year>
     <source.location>https://github.com/measuresforjustice/textricator</source.location>
@@ -71,7 +71,7 @@
     <dependency>
       <groupId>io.mfj</groupId>
       <artifactId>expr</artifactId>
-      <version>6.1.35</version>
+      <version>6.2.39</version>
       <!-- Apache 2.0 -->
     </dependency>
 

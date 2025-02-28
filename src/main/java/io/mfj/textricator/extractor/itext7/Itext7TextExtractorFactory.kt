@@ -24,7 +24,7 @@ import java.io.InputStream
 
 class Itext7TextExtractorFactory:TextExtractorFactory {
 
-  override fun create(pdf:InputStream, options:TextExtractorOptions):TextExtractor = Itext7TextExtractor(
-      pdf)
+  override fun create(input:InputStream, options:TextExtractorOptions):TextExtractor = Itext7TextExtractor(
+      input)
 
 }
