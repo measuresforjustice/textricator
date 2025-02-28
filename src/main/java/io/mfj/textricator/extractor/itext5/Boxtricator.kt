@@ -40,7 +40,7 @@ internal class Boxtricator(private val reader:PdfReader,
     val parser = PdfReaderContentParser(reader)
     parser.processContent(pageNumber,
         MyExtRenderListener(boxes, pageHeight, ignoreBoxColors))
-    return if ( boxes.isNotEmpty() ) boxes else emptyList()
+    return boxes.ifEmpty { emptyList() }
   }
 
   private class MyExtRenderListener(val boxes:MutableList<Box>, val pageHeight:Float,
@@ -58,7 +58,7 @@ internal class Boxtricator(private val reader:PdfReader,
 
       val ctm = graphicsState.ctm
 
-      val fill = (renderInfo.getOperation() and PathPaintingRenderInfo.FILL) != 0
+      val fill = (renderInfo.operation and PathPaintingRenderInfo.FILL) != 0
 
       if ( fill ) {
         val fillColor = graphicsState.fillColor
@@ -100,7 +100,7 @@ internal class Boxtricator(private val reader:PdfReader,
                 val box = Box(ulx = matrix[0 /* or 6 */], uly = calcY(matrix[5 /* or 7 */]),
                     lrx = matrix[4 /* or 2 */], lry = calcY(matrix[1 /* or 3 */]), color = color(fillColor))
 
-                log.debug( "box: ${box}" )
+                log.debug( "box: $box" )
                 boxes.add( box )
               }
               /*
@@ -124,7 +124,7 @@ internal class Boxtricator(private val reader:PdfReader,
       val result:MutableList<Float> = mutableListOf()
       var i = 0
       while ( i < coordinates.size-1) {
-        var vector = Vector(coordinates.get(i), coordinates.get(i + 1), 1f)
+        var vector = Vector(coordinates[i], coordinates[i + 1], 1f)
         vector = vector.cross(ctm)
         result.add(vector.get(Vector.I1))
         result.add(vector.get(Vector.I2))
@@ -137,14 +137,14 @@ internal class Boxtricator(private val reader:PdfReader,
       if (rectangle.size < 4) return emptyList()
 
       return listOf(
-          rectangle.get(0), // x (left)
-          rectangle.get(1), // y (bottom) (from bottom)
-          rectangle.get(0) + rectangle.get(2), // x (right)
-          rectangle.get(1), // y (bottom) (from bottom)
-          rectangle.get(0) + rectangle.get(2), // x (right)
-          rectangle.get(1) + rectangle.get(3), // y (top) (from bottom)
-          rectangle.get(0), // x (left)
-          rectangle.get(1) + rectangle.get(3) // y (top) (from bottom)
+        rectangle[0], // x (left)
+        rectangle[1], // y (bottom) (from bottom)
+          rectangle[0] + rectangle[2], // x (right)
+        rectangle[1], // y (bottom) (from bottom)
+          rectangle[0] + rectangle[2], // x (right)
+          rectangle[1] + rectangle[3], // y (top) (from bottom)
+        rectangle[0], // x (left)
+          rectangle[1] + rectangle[3] // y (top) (from bottom)
       )
     }
 

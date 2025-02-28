@@ -32,6 +32,7 @@ import ch.qos.logback.classic.Level
 import org.docopt.Docopt
 
 import org.slf4j.LoggerFactory
+import kotlin.system.exitProcess
 
 /**
  * Command-line interface to [Textricator].
@@ -110,7 +111,7 @@ object TextricatorCli {
       }
     } catch ( e:SystemExitException) {
       System.err.println(e.message)
-      System.exit(e.exitCode)
+      exitProcess(e.exitCode)
     }
   }
 
@@ -134,7 +135,7 @@ object TextricatorCli {
     val inputFormat = opts.string("--input-format") ?: inputFile.extension.lowercase()
 
     val outputFile = opts.file("<output>")
-    if ( outputFile != null ) outputFile.absoluteFile.parentFile.mkdirs()
+    outputFile?.absoluteFile?.parentFile?.mkdirs()
     val outputFormat = opts.string("--output-format") ?:
         if ( outputFile == null ) {
           Textricator.TEXT_OUTPUT_FORMAT_CSV
@@ -175,7 +176,7 @@ object TextricatorCli {
     val inputFormat = opts.string("--input-format") ?: inputFile.extension.lowercase()
 
     val outputFile = opts.file("<output>")
-    if ( outputFile != null ) outputFile.absoluteFile.parentFile.mkdirs()
+    outputFile?.absoluteFile?.parentFile?.mkdirs()
     val outputFormat = opts.string("--output-format") ?:
         if ( outputFile == null ) {
           throw SystemExitException( "--output-format is required if <output> is omitted.", 1 )
@@ -215,7 +216,7 @@ object TextricatorCli {
     val inputFormatUpper = inputFormat.uppercase()
 
     val outputFile = opts.file("<output>")
-    if ( outputFile != null ) outputFile.absoluteFile.parentFile.mkdirs()
+    outputFile?.absoluteFile?.parentFile?.mkdirs()
     val outputFormat = opts.string("--output-format") ?:
       if ( outputFile == null ) {
         throw SystemExitException( "--output-format is required if <output> is omitted.", 1 )
@@ -250,7 +251,7 @@ object TextricatorCli {
     val inputFormat = opts.string("--input-format") ?: inputFile.extension.lowercase()
 
     val outputFile = opts.file("<output>")
-    if ( outputFile != null ) outputFile.absoluteFile.parentFile.mkdirs()
+    outputFile?.absoluteFile?.parentFile?.mkdirs()
     val outputFormat = opts.string("--output-format") ?:
         if ( outputFile == null ) {
           throw SystemExitException( "--output-format is required if <output> is omitted.", 1 )

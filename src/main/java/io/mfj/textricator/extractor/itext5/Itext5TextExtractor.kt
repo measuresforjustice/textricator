@@ -23,7 +23,6 @@ import com.itextpdf.text.BaseColor
 import com.itextpdf.text.pdf.*
 import com.itextpdf.text.pdf.parser.ContentOperator
 import com.itextpdf.text.pdf.parser.FilteredTextRenderListener
-import com.itextpdf.text.pdf.parser.GraphicsState
 import com.itextpdf.text.pdf.parser.LocationTextExtractionStrategy
 import com.itextpdf.text.pdf.parser.PdfContentStreamProcessor
 import com.itextpdf.text.pdf.parser.PdfTextExtractor
@@ -94,7 +93,7 @@ class Itext5TextExtractor(input:InputStream, boxPrecision:Float?, boxIgnoreColor
   override fun extract(pageNumber:Int):List<Text> {
 
     if ( ! pageRange.contains( pageNumber ) ) {
-      throw IllegalArgumentException( "Invalid page number: ${pageNumber}. Valid pages are ${pageRange}" )
+      throw IllegalArgumentException( "Invalid page number: $pageNumber. Valid pages are $pageRange" )
     }
 
     val pageHeight = getPageSize(pageNumber).height
@@ -168,7 +167,7 @@ class Itext5TextExtractor(input:InputStream, boxPrecision:Float?, boxIgnoreColor
 
     // start a new text segment
     fun start(x:Float, y:Float, font:String, fontSize:Float, fontColor:String?) {
-      if (buffer != null) throw Exception("Forgot to call flush(). Text: ${buffer}")
+      if (buffer != null) throw Exception("Forgot to call flush(). Text: $buffer")
       buffer = Buffer(pageNumber, x, y, x, y, font, fontSize, fontColor)
     }
 
@@ -210,7 +209,7 @@ class Itext5TextExtractor(input:InputStream, boxPrecision:Float?, boxIgnoreColor
 
       flush()
 
-      log.debug("{${pageNumber}} string [ ${x}, ${y} ] ${text}")
+      log.debug("{${pageNumber}} string [ ${x}, $y ] $text")
       start(x, y, gs.font.postscriptFontName, fontSize, fontColor)
       append(x + width, y, text, gs.font.postscriptFontName, fontSize, fontColor )
     }
@@ -229,8 +228,8 @@ class Itext5TextExtractor(input:InputStream, boxPrecision:Float?, boxIgnoreColor
       val fontColor = color(gs.fillColor)
 
       // continuation from stringOperator
-      log.debug("{${pageNumber}} continue [ ${x}, ${y} ] ${text}")
-      append(x + width, y, " ${text}", gs.font.postscriptFontName, fontSize, fontColor)
+      log.debug("{${pageNumber}} continue [ ${x}, $y ] $text")
+      append(x + width, y, " $text", gs.font.postscriptFontName, fontSize, fontColor)
     }
 
     // capture pdfarray - this is all one segment
@@ -245,7 +244,7 @@ class Itext5TextExtractor(input:InputStream, boxPrecision:Float?, boxIgnoreColor
       // combine all PdfStrings in the PdfArray to one String
       val text = array.asSequence().filter { it is PdfString }.map { it as PdfString }.map { pdfString ->
         // PdfString.toUnicodeString() does not work in all cases.
-        val bytes = pdfString.getBytes()
+        val bytes = pdfString.bytes
         gs.font.decode(bytes, 0, bytes.size)
       }.joinToString(separator = "")
       val width = gs.font.getWidthPoint(text, fontSize)
@@ -253,7 +252,7 @@ class Itext5TextExtractor(input:InputStream, boxPrecision:Float?, boxIgnoreColor
 
       flush()
 
-      log.debug("{${pageNumber}} array [ ${x} , ${y} ] ${text}")
+      log.debug("{${pageNumber}} array [ $x , $y ] $text")
       start(x, y, gs.font.postscriptFontName, fontSize, fontColor)
       append(x + width, y, text, gs.font.postscriptFontName, fontSize, fontColor)
       flush()

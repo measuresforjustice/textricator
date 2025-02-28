@@ -27,8 +27,8 @@ import com.itextpdf.text.pdf.parser.*
  */
 class TextMoveStartNextLine:ContentOperator {
   override fun invoke(processor:PdfContentStreamProcessor, operator:PdfLiteral?, operands:ArrayList<PdfObject>) {
-    val tx = (operands.get(0) as PdfNumber).floatValue()
-    val ty = (operands.get(1) as PdfNumber).floatValue()
+    val tx = (operands[0] as PdfNumber).floatValue()
+    val ty = (operands[1] as PdfNumber).floatValue()
 
     val translationMatrix = Matrix(tx, ty)
     processor.textMatrix = translationMatrix.multiply(processor.textLineMatrix)
@@ -42,7 +42,7 @@ class TextMoveStartNextLine:ContentOperator {
  */
 class TextMoveNextLine(private val moveStartNextLine:TextMoveStartNextLine):ContentOperator {
   override fun invoke(processor:PdfContentStreamProcessor, operator:PdfLiteral?, operands:ArrayList<PdfObject>) {
-    val tdoperands:ArrayList<PdfObject> = ArrayList<PdfObject>(2)
+    val tdoperands:ArrayList<PdfObject> = ArrayList(2)
     tdoperands.add(0, PdfNumber(0))
     tdoperands.add(1, PdfNumber(-processor.gs().leading))
     moveStartNextLine.invoke(processor, null, tdoperands)
@@ -55,7 +55,7 @@ class TextMoveNextLine(private val moveStartNextLine:TextMoveStartNextLine):Cont
 class MoveNextLineAndShowText(private val textMoveNextLine:TextMoveNextLine, private val showText:ContentOperator):
     ContentOperator {
   override fun invoke(processor:PdfContentStreamProcessor, operator:PdfLiteral?, operands:ArrayList<PdfObject>) {
-    textMoveNextLine.invoke(processor, null, ArrayList<PdfObject>(0))
+    textMoveNextLine.invoke(processor, null, ArrayList(0))
     showText.invoke(processor, null, operands)
   }
 }
@@ -65,7 +65,7 @@ class MoveNextLineAndShowText(private val textMoveNextLine:TextMoveNextLine, pri
  */
 class SetTextWordSpacing:ContentOperator {
   override fun invoke(processor:PdfContentStreamProcessor, operator:PdfLiteral?, operands:ArrayList<PdfObject>) {
-    val wordSpace = operands.get(0) as PdfNumber
+    val wordSpace = operands[0] as PdfNumber
     processor.gs().setWordSpacing(wordSpace.floatValue())
   }
 }
@@ -75,7 +75,7 @@ class SetTextWordSpacing:ContentOperator {
  */
 class SetTextCharacterSpacing:ContentOperator {
   override fun invoke(processor:PdfContentStreamProcessor, operator:PdfLiteral?, operands:ArrayList<PdfObject>) {
-    val charSpace = operands.get(0) as PdfNumber
+    val charSpace = operands[0] as PdfNumber
     processor.gs().setCharacterSpacing(charSpace.floatValue())
   }
 }
@@ -89,19 +89,19 @@ class MoveNextLineAndShowTextWithSpacing(private val setTextWordSpacing:SetTextW
 
   override fun invoke(processor:PdfContentStreamProcessor, operator:PdfLiteral?, operands:ArrayList<PdfObject>) {
 
-    val aw:PdfNumber = operands.get(0) as PdfNumber
-    val ac:PdfNumber = operands.get(1) as PdfNumber
-    val string:PdfString = operands.get(2) as PdfString
+    val aw:PdfNumber = operands[0] as PdfNumber
+    val ac:PdfNumber = operands[1] as PdfNumber
+    val string:PdfString = operands[2] as PdfString
 
-    val twOperands:ArrayList<PdfObject> = ArrayList<PdfObject>(1)
+    val twOperands:ArrayList<PdfObject> = ArrayList(1)
     twOperands.add(0, aw)
     setTextWordSpacing.invoke(processor, null, twOperands)
 
-    val tcOperands:ArrayList<PdfObject> = ArrayList<PdfObject>(1)
+    val tcOperands:ArrayList<PdfObject> = ArrayList(1)
     tcOperands.add(0, ac)
     setTextCharacterSpacing.invoke(processor, null, tcOperands)
 
-    val tickOperands:ArrayList<PdfObject> = ArrayList<PdfObject>(1)
+    val tickOperands:ArrayList<PdfObject> = ArrayList(1)
     tickOperands.add(0, string)
     moveNextLineAndShowText.invoke(processor, null, tickOperands)
   }
