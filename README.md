@@ -14,7 +14,6 @@ _Textricator_ is deployed to [Maven Central](https://repo1.maven.org/maven2/io/m
 This application is actively used and developed by [Measures for Justice](https://measuresforjustice.org).
 We welcome feedback, bug reports, and contributions. Create an issue, send a pull request,
 or email us at <textricator@mfj.io>. If you use _Textricator_, please let us know.
-Send us your mailing address and we will mail you a sticker.
 
 `io.mfj.textricator.Textricator` is the main entry point for library usage.
 
