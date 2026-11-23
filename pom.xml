@@ -6,7 +6,7 @@
 
   <groupId>io.mfj</groupId>
   <artifactId>textricator</artifactId>
-  <version>10.2-SNAPSHOT</version>
+  <version>10.2.78</version>
 
   <name>${project.groupId}:${project.artifactId}</name>
   <description>A tool to extract text from documents and generate structured data</description>
@@ -28,6 +28,12 @@
       <url>https://www.gnu.org/licenses/agpl-3.0.txt</url>
     </license>
   </licenses>
+
+  <scm>
+    <connection>scm:git:git://measuresforjustice/expr.git</connection>
+    <developerConnection>scm:git:ssh://github.com:measuresforjustice/textricator.git</developerConnection>
+    <url>https://github.com/measuresforjustice/textricator/tree/main</url>
+  </scm>
 
   <properties>
     <maven.compiler.source>11</maven.compiler.source>
