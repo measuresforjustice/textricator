@@ -34,7 +34,7 @@ class CsvTextExtractor(input:InputStream):TextExtractor {
   // Do not assume that pages are in order in the CSV.
   private val pages:MutableMap<Int,MutableList<Text>> = mutableMapOf<Int,MutableList<Text>>()
       .apply {
-        CSVParser(input.bufferedReader(), CsvTextOutput.CSV_FORMAT).use { csvp ->
+        CSVParser.parse(input.bufferedReader(), CsvTextOutput.CSV_FORMAT).use { csvp ->
           csvp.asSequence()
               .drop(1) // header
               .map(::parseRec)
